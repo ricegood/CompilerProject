@@ -26,10 +26,29 @@ int commentdepth=0;
 %}
 
 letter		[A-Za-z_]
+alnum			[A-Za-z0-9_]
+digit			[0-9]
+white-space [ \t\n]
+integer-constant ([1-9]+{digit}*)|0
+float-constant {digit}+.{digit}*([eE][+-]?{digit}+)?
+operator	[\(]|[\)]|[\[]|[\]]|[\{]|[\}]|[\->]|[\.]|[\,]|[\..]|[\!]|[\~]|[\++]|[\--]|[\*]|[\/]|[\%]|[\+]|[\-]|[\<<]|[\>>]|[\<]|[\<=]|[\>]|[\>=]|[\==]|[\!=]|[\&]|[\^]|[\|]|[\&&]|[\||]|[\?]|[\:]|[\;]|[\=]|[\+=]|[\-=]|[\*=]|[\/=]|[\%=]|[\&=]|[\^=]|[\|=}\[\<<=]|[\>>=]
+open-comment ["/*"]
+close-comment ["*/"]
+keyword [auto|break|case|char|continue|default|do|double|else|extern|float|for|goto|if|int|long|register|return|short|sizeof|static|struct|switch|typedef|union|unsigned|void|while]
+
 %start AA BB
 
 %%
-{letter}	{ }
+{letter}	{ printf("letter\n"); }
+{alnum}		{ printf("alnum\n"); }
+{digit}		{ printf("digit\n"); }
+{white-space}		{ printf("white-space\n"); }
+{integer-constant}		{ printf("integer-constant\n"); }
+{float-constant}		{ printf("float-constant\n"); }
+{operator}		{ printf("operator\n"); }
+{open-comment}		{ printf("open-comment\n"); }
+{close-comment}		{ printf("close-comment\n"); }
+{keyword}		{ printf("keyword\n"); }
 
 %%
 void initHash() 
