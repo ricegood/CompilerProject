@@ -34,7 +34,7 @@ float-constant	{digit}+("."){digit}*([eE][("+")|("-")]?{digit}+)?
 operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"%"|"+"|"-"|"<<"|">>"|"<"|"<="|">"|">="|"=="|"!="|"&"|"^"|"|"|"&&"|"||"|"?"|":"|";"|"="|"+="|"-="|"*="|"/="|"%="|"&="|"^="|"|="|"<<="|">>=")
 open-comment 	("/*")
 close-comment 	("*/")
-keyword 		("auto"|"break"|"case"|"char"|"continue"|"default"|"do"|"double"|"else"|"extern"|"float"|"for"|"goto"|"if"|"int"|"long"|"register"|"return"|"short"|"sizeof"|"static"|"struct"|"switch"|"typedef"|"union"|"unsigned"|"void"|"while")
+keyword 		("auto"|"break"|"case"|"char"|"continue"|"default"|"do"|"double"|"else"|"extern"|"float"|"for"|"goto"|"if"|"long"|"register"|"return"|"short"|"sizeof"|"static"|"struct"|"switch"|"typedef"|"union"|"unsigned"|"void"|"while")
 
 %start AA BB
 
@@ -45,7 +45,13 @@ keyword 		("auto"|"break"|"case"|"char"|"continue"|"default"|"do"|"double"|"else
 <AA>{white-space}				{ }
 <AA>{operator}					{ printf("OP\t%s\n",yytext); }
 <AA>{keyword}					{ printf("KEY\t%s\n",yytext); }
-<AA>(_|{letter})+({alnum}*)		{ printf("ID\t%s\n",yytext); }
+<AA>(_|{letter})+({alnum}*)		{ 
+								  id* data = enter(UNDEFINED, yytext, strlen(yytext));
+								  if (data->tokenType == KEYWORD)
+								  	printf("KEY\t%s\t%d\n",data->name,data->count);
+								  else if(data->tokenType == ID)
+								  	printf("ID\t%s\t%d\n",data->name,data->count);
+								}
 
 <AA>{open-comment}				{ commentdepth++; BEGIN BB;}
 <BB>{open-comment}				{ commentdepth++; }
@@ -72,7 +78,7 @@ void initHash()
 
 	/* Initilize Hash Tabel with Keywords */
 	for (i = 0; strcmp(keyWord[i], "\0") !=0; i++) {
-		//enter(KEYWORD, keyWord[i],strlen(keyWord[i]));
+		enter(KEYWORD, keyWord[i],strlen(keyWord[i]));
 	}
 }
 

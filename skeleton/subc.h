@@ -7,8 +7,14 @@
 #ifndef __SUBC_H__
 #define __SUBC_H__
 
+#define KEYWORD   0
+#define UNDEFINED 1
+#define ID        2
+
 #include <stdio.h>
 #include <strings.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct id {
 	int tokenType;
