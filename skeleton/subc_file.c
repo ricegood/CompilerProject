@@ -1,4 +1,7 @@
-struct _point {
+/************************
+   /* nested comments*/
+ ************************/
+struct _point {    
     float x, y, z;
     int color;
 } point[20];
@@ -9,4 +12,4 @@ struct _line {
     float meter = 0.5;
 } line[20];
 
-1..50 
+1..50
