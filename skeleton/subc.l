@@ -25,29 +25,29 @@
 int commentdepth=0;
 %}
 
-letter		[A-Za-z_]
+letter			[A-Za-z_]
 alnum			[A-Za-z0-9_]
 digit			[0-9]
-white-space [ \t\n]+
-integer-constant (([1-9]+{digit}*)|0)
-float-constant {digit}+("."){digit}*([eE][("+")|("-")]?{digit}+)?
-operator	[\(]|[\)]|[\[]|[\]]|[\{]|[\}]|[\->]|[\.]|[\,]|[\..]|[\!]|[\~]|[\++]|[\--]|[\*]|[\/]|[\%]|[\+]|[\-]|[\<<]|[\>>]|[\<]|[\<=]|[\>]|[\>=]|[\==]|[\!=]|[\&]|[\^]|[\|]|[\&&]|[\||]|[\?]|[\:]|[\;]|[\=]|[\+=]|[\-=]|[\*=]|[\/=]|[\%=]|[\&=]|[\^=]|[\|=}\[\<<=]|[\>>=]
-open-comment ("/*")
-close-comment ("*/")
-keyword ("auto"|"break"|"case"|"char"|"continue"|"default"|"do"|"double"|"else"|"extern"|"float"|"for"|"goto"|"if"|"int"|"long"|"register"|"return"|"short"|"sizeof"|"static"|"struct"|"switch"|"typedef"|"union"|"unsigned"|"void"|"while")
+white-space		[ \t\n]+
+integer-constant(([1-9]+{digit}*)|0)
+float-constant	{digit}+("."){digit}*([eE][("+")|("-")]?{digit}+)?
+operator		("\("|"\)"|"\["|"\]"|"\{"|"\}"|"\->"|"\."|"\,"|"\.."|"\!"|"\~"|"\++"|"\--"|"\*"|"\/"|"\%"|"\+"|"\-"|"\<<"|"\>>"|"\<"|"\<="|"\>"\"\>="|"\=="|"\!="|"\&"|"\^"|"\|"|"\&&"|"\||"|"\?"|"\:"|"\;"|"\="|"\+="|"\-="|"\*="|"\/="|"\%="|"\&="|"\^="|"\|="\"\<<="|"\>>=")
+open-comment 	("/*")
+close-comment 	("*/")
+keyword 		("auto"|"break"|"case"|"char"|"continue"|"default"|"do"|"double"|"else"|"extern"|"float"|"for"|"goto"|"if"|"int"|"long"|"register"|"return"|"short"|"sizeof"|"static"|"struct"|"switch"|"typedef"|"union"|"unsigned"|"void"|"while")
 
 %start AA BB
 
 %%
 {integer-constant}		{ printf("INT\t%s\n",yytext); }
 {float-constant}		{ printf("F\t%s\n",yytext); }
-{white-space}		{ }
-{operator}		{ printf("OP\t%s\n",yytext); }
-{open-comment}		{ printf("open-comment\n"); }
-{close-comment}		{ printf("close-comment\n"); }
-{keyword}		{ printf("KEY\t%s\n",yytext); }
-(_|{letter})+({alnum}*)		{ printf("ID\t%s\n",yytext); }
-. {}
+{white-space}			{ }
+{operator}				{ printf("OP\t%s\n",yytext); }
+{open-comment}			{ printf("open-comment\n"); }
+{close-comment}			{ printf("close-comment\n"); }
+{keyword}				{ printf("KEY\t%s\n",yytext); }
+(_|{letter})+({alnum}*)	{ printf("ID\t%s\n",yytext); }
+. 						{ }
 
 %%
 void initHash() 
