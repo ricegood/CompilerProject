@@ -31,7 +31,7 @@ digit			[0-9]
 white-space		[ \t\n]+
 integer-constant(([1-9]+{digit}*)|0)
 float-constant	{digit}+("."){digit}*([eE][("+")|("-")]?{digit}+)?
-operator		("\("|"\)"|"\["|"\]"|"\{"|"\}"|"\->"|"\."|"\,"|"\.."|"\!"|"\~"|"\++"|"\--"|"\*"|"\/"|"\%"|"\+"|"\-"|"\<<"|"\>>"|"\<"|"\<="|"\>"\"\>="|"\=="|"\!="|"\&"|"\^"|"\|"|"\&&"|"\||"|"\?"|"\:"|"\;"|"\="|"\+="|"\-="|"\*="|"\/="|"\%="|"\&="|"\^="|"\|="\"\<<="|"\>>=")
+operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"%"|"+"|"-"|"<<"|">>"|"<"|"<="|">"|">="|"=="|"!="|"&"|"^"|"|"|"&&"|"||"|"?"|":"|";"|"="|"+="|"-="|"*="|"/="|"%="|"&="|"^="|"|="|"<<="|">>=")
 open-comment 	("/*")
 close-comment 	("*/")
 keyword 		("auto"|"break"|"case"|"char"|"continue"|"default"|"do"|"double"|"else"|"extern"|"float"|"for"|"goto"|"if"|"int"|"long"|"register"|"return"|"short"|"sizeof"|"static"|"struct"|"switch"|"typedef"|"union"|"unsigned"|"void"|"while")
@@ -47,13 +47,13 @@ keyword 		("auto"|"break"|"case"|"char"|"continue"|"default"|"do"|"double"|"else
 <AA>{keyword}					{ printf("KEY\t%s\n",yytext); }
 <AA>(_|{letter})+({alnum}*)		{ printf("ID\t%s\n",yytext); }
 
-<AA>{open-comment}				{ printf("# INITIALLY OPEN COMMENT DEPTH = %d\n",++commentdepth); BEGIN BB;}
-<BB>{open-comment}				{ printf("OPEN COMMENT DEPTH = %d\n",++commentdepth); }
+<AA>{open-comment}				{ commentdepth++; BEGIN BB;}
+<BB>{open-comment}				{ commentdepth++; }
 <BB>{close-comment}				{ if (commentdepth > 1) {
-									printf("CLOSE COMMENT DEPTH = %d\n",--commentdepth);
+									commentdepth--;
 						 		  }
 						 		  else if (commentdepth == 1) {
-						  			printf("# FINALLY CLOSE COMMENT DEPTH = %d\n",--commentdepth);
+						  			commentdepth--;
 						  			BEGIN AA;
 						  		  }
 								}
