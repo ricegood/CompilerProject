@@ -40,6 +40,7 @@ keyword 		("auto"|"break"|"case"|"char"|"continue"|"default"|"do"|"double"|"else
 
 %%
 {integer-constant}		{ printf("INT\t%s\n",yytext); }
+{integer-constant}/("..") { printf("INT\t%s\n",yytext); }
 {float-constant}		{ printf("F\t%s\n",yytext); }
 {white-space}			{ }
 {operator}				{ printf("OP\t%s\n",yytext); }
