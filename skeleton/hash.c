@@ -25,7 +25,6 @@ id *enter(int tokenType, char *name, int length) {
     // hash function : (length) % HASH_TABLE_SIZE
     struct nlist* node;
     int key = (length) % HASH_TABLE_SIZE;
-    printf("key of %s : %d\n", name, key);
     // allocation pointer to node
     node = hashTable[key];
 
@@ -37,7 +36,9 @@ id *enter(int tokenType, char *name, int length) {
             node->data->count++;
             return node->data;
         }
-        node = node->next;
+        if(node->next)
+            node = node->next;
+        else break;
     }
 
 
@@ -54,6 +55,19 @@ id *enter(int tokenType, char *name, int length) {
 
     // if token type is undefined, it must be ID.
     if (tokenType == UNDEFINED) {
+        // print hash table
+        /*
+        struct nlist* n;
+        printf("==================================\n");
+        for(int i=0; i<HASH_TABLE_SIZE; i++) {
+            n = hashTable[i];
+            while(n){
+                printf("%s\n",n->data->name);
+                n = n->next;
+            }
+        }
+        printf("==================================\n");
+        */
         temp_id->tokenType = ID;
         temp_id->count = 1;
     }
@@ -64,8 +78,10 @@ id *enter(int tokenType, char *name, int length) {
     temp_nlist->data = temp_id;
 
     // add to hash table
-    hashTable[key] = temp_nlist;
+    if (node)
+        node->next = temp_nlist;
+    else
+        hashTable[key] = temp_nlist;
 
-    printf("hash entered!\n");
     return temp_nlist->data;
 }

@@ -44,7 +44,6 @@ keyword 		("auto"|"break"|"case"|"char"|"continue"|"default"|"do"|"double"|"else
 <AA>{float-constant}			{ printf("F\t%s\n",yytext); }
 <AA>{white-space}				{ }
 <AA>{operator}					{ printf("OP\t%s\n",yytext); }
-<AA>{keyword}					{ printf("KEY\t%s\n",yytext); }
 <AA>(_|{letter})+({alnum}*)		{ 
 								  id* data = enter(UNDEFINED, yytext, strlen(yytext));
 								  if (data->tokenType == KEYWORD)
@@ -73,7 +72,7 @@ void initHash()
 	int i;
 
 	char* keyWord[]={
-		"int","return", "\0"
+		"auto","break","case","char","continue","default","do","double","else","extern","float","for","goto","if","int","long","register","return","short","sizeof","static","struct","switch","typedef","union","unsigned","void","while", "\0"
 	};
 
 	/* Initilize Hash Tabel with Keywords */
