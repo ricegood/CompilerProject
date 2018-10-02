@@ -34,23 +34,22 @@ float-constant	{digit}+("."){digit}*([eE][("+")|("-")]?{digit}+)?
 operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"%"|"+"|"-"|"<<"|">>"|"<"|"<="|">"|">="|"=="|"!="|"&"|"^"|"|"|"&&"|"||"|"?"|":"|";"|"="|"+="|"-="|"*="|"/="|"%="|"&="|"^="|"|="|"<<="|">>=")
 open-comment 	("/*")
 close-comment 	("*/")
-keyword 		("auto"|"break"|"case"|"char"|"continue"|"default"|"do"|"double"|"else"|"extern"|"float"|"for"|"goto"|"if"|"long"|"register"|"return"|"short"|"sizeof"|"static"|"struct"|"switch"|"typedef"|"union"|"unsigned"|"void"|"while")
 
 %start AA BB
 
 %%
+
 <AA>{integer-constant}			{ printf("INT\t%s\n",yytext); }
 <AA>{integer-constant}/("..")	{ printf("INT\t%s\n",yytext); }
 <AA>{float-constant}			{ printf("F\t%s\n",yytext); }
 <AA>{operator}					{ printf("OP\t%s\n",yytext); }
-<AA>(_|{letter})+({alnum}*)		{ 
+<AA>{letter}+{alnum}*			{
 								  id* data = enter(UNDEFINED, yytext, strlen(yytext));
 								  if (data->tokenType == KEYWORD)
 								  	printf("KEY\t%s\t%d\n",data->name,data->count);
 								  else if(data->tokenType == ID)
 								  	printf("ID\t%s\t%d\n",data->name,data->count);
 								}
-
 <AA>{open-comment}				{ commentdepth++; BEGIN BB;}
 <BB>{open-comment}				{ commentdepth++; }
 <BB>{close-comment}				{ if (commentdepth > 1) {

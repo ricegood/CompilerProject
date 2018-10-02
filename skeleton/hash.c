@@ -46,7 +46,6 @@ id *enter(int tokenType, char *name, int length) {
     // while node is not null
     while (node) {
         // check existence
-        // Q. Should I check (node->data->tokenType == tokenType) ?????
         if (strcmp(node->data->name,name) == 0) {
             node->data->count++;
             return node->data;
