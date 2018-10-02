@@ -39,7 +39,6 @@ keyword 		("auto"|"break"|"case"|"char"|"continue"|"default"|"do"|"double"|"else
 %start AA BB
 
 %%
-<AA>{white-space}				{ printf("ws\n"); }
 <AA>{integer-constant}			{ printf("INT\t%s\n",yytext); }
 <AA>{integer-constant}/("..")	{ printf("INT\t%s\n",yytext); }
 <AA>{float-constant}			{ printf("F\t%s\n",yytext); }
@@ -62,8 +61,8 @@ keyword 		("auto"|"break"|"case"|"char"|"continue"|"default"|"do"|"double"|"else
 						  			BEGIN AA;
 						  		  }
 								}
-
-. 								{ }
+{white-space}					{ ; }
+. 								{ ; }
 
 %%
 

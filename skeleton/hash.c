@@ -48,8 +48,6 @@ id *enter(int tokenType, char *name, int length) {
         // check existence
         // Q. Should I check (node->data->tokenType == tokenType) ?????
         if (strcmp(node->data->name,name) == 0) {
-            print(hashTable);
-            printf("%s == %s\n", node->data->name, name);
             node->data->count++;
             return node->data;
         }
@@ -66,7 +64,7 @@ id *enter(int tokenType, char *name, int length) {
 
     // memory allocation to temp_id
     struct id* temp_id = malloc(sizeof(struct id));
-    char* temp_name = malloc(sizeof(name)); // due to yytext is pointer and changable.
+    char* temp_name = malloc(sizeof(name)); // due to yytext is pointer so value is changable.
     strcpy(temp_name, name);
     temp_id->tokenType = tokenType;
     temp_id->name = temp_name;
@@ -85,14 +83,11 @@ id *enter(int tokenType, char *name, int length) {
 
     // add to hash table
     if (node){
-        printf("node not null\n");
         node->next = temp_nlist;
     }
     else{
-        printf("node null\n");
         hashTable[key] = temp_nlist;
     }
 
-    print(hashTable);
     return temp_nlist->data;
 }
