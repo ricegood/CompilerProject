@@ -18,16 +18,16 @@ static nlist *hashTable[HASH_TABLE_SIZE];
 
 void print(nlist* table[HASH_TABLE_SIZE]) {
     // print hash table
-        struct nlist* n;
-        printf("==================================\n");
-        for(int i=0; i<HASH_TABLE_SIZE; i++) {
-            n = table[i];
-            while(n){
-                printf("%s\t(%p)\n",n->data->name,n->data->name);
-                n = n->next;
-            }
+    struct nlist* n;
+    printf("==================================\n");
+    for(int i=0; i<HASH_TABLE_SIZE; i++) {
+        n = table[i];
+        while(n){
+            printf("%s\t(%p)\n",n->data->name,n->data->name);
+            n = n->next;
         }
-        printf("==================================\n");
+    }
+    printf("==================================\n");
 }
 
 id *enter(int tokenType, char *name, int length) {
@@ -62,7 +62,7 @@ id *enter(int tokenType, char *name, int length) {
     /* ADD TOKEN */
     ///////////////
 
-    // memory allocation to temp_id
+    // memory allocation for temp_id
     struct id* temp_id = malloc(sizeof(struct id));
     char* temp_name = malloc(sizeof(name)); // due to yytext is pointer so value is changable.
     strcpy(temp_name, name);
@@ -76,7 +76,7 @@ id *enter(int tokenType, char *name, int length) {
         temp_id->count = 1;
     }
 
-    // memory allocation to temp_nlist
+    // memory allocation for temp_nlist
     struct nlist* temp_nlist = malloc(sizeof(struct nlist));
     temp_nlist->next = NULL;
     temp_nlist->data = temp_id;
