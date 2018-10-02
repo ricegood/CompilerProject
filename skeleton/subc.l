@@ -44,18 +44,26 @@ close-comment 	("*/")
 <AA>{float-constant}			{ printf("F\t%s\n",yytext); }
 <AA>{operator}					{ printf("OP\t%s\n",yytext); }
 <AA>{letter}+{alnum}*			{
+								  /* Determine the token type, and get the data */
 								  id* data = enter(UNDEFINED, yytext, strlen(yytext));
+
+								  /* Print the result */
 								  if (data->tokenType == KEYWORD)
 								  	printf("KEY\t%s\t%d\n",data->name,data->count);
 								  else if(data->tokenType == ID)
 								  	printf("ID\t%s\t%d\n",data->name,data->count);
 								}
-<AA>{open-comment}				{ commentdepth++; BEGIN BB;}
+<AA>{open-comment}				{ 
+								  /* Start the Comment Mode */
+								  commentdepth++;
+								  BEGIN BB;
+								}
 <BB>{open-comment}				{ commentdepth++; }
-<BB>{close-comment}				{ if (commentdepth > 1) {
+<BB>{close-comment}				{
+								  if (commentdepth > 1)
 									commentdepth--;
-						 		  }
 						 		  else if (commentdepth == 1) {
+						 		  	/* Back to the Normal Mode */
 						  			commentdepth--;
 						  			BEGIN AA;
 						  		  }

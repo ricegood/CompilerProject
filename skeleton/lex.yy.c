@@ -839,7 +839,10 @@ case 5:
 YY_RULE_SETUP
 #line 46 "subc.l"
 {
+								  /* Determine the token type, and get the data */
 								  id* data = enter(UNDEFINED, yytext, strlen(yytext));
+
+								  /* Print the result */
 								  if (data->tokenType == KEYWORD)
 								  	printf("KEY\t%s\t%d\n",data->name,data->count);
 								  else if(data->tokenType == ID)
@@ -848,21 +851,26 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 53 "subc.l"
-{ commentdepth++; BEGIN BB;}
+#line 56 "subc.l"
+{ 
+								  /* Start the Comment Mode */
+								  commentdepth++;
+								  BEGIN BB;
+								}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 54 "subc.l"
+#line 61 "subc.l"
 { commentdepth++; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 55 "subc.l"
-{ if (commentdepth > 1) {
+#line 62 "subc.l"
+{
+								  if (commentdepth > 1)
 									commentdepth--;
-						 		  }
 						 		  else if (commentdepth == 1) {
+						 		  	/* Back to the Normal Mode */
 						  			commentdepth--;
 						  			BEGIN AA;
 						  		  }
@@ -871,20 +879,20 @@ YY_RULE_SETUP
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 63 "subc.l"
+#line 71 "subc.l"
 { ; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 64 "subc.l"
+#line 72 "subc.l"
 { ; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 66 "subc.l"
+#line 74 "subc.l"
 ECHO;
 	YY_BREAK
-#line 888 "lex.yy.c"
+#line 896 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(AA):
 case YY_STATE_EOF(BB):
@@ -1887,7 +1895,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 66 "subc.l"
+#line 74 "subc.l"
 
 
 
