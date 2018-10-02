@@ -36,9 +36,10 @@ id *enter(int tokenType, char *name, int length) {
     /* find the token */
     ////////////////////
 
-    // hash function : (length) % HASH_TABLE_SIZE
+    // hash function : ((first char ascii code)*(length)) % HASH_TABLE_SIZE
     struct nlist* node;
-    int key = (length) % HASH_TABLE_SIZE;
+    int key = ((*name) * (length)) % HASH_TABLE_SIZE;
+    printf("key = %d\n",key);
 
     // allocation pointer to node
     node = hashTable[key];
