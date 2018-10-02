@@ -44,14 +44,12 @@ keyword 		("auto"|"break"|"case"|"char"|"continue"|"default"|"do"|"double"|"else
 <AA>{integer-constant}/("..")	{ printf("INT\t%s\n",yytext); }
 <AA>{float-constant}			{ printf("F\t%s\n",yytext); }
 <AA>{operator}					{ printf("OP\t%s\n",yytext); }
-<AA>(_|{letter})+({alnum}*)		{ //printf("yytext=%s\n",yytext);
-								
+<AA>(_|{letter})+({alnum}*)		{ 
 								  id* data = enter(UNDEFINED, yytext, strlen(yytext));
 								  if (data->tokenType == KEYWORD)
 								  	printf("KEY\t%s\t%d\n",data->name,data->count);
 								  else if(data->tokenType == ID)
 								  	printf("ID\t%s\t%d\n",data->name,data->count);
-								  
 								}
 
 <AA>{open-comment}				{ commentdepth++; BEGIN BB;}

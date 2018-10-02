@@ -20,10 +20,10 @@ void print(nlist* table[HASH_TABLE_SIZE]) {
     // print hash table
         struct nlist* n;
         printf("==================================\n");
-        for(int i=0; i<2; i++) {
+        for(int i=0; i<HASH_TABLE_SIZE; i++) {
             n = table[i];
             while(n){
-                printf("%s\n",n->data->name);
+                printf("%s\t(%p)\n",n->data->name,n->data->name);
                 n = n->next;
             }
         }
@@ -31,7 +31,7 @@ void print(nlist* table[HASH_TABLE_SIZE]) {
 }
 
 id *enter(int tokenType, char *name, int length) {
-    print(hashTable);
+    
     ////////////////////
     /* find the token */
     ////////////////////
@@ -45,10 +45,11 @@ id *enter(int tokenType, char *name, int length) {
 
     // while node is not null
     while (node) {
-        printf("HERE\n");
         // check existence
         // Q. Should I check (node->data->tokenType == tokenType) ?????
         if (strcmp(node->data->name,name) == 0) {
+            print(hashTable);
+            printf("%s == %s\n", node->data->name, name);
             node->data->count++;
             return node->data;
         }
@@ -65,8 +66,10 @@ id *enter(int tokenType, char *name, int length) {
 
     // memory allocation to temp_id
     struct id* temp_id = malloc(sizeof(struct id));
+    char* temp_name = malloc(sizeof(name)); // due to yytext is pointer and changable.
+    strcpy(temp_name, name);
     temp_id->tokenType = tokenType;
-    temp_id->name = name;
+    temp_id->name = temp_name;
     temp_id->count = 0;
 
     // if token type is undefined, it must be ID.
@@ -90,5 +93,6 @@ id *enter(int tokenType, char *name, int length) {
         hashTable[key] = temp_nlist;
     }
 
+    print(hashTable);
     return temp_nlist->data;
 }

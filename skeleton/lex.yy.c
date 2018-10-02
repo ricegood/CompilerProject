@@ -846,29 +846,27 @@ YY_RULE_SETUP
 case 6:
 YY_RULE_SETUP
 #line 47 "subc.l"
-{ //printf("yytext=%s\n",yytext);
-								
+{ 
 								  id* data = enter(UNDEFINED, yytext, strlen(yytext));
 								  if (data->tokenType == KEYWORD)
 								  	printf("KEY\t%s\t%d\n",data->name,data->count);
 								  else if(data->tokenType == ID)
 								  	printf("ID\t%s\t%d\n",data->name,data->count);
-								  
 								}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 57 "subc.l"
+#line 55 "subc.l"
 { commentdepth++; BEGIN BB;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 58 "subc.l"
+#line 56 "subc.l"
 { commentdepth++; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 59 "subc.l"
+#line 57 "subc.l"
 { if (commentdepth > 1) {
 									commentdepth--;
 						 		  }
@@ -880,15 +878,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 68 "subc.l"
+#line 66 "subc.l"
 { }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 70 "subc.l"
+#line 68 "subc.l"
 ECHO;
 	YY_BREAK
-#line 892 "lex.yy.c"
+#line 890 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(AA):
 case YY_STATE_EOF(BB):
@@ -1891,7 +1889,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 70 "subc.l"
+#line 68 "subc.l"
 
 
 
