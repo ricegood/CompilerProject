@@ -66,7 +66,7 @@ id *enter(int tokenType, char *name, int length) {
 
     // Memory allocation for temp_id
     struct id* temp_id = malloc(sizeof(struct id));
-    char* temp_name = malloc(sizeof(name)); // due to yytext is pointer so value is changable.
+    char* temp_name = malloc(length+1); // due to yytext is pointer so value is changable.
     strcpy(temp_name, name);
     temp_id->tokenType = tokenType;
     temp_id->name = temp_name;
