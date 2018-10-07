@@ -1,13 +1,11 @@
-letter	[A-Za-z]
-
+letter	[A-Za-z*/]
+ws	[ \t\n]
+operator ["/"|"*"]
 %%
-
-
-"++"/{letter}  {printf("++a and yytext has %s\n",yytext);} 
-
-{letter}/"++"  {printf("a++ and yytext has %s\n",yytext);} 
-
-. { ; }
+{ws} { ; }
+{operator} {printf("operator\n");}
+"/*"([^*]|\*+[^*/])*\*+"/" {printf("comment\n");}
+. { printf("%s\n", yytext); }
 
 %%
 
