@@ -6,6 +6,7 @@
 
 
 %}
+be ("is")
 char [A-Za-z]
 num [0-9]
 eq [=]
@@ -14,13 +15,13 @@ age {num}+
 
 %%
 
+{be} { return BE; }
 {name} {
 	yylval = strdup(yytext);
 	printf("String : %s\n",yytext);
 //	yylval = yytext;
 	return NAME; 
 }
-{eq} { return EQ; }
 {age} { 
 	char* temp = (char*)malloc(sizeof(char)*(yyleng+1));
 	strncpy(temp,yytext,yyleng);

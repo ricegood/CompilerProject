@@ -18,7 +18,9 @@ OP 		[\+\-\*\/]
 	yylval.floatval = atof(yytext);
 	return FLOAT;
 	}
-{OP} 	{ return yytext[0]; }
+{OP} 	{ printf("%s\n", yytext);
+		  printf("%c\n", yytext[0]);
+		  return yytext[0]; }
 
 %%
 int main(int argc, char* argv[]){

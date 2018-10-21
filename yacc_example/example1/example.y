@@ -5,7 +5,7 @@ typedef char* string;
 %}
 
 
-%token NAME EQ AGE
+%token NAME BE AGE
 
 %%
 
@@ -13,7 +13,7 @@ file: record file
 	| record
 	;
 
-record: NAME EQ AGE { printf("%s is %s years old!!!\n", $1, $3); }
+record: NAME BE AGE { printf("%s is %s years old!!!\n", $1, $3); }
 
 %%
 int main() {
