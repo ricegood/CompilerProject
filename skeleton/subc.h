@@ -9,7 +9,7 @@
 
 #define KEYWORD   0
 #define UNDEFINED 1
-#define ID        2
+#define ID_       2
 
 #include <stdio.h>
 #include <strings.h>

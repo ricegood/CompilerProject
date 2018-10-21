@@ -19,6 +19,8 @@
 /**************************************************************/
 
 #include "subc.h"
+#include "subc.tab.h"
+
 /***************************************************************
 {Other useful code segments can be here.}
 ***************************************************************/
@@ -34,26 +36,70 @@ float-constant	{digit}+("."){digit}*([eE][+-]?{digit}+)?
 operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"%"|"+"|"-"|"<<"|">>"|"<"|"<="|">"|">="|"=="|"!="|"&"|"^"|"|"|"&&"|"||"|"?"|":"|";"|"="|"+="|"-="|"*="|"/="|"%="|"&="|"^="|"|="|"<<="|">>=")
 open-comment 	("/*")
 close-comment 	("*/")
+special-char	\\[nt]
 
 %start AA BB
 
 %%
+"int"|"char"|"float"|"double"|"short"|"long" { return TYPE; }
+"struct" 	{ return STRUCT; }
+"="			{ return ASSIGNOP; }
+"if"		{ return IF; }
+"else"		{ return ELSE; }
+"break"		{ return BREAK; }
+"continue"	{ return CONTINUE; }
+"=="		{ return EQUOP; }
+"for"		{ return FOR; }
+"&&"		{ return LOGICAL_AND; }
+"||"		{ return LOGICAL_OR; }
+"--"		{ return MINUS_MINUS; }
+"++"		{ return PLUS_PLUS; }
 
-<AA>{integer-constant}			{ printf("INT\t%s\n",yytext); }
-<AA>{integer-constant}/("..")	{ printf("INT\t%s\n",yytext); }
-<AA>{float-constant}			{ printf("F\t%s\n",yytext); }
-<AA>{operator}					{ printf("OP\t%s\n",yytext); }
-<AA>{letter}+{alnum}*			{
+{integer-constant}			{
+								  //printf("INT\t%s\n",yytext);
+								  yylval.intVal = atoi(yytext);
+								  return INTEGER_CONST;
+								}
+{integer-constant}/("..")	{
+								  //printf("INT\t%s\n",yytext);
+								  yylval.intVal = atoi(yytext);
+								  return INTEGER_CONST;
+								}
+{float-constant}			{
+								  //printf("F\t%s\n",yytext);
+								}
+{operator}					{
+								  //printf("OP\t%s\n",yytext);
+								}
+{letter}+{alnum}*			{
 								  /* Determine the token type, and get the data */
 								  id* data = enter(UNDEFINED, yytext, strlen(yytext));
 
 								  /* Print the result */
-								  if (data->tokenType == KEYWORD)
-								  	printf("KEY\t%s\t%d\n",data->name,data->count);
-								  else if(data->tokenType == ID)
-								  	printf("ID\t%s\t%d\n",data->name,data->count);
+								  if (data->tokenType == KEYWORD) {
+								  	// printf("KEY\t%s\t%d\n",data->name,data->count);
+								  }
+								  else if(data->tokenType == ID_) {
+								  	// printf("ID\t%s\t%d\n",data->name,data->count);
+								    yylval.stringVal = data->name;
+								    return ID;
+								  }
 								}
-<AA>{open-comment}				{ 
+
+\"({special-char}|[^\\\"\n])*\"	{
+								  /* String Variable */
+								  yylval.stringVal = yytext;
+								  return STRING;
+								}
+'({special-char}|[^\\'\n])'		{
+								  /* Character Variable */
+								  yylval.stringVal = yytext;
+								  return CHAR_CONST;
+								}
+","								{ return ','; }
+";"								{ return yytext[0]; }
+
+{open-comment}					{ 
 								  /* Start the Comment Mode */
 								  commentdepth++;
 								  BEGIN BB;
@@ -68,6 +114,7 @@ close-comment 	("*/")
 						  			BEGIN AA;
 						  		  }
 								}
+<BB>.							{}
 {white-space}					{ ; }
 . 								{ ; }
 
@@ -89,21 +136,25 @@ void initHash()
 
 int main(int argc, char** argv)
 {
-	id* temp;
+   static char* keyWord[]={
+		"auto","break","case","char","continue","default","do","double","else","extern","float","for","goto","if","int","long","register","return","short","sizeof","static","struct","switch","typedef","union","unsigned","void","while", "\0"
+	};
+   static int tokentype[] = { TYPE, 0 };
+   int i;
+   /* Initilize Hash Tabel with Keywords */
+   for (i = 0; strcmp(keyWord[i], "\0") !=0; i++) {
+      enter(KEYWORD, keyWord[i],strlen(keyWord[i]));
+   }
 
-	++argv;
-	--argc;
+   if(argc >= 2) yyin = fopen(argv[1], "r");
+   else yyin = stdin;
+   if(!yyin) {
+      printf("Can't open input stream!\n");
+      exit(1);
+   }
+	
+   yyparse();
+   fclose(yyin);
+   return 0;
 
-	if (argc > 0) {
-		yyin = fopen(argv[0], "r");
-	} else {
-		yyin = stdin;
-	}
-
-	initHash();
-
-	BEGIN AA;
-	yylex ();
-
-	return 0;
 }

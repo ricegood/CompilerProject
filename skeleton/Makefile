@@ -1,16 +1,34 @@
-subc: lex.yy.o hash.o
-	gcc -o subc lex.yy.o hash.o -lfl
+#
+# This is a makefile for the skeleton program for project 2.
+#
 
-lex.yy.o: lex.yy.c
-	gcc -c -g lex.yy.c
+CC = gcc
+LEX = flex
+YACC = bison
+COMPILE_OPTION = -g
+LINK_OPTION = -lfl
+YACC_OPTION = -vd
 
-lex.yy.c: subc.l
-	flex subc.l
+all : subc
 
-hash.o: hash.c subc.h
-	gcc -c -g hash.c
+clean :
+	rm -f *.o lex.yy.c subc.tab.c subc.tab.h subc.output subc
 
-clean:
-	rm lex.yy.c
-	rm *.o
-	rm subc
+subc : lex.yy.o hash.o subc.tab.o
+	${CC} -o subc lex.yy.o hash.o subc.tab.o ${LINK_OPTION}
+
+subc.tab.o : subc.tab.c subc.h
+	${CC} -c ${COMPILE_OPTION} subc.tab.c
+
+hash.o : hash.c subc.h
+	${CC} -c ${COMPILE_OPTION} hash.c
+
+lex.yy.o : lex.yy.c subc.tab.h subc.h
+	${CC} -c ${COMPILE_OPTION} lex.yy.c
+
+lex.yy.c : subc.l
+	${LEX} subc.l
+
+subc.tab.h subc.tab.c : subc.y
+	${YACC} ${YACC_OPTION} subc.y
+

@@ -74,7 +74,7 @@ id *enter(int tokenType, char *name, int length) {
 
     // If the token type is UNDEFINED, It must be ID.
     if (tokenType == UNDEFINED) {
-        temp_id->tokenType = ID;
+        temp_id->tokenType = ID_;
         temp_id->count = 1;
     }
 
