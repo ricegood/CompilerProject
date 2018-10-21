@@ -43,7 +43,6 @@ special-char	\\[nt]
 %%
 "int"|"char"|"float"|"double"|"short"|"long" { return TYPE; }
 "struct" 	{ return STRUCT; }
-"="			{ return ASSIGNOP; }
 "if"		{ return IF; }
 "else"		{ return ELSE; }
 "break"		{ return BREAK; }
@@ -54,6 +53,9 @@ special-char	\\[nt]
 "||"		{ return LOGICAL_OR; }
 "--"		{ return MINUS_MINUS; }
 "++"		{ return PLUS_PLUS; }
+"<"|"<="|">"|">="|"!=" { return RELOP; }
+"return"	{ return RETURN; }
+"while"		{ return WHILE; }
 
 {integer-constant}			{
 								  //printf("INT\t%s\n",yytext);
@@ -70,6 +72,7 @@ special-char	\\[nt]
 								}
 {operator}					{
 								  //printf("OP\t%s\n",yytext);
+								  return yytext[0];
 								}
 {letter}+{alnum}*			{
 								  /* Determine the token type, and get the data */
