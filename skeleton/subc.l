@@ -20,11 +20,9 @@
 
 #include "subc.h"
 #include "subc.tab.h"
+static int comment_depth = 0;
+static int lineno = 1;
 
-/***************************************************************
-{Other useful code segments can be here.}
-***************************************************************/
-int commentdepth=0;
 %}
 
 letter			[A-Za-z_]
@@ -38,7 +36,7 @@ open-comment 	("/*")
 close-comment 	("*/")
 special-char	\\[nt]
 
-%start AA BB
+%x COMMENT
 
 %%
 "int"|"char"|"float"|"double"|"short"|"long" { return TYPE; }
@@ -102,39 +100,22 @@ special-char	\\[nt]
 ","								{ return ','; }
 ";"								{ return yytext[0]; }
 
-{open-comment}					{ 
-								  /* Start the Comment Mode */
-								  commentdepth++;
-								  BEGIN BB;
-								}
-<BB>{open-comment}				{ commentdepth++; }
-<BB>{close-comment}				{
-								  if (commentdepth > 1)
-									commentdepth--;
-						 		  else if (commentdepth == 1) {
-						 		  	/* Back to the Normal Mode */
-						  			commentdepth--;
-						  			BEGIN AA;
-						  		  }
-								}
-<BB>.							{}
+<*>\n		   ++lineno;
+<INITIAL,COMMENT>"/*"	{
+		   ++comment_depth;
+		   BEGIN (COMMENT);
+		}
+<COMMENT>"*/"	   if(--comment_depth == 0) BEGIN (INITIAL);
+<COMMENT>.		 {}
+
 {white-space}					{ ; }
 . 								{ ; }
 
 %%
 
-void initHash() 
+int read_line()
 {
-	int i;
-
-	char* keyWord[]={
-		"auto","break","case","char","continue","default","do","double","else","extern","float","for","goto","if","int","long","register","return","short","sizeof","static","struct","switch","typedef","union","unsigned","void","while", "\0"
-	};
-
-	/* Initilize Hash Tabel with Keywords */
-	for (i = 0; strcmp(keyWord[i], "\0") !=0; i++) {
-		enter(KEYWORD, keyWord[i],strlen(keyWord[i]));
-	}
+   return lineno;
 }
 
 int main(int argc, char** argv)
