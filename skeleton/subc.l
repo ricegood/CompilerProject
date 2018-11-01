@@ -39,28 +39,26 @@ special-char	\\[nt]
 %x COMMENT
 
 %%
-"int"|"char"|"float"|"double"|"short"|"long" { return TYPE; }
+"int"|"char" { return TYPE; }
 "struct" 	{ return STRUCT; }
+"return"	{ return RETURN; }
 "if"		{ return IF; }
 "else"		{ return ELSE; }
+"while"		{ return WHILE; }
+"for"		{ return FOR; }
 "break"		{ return BREAK; }
 "continue"	{ return CONTINUE; }
-"=="		{ return EQUOP; }
-"for"		{ return FOR; }
-"&&"		{ return LOGICAL_AND; }
+"+="|"-="|"*="|"/="|"%=" { return ASSIGNOP; }
 "||"		{ return LOGICAL_OR; }
-"--"		{ return MINUS_MINUS; }
+"&&"		{ return LOGICAL_AND; }
+"<"|"<="|">"|">=" { return RELOP; }
+"=="|"!="	{ return EQUOP; }
 "++"		{ return PLUS_PLUS; }
-"<"|"<="|">"|">="|"!=" { return RELOP; }
-"return"	{ return RETURN; }
-"while"		{ return WHILE; }
+"--"		{ return MINUS_MINUS; }
+"."			{ return STRUCTOP; }
+
 
 {integer-constant}			{
-								  //printf("INT\t%s\n",yytext);
-								  yylval.intVal = atoi(yytext);
-								  return INTEGER_CONST;
-								}
-{integer-constant}/("..")	{
 								  //printf("INT\t%s\n",yytext);
 								  yylval.intVal = atoi(yytext);
 								  return INTEGER_CONST;
