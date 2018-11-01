@@ -1263,7 +1263,7 @@ yyreduce:
 
   case 8:
 #line 46 "subc.y" /* yacc.c:1646  */
-    {}
+    {REDUCE("def -> unary");}
 #line 1268 "subc.tab.c" /* yacc.c:1646  */
     break;
 

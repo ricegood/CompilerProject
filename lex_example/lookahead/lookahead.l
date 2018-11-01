@@ -4,7 +4,7 @@ operator ["/"|"*"]
 %%
 {ws} { ; }
 {operator} {printf("operator\n");}
-"/*"([^*]|\*+[^*/])*\*+"/" {printf("comment\n");}
+"/*"[^*]*(\*)+([^*/][^*]*\*+)*"/" {printf("comment\n");}
 . { printf("%s\n", yytext); }
 
 %%

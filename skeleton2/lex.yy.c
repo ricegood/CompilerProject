@@ -811,13 +811,14 @@ case 5:
 YY_RULE_SETUP
 #line 33 "subc.l"
 {
+		   printf("integer\n");
 		   yylval.intVal = atoi(yytext);
 		   return INTEGER_CONST;
 		}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 37 "subc.l"
+#line 38 "subc.l"
 {
 			/* String Variable */
 		   yylval.stringVal = yytext;
@@ -826,7 +827,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 42 "subc.l"
+#line 43 "subc.l"
 {
 			/* Character Variable */
 		   yylval.stringVal = yytext;
@@ -835,28 +836,28 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 47 "subc.l"
+#line 48 "subc.l"
 { return ','; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 48 "subc.l"
+#line 49 "subc.l"
 { return yytext[0]; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 50 "subc.l"
+#line 51 "subc.l"
 
 	YY_BREAK
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 51 "subc.l"
+#line 52 "subc.l"
 ++lineno;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 52 "subc.l"
+#line 53 "subc.l"
 {
 		   ++comment_depth;
 		   BEGIN (COMMENT);
@@ -864,20 +865,20 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 56 "subc.l"
+#line 57 "subc.l"
 if(--comment_depth == 0) BEGIN (INITIAL);
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 57 "subc.l"
+#line 58 "subc.l"
 {}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 60 "subc.l"
+#line 61 "subc.l"
 ECHO;
 	YY_BREAK
-#line 881 "lex.yy.c"
+#line 882 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 	yyterminate();
@@ -1879,7 +1880,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 60 "subc.l"
+#line 61 "subc.l"
 
 
 

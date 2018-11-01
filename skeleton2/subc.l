@@ -28,7 +28,7 @@ special-char	\\[nt]
 {id}	{
 		   struct id *entered  = enter(ID, yytext, yyleng);
 		   yylval.stringVal = entered->name;
-		   return entered->lextype;
+		   return ID;
 		}
 {integer_const}	{
 		   yylval.intVal = atoi(yytext);

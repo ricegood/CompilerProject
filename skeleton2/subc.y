@@ -23,8 +23,11 @@ void 	REDUCE(char* s);
 %left 	STRUCTOP
 
 /* Token and Types */
-%token 				TYPE STRUCT
-%token<stringVal>	ID CHAR_CONST STRING STRUCTOP
+/* what is ID??? */
+%token        ID
+%token 				TYPE STRUCT RETURN IF ELSE WHILE FOR BREAK CONTINUE
+%token        ASSIGNOP LOGICAL_OR LOGICAL_AND RELOP EQUOP PLUS_PLUS MINUS_MINUS STRUCTOP
+%token<stringVal>	CHAR_CONST STRING
 %token<intVal>		INTEGER_CONST
 
 %%
@@ -43,7 +46,7 @@ ext_def: TYPE def ';'	{}
    | /* empty */	{}
    ;
 def: def ',' def	{}
-   | unary	{}
+   | unary	{REDUCE("def -> unary");}
    ;
 unary: INTEGER_CONST {
             REDUCE("unary -> INTEGER_CONST");
