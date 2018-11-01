@@ -19,15 +19,25 @@ void 	REDUCE(char* s);
 }
 
 /* Precedences and Associativities */
+/* How to unary '-', unary '*', unary '&' : right? */
 %left	','
+%right  ASSIGNOP '='
+%left   LOGICAL_OR
+%left   LOGICAL_AND
+%left   '|'
+%left   '&'
+%left   EQUOP
+%left   RELOP
+%left   '+' '-'
+%left   '*' '/' '%'
+%right  '!' PLUS_PLUS MINUS_MINUS
 %left 	STRUCTOP
 
 /* Token and Types */
 /* what is ID ? */
-%token        ID
 %token        TYPE STRUCT RETURN IF ELSE WHILE FOR BREAK CONTINUE
 %token        ASSIGNOP LOGICAL_OR LOGICAL_AND RELOP EQUOP PLUS_PLUS MINUS_MINUS STRUCTOP
-%token<stringVal>   CHAR_CONST STRING
+%token<stringVal>   ID CHAR_CONST STRING
 %token<intVal>      INTEGER_CONST
 
 %%
