@@ -30,7 +30,6 @@ alnum			[A-Za-z0-9_]
 digit			[0-9]
 white-space		[ \t\n]
 integer-constant(([1-9]+{digit}*)|0)
-float-constant	{digit}+("."){digit}*([eE][+-]?{digit}+)?
 operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"%"|"+"|"-"|"<<"|">>"|"<"|"<="|">"|">="|"=="|"!="|"&"|"^"|"|"|"&&"|"||"|"?"|":"|";"|"="|"+="|"-="|"*="|"/="|"%="|"&="|"^="|"|="|"<<="|">>=")
 open-comment 	("/*")
 close-comment 	("*/")
@@ -63,9 +62,6 @@ special-char	\\[nt]
 								  yylval.intVal = atoi(yytext);
 								  return INTEGER_CONST;
 								}
-{float-constant}			{
-								  //printf("F\t%s\n",yytext);
-								}
 {operator}					{
 								  //printf("OP\t%s\n",yytext);
 								  return yytext[0];
@@ -76,10 +72,10 @@ special-char	\\[nt]
 
 								  /* Print the result */
 								  if (data->tokenType == KEYWORD) {
-								  	// printf("KEY\t%s\t%d\n",data->name,data->count);
+								  	//printf("KEY\t%s\t%d\n",data->name,data->count);
 								  }
 								  else if(data->tokenType == ID_) {
-								  	// printf("ID\t%s\t%d\n",data->name,data->count);
+								  	//printf("ID\t%s\t%d\n",data->name,data->count);
 								    yylval.stringVal = data->name;
 								    return ID;
 								  }
@@ -95,7 +91,6 @@ special-char	\\[nt]
 								  yylval.stringVal = yytext;
 								  return CHAR_CONST;
 								}
-","								{ return ','; }
 ";"								{ return yytext[0]; }
 
 <*>\n		   ++lineno;
@@ -119,7 +114,7 @@ int read_line()
 int main(int argc, char** argv)
 {
    static char* keyWord[]={
-		"auto","break","case","char","continue","default","do","double","else","extern","float","for","goto","if","int","long","register","return","short","sizeof","static","struct","switch","typedef","union","unsigned","void","while", "\0"
+		"auto","break","case","char","continue","default","do","else","extern","for","goto","if","int","register","return","sizeof","static","struct","switch","while", "\0"
 	};
    static int tokentype[] = { TYPE, 0 };
    int i;

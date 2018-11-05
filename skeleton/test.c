@@ -2,7 +2,7 @@ int main(){
 
 	int a;
 	char b;
-
+/* hi my /* name is yj * sdkfjls */ /***/ /*****/ */
 	a = 10;
 	b = 5;
 
