@@ -8,7 +8,7 @@
 
 int    yylex ();
 int    yyerror (char* s);
-void    REDUCE(char* s);
+void   REDUCE(char* s);
 
 %}
 
@@ -351,12 +351,12 @@ args:   expr {
 /*  Additional C Codes 
     Implemnt REDUCE function here */
 
-int    yyerror (char* s)
+int yyerror (char* s)
 {
     fprintf (stderr, "%s\n", s);
 }
 
-void    REDUCE( char* s)
+void REDUCE( char* s)
 {
     printf("%s\n",s);
 }
