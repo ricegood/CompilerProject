@@ -8,19 +8,18 @@
 
 int    yylex ();
 int    yyerror (char* s);
-void 	REDUCE(char* s);
+void    REDUCE(char* s);
 
 %}
 
 /* yylval types */
 %union {
-	int		intVal;
-	char	*stringVal;
+    int     intVal;
+    char    *stringVal;
 }
 
 /* Precedences and Associativities */
-/* How to unary '-', unary '*', unary '&' : right? */
-%left	','
+%left   ','
 %right  ASSIGNOP '='
 %left   LOGICAL_OR
 %left   LOGICAL_AND
@@ -31,10 +30,11 @@ void 	REDUCE(char* s);
 %left   '+' '-'
 %left   '*' '/' '%'
 %right  '!' PLUS_PLUS MINUS_MINUS
-%left 	STRUCTOP
+%left   STRUCTOP
+%nonassoc   '[' ']' '(' ')'
+%nonassoc   ELSE
 
 /* Token and Types */
-/* what is ID ? */
 %token        TYPE STRUCT RETURN IF ELSE WHILE FOR BREAK CONTINUE
 %token        ASSIGNOP LOGICAL_OR LOGICAL_AND RELOP EQUOP PLUS_PLUS MINUS_MINUS STRUCTOP
 %token<stringVal>   ID CHAR_CONST STRING
@@ -79,7 +79,7 @@ opt_specifier:  type_specifier {
         }
     | /* empty */ {
             REDUCE("opt_specifier->epsilon");
-            printf("<= When the type specifier is omitted, the default type is 'int'\n");
+            //printf("<= When the type specifier is omitted, the default type is 'int'\n");
         };
 
 type_specifier: TYPE {
@@ -94,7 +94,7 @@ struct_specifier: STRUCT opt_tag '{' def_list '}' {
         }
     | STRUCT ID {
             REDUCE("struct_specifier->STRUCT ID");
-            printf("<= In the second case, the struct must have been defined before.\n");
+            //printf("<= In the second case, the struct must have been defined before.\n");
         };
 
 opt_tag:  ID {
@@ -102,7 +102,7 @@ opt_tag:  ID {
         }
     | /* empty */ {
             REDUCE("opt_tag->epsilon");
-            printf("<= In the second case, the struct becomes anonymous.\n");
+            //printf("<= In the second case, the struct becomes anonymous.\n");
         };
 
 var_decl: ID {
@@ -116,7 +116,7 @@ var_decl: ID {
         }
     | '*' ID {
             REDUCE("var_decl->'*' ID");
-            printf("<= ID[] is the same as *ID. (pointer type)\n");
+            //printf("<= ID[] is the same as *ID. (pointer type)\n");
         };
 
 funct_decl: ID '(' ')' {
@@ -124,7 +124,7 @@ funct_decl: ID '(' ')' {
         }
     | ID '(' var_list ')' {
             REDUCE("funct_decl->ID '(' var_list ')'");
-            printf("<= When we declare a function with ID(), we want to have a function which has no parameter.\n");
+            //printf("<= When we declare a function with ID(), we want to have a function which has no parameter.\n");
         };
 
 var_list: param_decl {
@@ -321,19 +321,19 @@ unary:    '(' expr ')' {
         }
     | '*' unary {
             REDUCE("unary->'*' unary");
-            printf("<= The type of unary is pointer.\n");
+            //printf("<= The type of unary is pointer.\n");
         }
     | unary '[' expr ']' {
             REDUCE("unary->unary '[' expr ']'");
-            printf("<= The type of expr is integer.");
+            //printf("<= The type of expr is integer.\n");
         }
     | unary STRUCTOP ID {
             REDUCE("unary->unary STRUCTOP ID");
-            printf(" <= The type of unary is a struct.\n");
+            //printf(" <= The type of unary is a struct.\n");
         }
     | unary '(' args ')' {
             REDUCE("unary->unary '(' args ')'");
-            printf("<= The type of unary is a function.\n");
+            //printf("<= The type of unary is a function.\n");
         }
     | unary '(' ')' {
             REDUCE("unary->unary '(' ')'");
@@ -349,15 +349,15 @@ args:   expr {
 %%
 
 /*  Additional C Codes 
- 	Implemnt REDUCE function here */
+    Implemnt REDUCE function here */
 
 int    yyerror (char* s)
 {
-	fprintf (stderr, "%s\n", s);
+    fprintf (stderr, "%s\n", s);
 }
 
-void 	REDUCE( char* s)
+void    REDUCE( char* s)
 {
-	printf("%s\n",s);
+    printf("%s\n",s);
 }
 

@@ -461,15 +461,15 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    45,    45,    49,    52,    56,    59,    63,    66,    70,
-      73,    77,    80,    85,    88,    92,    95,   100,   103,   108,
-     111,   114,   117,   122,   125,   130,   133,   137,   141,   144,
-     148,   152,   155,   159,   162,   166,   170,   174,   177,   181,
-     184,   187,   190,   193,   196,   199,   202,   205,   208,   211,
-     215,   218,   222,   225,   229,   232,   235,   239,   243,   246,
-     249,   253,   257,   260,   263,   267,   270,   273,   276,   279,
-     282,   285,   288,   292,   295,   298,   301,   304,   307,   310,
-     313,   316,   319,   322,   326,   330,   334,   338,   342,   345
+       0,    43,    43,    47,    50,    54,    57,    61,    64,    68,
+      71,    75,    78,    83,    86,    90,    93,    98,   101,   106,
+     109,   112,   115,   120,   123,   128,   131,   135,   139,   142,
+     146,   150,   153,   157,   160,   164,   168,   172,   175,   179,
+     182,   185,   188,   191,   194,   197,   200,   203,   206,   209,
+     213,   216,   220,   223,   227,   230,   233,   237,   241,   244,
+     247,   251,   255,   258,   261,   265,   268,   271,   274,   277,
+     280,   283,   286,   290,   293,   296,   299,   302,   305,   308,
+     311,   314,   317,   320,   324,   328,   332,   336,   340,   343
 };
 #endif
 
@@ -1356,7 +1356,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 45 "subc.y" /* yacc.c:1646  */
+#line 43 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("program->ext_def_list");
         }
@@ -1364,7 +1364,7 @@ yyreduce:
     break;
 
   case 3:
-#line 49 "subc.y" /* yacc.c:1646  */
+#line 47 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("ext_def_list->ext_def_list ext_def");
         }
@@ -1372,7 +1372,7 @@ yyreduce:
     break;
 
   case 4:
-#line 52 "subc.y" /* yacc.c:1646  */
+#line 50 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("ext_def_list->epsilon");
         }
@@ -1380,7 +1380,7 @@ yyreduce:
     break;
 
   case 5:
-#line 56 "subc.y" /* yacc.c:1646  */
+#line 54 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("ext_def->opt_specifier ext_decl_list ';'");
         }
@@ -1388,7 +1388,7 @@ yyreduce:
     break;
 
   case 6:
-#line 59 "subc.y" /* yacc.c:1646  */
+#line 57 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("ext_def->opt_specifier funct_decl compound_stmt");
         }
@@ -1396,7 +1396,7 @@ yyreduce:
     break;
 
   case 7:
-#line 63 "subc.y" /* yacc.c:1646  */
+#line 61 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("ext_decl_list->ext_decl");
         }
@@ -1404,7 +1404,7 @@ yyreduce:
     break;
 
   case 8:
-#line 66 "subc.y" /* yacc.c:1646  */
+#line 64 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("ext_decl_list->ext_decl_list ',' ext_decl");
         }
@@ -1412,7 +1412,7 @@ yyreduce:
     break;
 
   case 9:
-#line 70 "subc.y" /* yacc.c:1646  */
+#line 68 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("ext_decl->var_decl");
         }
@@ -1420,7 +1420,7 @@ yyreduce:
     break;
 
   case 10:
-#line 73 "subc.y" /* yacc.c:1646  */
+#line 71 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("ext_decl->funct_decl");
         }
@@ -1428,7 +1428,7 @@ yyreduce:
     break;
 
   case 11:
-#line 77 "subc.y" /* yacc.c:1646  */
+#line 75 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("opt_specifier->type_specifier");
         }
@@ -1436,16 +1436,16 @@ yyreduce:
     break;
 
   case 12:
-#line 80 "subc.y" /* yacc.c:1646  */
+#line 78 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("opt_specifier->epsilon");
-            printf("<= When the type specifier is omitted, the default type is 'int'\n");
+            //printf("<= When the type specifier is omitted, the default type is 'int'\n");
         }
 #line 1445 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 85 "subc.y" /* yacc.c:1646  */
+#line 83 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("type_specifier->TYPE");
         }
@@ -1453,7 +1453,7 @@ yyreduce:
     break;
 
   case 14:
-#line 88 "subc.y" /* yacc.c:1646  */
+#line 86 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("type_specifier->struct_specifier");
         }
@@ -1461,7 +1461,7 @@ yyreduce:
     break;
 
   case 15:
-#line 92 "subc.y" /* yacc.c:1646  */
+#line 90 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("struct_specifier->STRUCT opt_tag '{' def_list '}'");
         }
@@ -1469,16 +1469,16 @@ yyreduce:
     break;
 
   case 16:
-#line 95 "subc.y" /* yacc.c:1646  */
+#line 93 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("struct_specifier->STRUCT ID");
-            printf("<= In the second case, the struct must have been defined before.\n");
+            //printf("<= In the second case, the struct must have been defined before.\n");
         }
 #line 1478 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 100 "subc.y" /* yacc.c:1646  */
+#line 98 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("opt_tag->ID");
         }
@@ -1486,16 +1486,16 @@ yyreduce:
     break;
 
   case 18:
-#line 103 "subc.y" /* yacc.c:1646  */
+#line 101 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("opt_tag->epsilon");
-            printf("<= In the second case, the struct becomes anonymous.\n");
+            //printf("<= In the second case, the struct becomes anonymous.\n");
         }
 #line 1495 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 108 "subc.y" /* yacc.c:1646  */
+#line 106 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("var_decl->ID");
         }
@@ -1503,7 +1503,7 @@ yyreduce:
     break;
 
   case 20:
-#line 111 "subc.y" /* yacc.c:1646  */
+#line 109 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("var_decl->ID '[' ']'");
         }
@@ -1511,7 +1511,7 @@ yyreduce:
     break;
 
   case 21:
-#line 114 "subc.y" /* yacc.c:1646  */
+#line 112 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("var_decl->ID '[' INTEGER_CONST ']'");
         }
@@ -1519,16 +1519,16 @@ yyreduce:
     break;
 
   case 22:
-#line 117 "subc.y" /* yacc.c:1646  */
+#line 115 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("var_decl->'*' ID");
-            printf("<= ID[] is the same as *ID. (pointer type)\n");
+            //printf("<= ID[] is the same as *ID. (pointer type)\n");
         }
 #line 1528 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 122 "subc.y" /* yacc.c:1646  */
+#line 120 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("funct_decl->ID '(' ')'");
         }
@@ -1536,16 +1536,16 @@ yyreduce:
     break;
 
   case 24:
-#line 125 "subc.y" /* yacc.c:1646  */
+#line 123 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("funct_decl->ID '(' var_list ')'");
-            printf("<= When we declare a function with ID(), we want to have a function which has no parameter.\n");
+            //printf("<= When we declare a function with ID(), we want to have a function which has no parameter.\n");
         }
 #line 1545 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 130 "subc.y" /* yacc.c:1646  */
+#line 128 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("var_list->param_decl");
         }
@@ -1553,7 +1553,7 @@ yyreduce:
     break;
 
   case 26:
-#line 133 "subc.y" /* yacc.c:1646  */
+#line 131 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("var_list->var_list ',' param_decl");
         }
@@ -1561,7 +1561,7 @@ yyreduce:
     break;
 
   case 27:
-#line 137 "subc.y" /* yacc.c:1646  */
+#line 135 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("param_decl->type_specifier var_decl");
         }
@@ -1569,7 +1569,7 @@ yyreduce:
     break;
 
   case 28:
-#line 141 "subc.y" /* yacc.c:1646  */
+#line 139 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("def_list->def_list def");
         }
@@ -1577,7 +1577,7 @@ yyreduce:
     break;
 
   case 29:
-#line 144 "subc.y" /* yacc.c:1646  */
+#line 142 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("def_list->epsilon");
         }
@@ -1585,7 +1585,7 @@ yyreduce:
     break;
 
   case 30:
-#line 148 "subc.y" /* yacc.c:1646  */
+#line 146 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("def->type_specifier decl_list ';'");
         }
@@ -1593,7 +1593,7 @@ yyreduce:
     break;
 
   case 31:
-#line 152 "subc.y" /* yacc.c:1646  */
+#line 150 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("decl_list->decl_list ',' decl");
         }
@@ -1601,7 +1601,7 @@ yyreduce:
     break;
 
   case 32:
-#line 155 "subc.y" /* yacc.c:1646  */
+#line 153 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("decl_list->decl");
         }
@@ -1609,7 +1609,7 @@ yyreduce:
     break;
 
   case 33:
-#line 159 "subc.y" /* yacc.c:1646  */
+#line 157 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("decl->funct_decl");
         }
@@ -1617,7 +1617,7 @@ yyreduce:
     break;
 
   case 34:
-#line 162 "subc.y" /* yacc.c:1646  */
+#line 160 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("decl->var_decl");
         }
@@ -1625,7 +1625,7 @@ yyreduce:
     break;
 
   case 35:
-#line 166 "subc.y" /* yacc.c:1646  */
+#line 164 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("compound_stmt->'{' local_defs stmt_list '}'");
         }
@@ -1633,7 +1633,7 @@ yyreduce:
     break;
 
   case 36:
-#line 170 "subc.y" /* yacc.c:1646  */
+#line 168 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("local_defs->def_list");
         }
@@ -1641,7 +1641,7 @@ yyreduce:
     break;
 
   case 37:
-#line 174 "subc.y" /* yacc.c:1646  */
+#line 172 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("stmt_list->stmt_list stmt");
         }
@@ -1649,7 +1649,7 @@ yyreduce:
     break;
 
   case 38:
-#line 177 "subc.y" /* yacc.c:1646  */
+#line 175 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("stmt_list->epsilon");
         }
@@ -1657,7 +1657,7 @@ yyreduce:
     break;
 
   case 39:
-#line 181 "subc.y" /* yacc.c:1646  */
+#line 179 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("stmt->expr ';'");
         }
@@ -1665,7 +1665,7 @@ yyreduce:
     break;
 
   case 40:
-#line 184 "subc.y" /* yacc.c:1646  */
+#line 182 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("stmt->compound_stmt");
         }
@@ -1673,7 +1673,7 @@ yyreduce:
     break;
 
   case 41:
-#line 187 "subc.y" /* yacc.c:1646  */
+#line 185 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("stmt->RETURN ';'");
         }
@@ -1681,7 +1681,7 @@ yyreduce:
     break;
 
   case 42:
-#line 190 "subc.y" /* yacc.c:1646  */
+#line 188 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("stmt->RETURN expr ';'");
         }
@@ -1689,7 +1689,7 @@ yyreduce:
     break;
 
   case 43:
-#line 193 "subc.y" /* yacc.c:1646  */
+#line 191 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("stmt->';'");
         }
@@ -1697,7 +1697,7 @@ yyreduce:
     break;
 
   case 44:
-#line 196 "subc.y" /* yacc.c:1646  */
+#line 194 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("stmt-> IF '(' test ')' stmt");
         }
@@ -1705,7 +1705,7 @@ yyreduce:
     break;
 
   case 45:
-#line 199 "subc.y" /* yacc.c:1646  */
+#line 197 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("stmt->IF '(' test ')' stmt ELSE stmt");
         }
@@ -1713,7 +1713,7 @@ yyreduce:
     break;
 
   case 46:
-#line 202 "subc.y" /* yacc.c:1646  */
+#line 200 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("stmt->WHILE '(' test ')' stmt");
         }
@@ -1721,7 +1721,7 @@ yyreduce:
     break;
 
   case 47:
-#line 205 "subc.y" /* yacc.c:1646  */
+#line 203 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("stmt->FOR '(' opt_expr ';' test ';' opt_expr ')' stmt");
         }
@@ -1729,7 +1729,7 @@ yyreduce:
     break;
 
   case 48:
-#line 208 "subc.y" /* yacc.c:1646  */
+#line 206 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("stmt-> BREAK ';'");
         }
@@ -1737,7 +1737,7 @@ yyreduce:
     break;
 
   case 49:
-#line 211 "subc.y" /* yacc.c:1646  */
+#line 209 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("stmt->CONTINUE ';'");
         }
@@ -1745,7 +1745,7 @@ yyreduce:
     break;
 
   case 50:
-#line 215 "subc.y" /* yacc.c:1646  */
+#line 213 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("test->expr");
         }
@@ -1753,7 +1753,7 @@ yyreduce:
     break;
 
   case 51:
-#line 218 "subc.y" /* yacc.c:1646  */
+#line 216 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("test->epsilon");
         }
@@ -1761,7 +1761,7 @@ yyreduce:
     break;
 
   case 52:
-#line 222 "subc.y" /* yacc.c:1646  */
+#line 220 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("opt_expr->expr");
         }
@@ -1769,7 +1769,7 @@ yyreduce:
     break;
 
   case 53:
-#line 225 "subc.y" /* yacc.c:1646  */
+#line 223 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("opt_expr->epsilon");
         }
@@ -1777,7 +1777,7 @@ yyreduce:
     break;
 
   case 54:
-#line 229 "subc.y" /* yacc.c:1646  */
+#line 227 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("expr->expr ASSIGNOP expr");
         }
@@ -1785,7 +1785,7 @@ yyreduce:
     break;
 
   case 55:
-#line 232 "subc.y" /* yacc.c:1646  */
+#line 230 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("expr->expr '=' expr");
         }
@@ -1793,7 +1793,7 @@ yyreduce:
     break;
 
   case 56:
-#line 235 "subc.y" /* yacc.c:1646  */
+#line 233 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("expr->or_expr");
         }
@@ -1801,7 +1801,7 @@ yyreduce:
     break;
 
   case 57:
-#line 239 "subc.y" /* yacc.c:1646  */
+#line 237 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("or_expr->or_list");
         }
@@ -1809,7 +1809,7 @@ yyreduce:
     break;
 
   case 58:
-#line 243 "subc.y" /* yacc.c:1646  */
+#line 241 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("or_list->or_list LOGICAL_OR and_expr");
         }
@@ -1817,7 +1817,7 @@ yyreduce:
     break;
 
   case 59:
-#line 246 "subc.y" /* yacc.c:1646  */
+#line 244 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("or_list->or_list '|' and_expr");
         }
@@ -1825,7 +1825,7 @@ yyreduce:
     break;
 
   case 60:
-#line 249 "subc.y" /* yacc.c:1646  */
+#line 247 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("or_list->and_expr");
         }
@@ -1833,7 +1833,7 @@ yyreduce:
     break;
 
   case 61:
-#line 253 "subc.y" /* yacc.c:1646  */
+#line 251 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("and_expr->and_list");
         }
@@ -1841,7 +1841,7 @@ yyreduce:
     break;
 
   case 62:
-#line 257 "subc.y" /* yacc.c:1646  */
+#line 255 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("and_list->and_list LOGICAL_AND binary");
         }
@@ -1849,7 +1849,7 @@ yyreduce:
     break;
 
   case 63:
-#line 260 "subc.y" /* yacc.c:1646  */
+#line 258 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("and_list->and_list '&' binary");
         }
@@ -1857,7 +1857,7 @@ yyreduce:
     break;
 
   case 64:
-#line 263 "subc.y" /* yacc.c:1646  */
+#line 261 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("and_list->binary");
         }
@@ -1865,7 +1865,7 @@ yyreduce:
     break;
 
   case 65:
-#line 267 "subc.y" /* yacc.c:1646  */
+#line 265 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("binary->binary RELOP binary");
         }
@@ -1873,7 +1873,7 @@ yyreduce:
     break;
 
   case 66:
-#line 270 "subc.y" /* yacc.c:1646  */
+#line 268 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("binary->binary EQUOP binary");
         }
@@ -1881,7 +1881,7 @@ yyreduce:
     break;
 
   case 67:
-#line 273 "subc.y" /* yacc.c:1646  */
+#line 271 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("binary->binary '*' binary");
         }
@@ -1889,7 +1889,7 @@ yyreduce:
     break;
 
   case 68:
-#line 276 "subc.y" /* yacc.c:1646  */
+#line 274 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("binary->binary '/' binary");
         }
@@ -1897,7 +1897,7 @@ yyreduce:
     break;
 
   case 69:
-#line 279 "subc.y" /* yacc.c:1646  */
+#line 277 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("binary->binary '%' binary");
         }
@@ -1905,7 +1905,7 @@ yyreduce:
     break;
 
   case 70:
-#line 282 "subc.y" /* yacc.c:1646  */
+#line 280 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("binary->binary '+' binary");
         }
@@ -1913,7 +1913,7 @@ yyreduce:
     break;
 
   case 71:
-#line 285 "subc.y" /* yacc.c:1646  */
+#line 283 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("binary->binary '-' binary");
         }
@@ -1921,7 +1921,7 @@ yyreduce:
     break;
 
   case 72:
-#line 288 "subc.y" /* yacc.c:1646  */
+#line 286 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("binary->unary");
         }
@@ -1929,7 +1929,7 @@ yyreduce:
     break;
 
   case 73:
-#line 292 "subc.y" /* yacc.c:1646  */
+#line 290 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->'(' expr ')'");
         }
@@ -1937,7 +1937,7 @@ yyreduce:
     break;
 
   case 74:
-#line 295 "subc.y" /* yacc.c:1646  */
+#line 293 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->INTEGER_CONST");
         }
@@ -1945,7 +1945,7 @@ yyreduce:
     break;
 
   case 75:
-#line 298 "subc.y" /* yacc.c:1646  */
+#line 296 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->CHAR_CONST");
         }
@@ -1953,7 +1953,7 @@ yyreduce:
     break;
 
   case 76:
-#line 301 "subc.y" /* yacc.c:1646  */
+#line 299 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->ID");
         }
@@ -1961,7 +1961,7 @@ yyreduce:
     break;
 
   case 77:
-#line 304 "subc.y" /* yacc.c:1646  */
+#line 302 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->STRING");
         }
@@ -1969,7 +1969,7 @@ yyreduce:
     break;
 
   case 78:
-#line 307 "subc.y" /* yacc.c:1646  */
+#line 305 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->'-' unary");
         }
@@ -1977,7 +1977,7 @@ yyreduce:
     break;
 
   case 79:
-#line 310 "subc.y" /* yacc.c:1646  */
+#line 308 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->'!' unary");
         }
@@ -1985,7 +1985,7 @@ yyreduce:
     break;
 
   case 80:
-#line 313 "subc.y" /* yacc.c:1646  */
+#line 311 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->unary PLUS_PLUS");
         }
@@ -1993,7 +1993,7 @@ yyreduce:
     break;
 
   case 81:
-#line 316 "subc.y" /* yacc.c:1646  */
+#line 314 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->unary MINUS_MINUS");
         }
@@ -2001,7 +2001,7 @@ yyreduce:
     break;
 
   case 82:
-#line 319 "subc.y" /* yacc.c:1646  */
+#line 317 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->'&' unary");
         }
@@ -2009,43 +2009,43 @@ yyreduce:
     break;
 
   case 83:
-#line 322 "subc.y" /* yacc.c:1646  */
+#line 320 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->'*' unary");
-            printf("<= The type of unary is pointer.\n");
+            //printf("<= The type of unary is pointer.\n");
         }
 #line 2018 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 326 "subc.y" /* yacc.c:1646  */
+#line 324 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->unary '[' expr ']'");
-            printf("<= The type of expr is integer.");
+            //printf("<= The type of expr is integer.\n");
         }
 #line 2027 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 330 "subc.y" /* yacc.c:1646  */
+#line 328 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->unary STRUCTOP ID");
-            printf(" <= The type of unary is a struct.\n");
+            //printf(" <= The type of unary is a struct.\n");
         }
 #line 2036 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 334 "subc.y" /* yacc.c:1646  */
+#line 332 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->unary '(' args ')'");
-            printf("<= The type of unary is a function.\n");
+            //printf("<= The type of unary is a function.\n");
         }
 #line 2045 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 338 "subc.y" /* yacc.c:1646  */
+#line 336 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("unary->unary '(' ')'");
         }
@@ -2053,7 +2053,7 @@ yyreduce:
     break;
 
   case 88:
-#line 342 "subc.y" /* yacc.c:1646  */
+#line 340 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("args->expr");
         }
@@ -2061,7 +2061,7 @@ yyreduce:
     break;
 
   case 89:
-#line 345 "subc.y" /* yacc.c:1646  */
+#line 343 "subc.y" /* yacc.c:1646  */
     {
             REDUCE("args->args ',' expr");
         }
@@ -2297,7 +2297,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 349 "subc.y" /* yacc.c:1906  */
+#line 347 "subc.y" /* yacc.c:1906  */
 
 
 /*  Additional C Codes 
