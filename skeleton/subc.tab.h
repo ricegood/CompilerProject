@@ -53,11 +53,11 @@ extern int yydebug;
     PLUS_PLUS = 263,
     MINUS_MINUS = 264,
     STRUCTOP = 265,
-    TYPE = 266,
-    STRUCT = 267,
-    RETURN = 268,
-    IF = 269,
-    ELSE = 270,
+    ELSE = 266,
+    TYPE = 267,
+    STRUCT = 268,
+    RETURN = 269,
+    IF = 270,
     WHILE = 271,
     FOR = 272,
     BREAK = 273,
@@ -76,8 +76,8 @@ union YYSTYPE
 {
 #line 16 "subc.y" /* yacc.c:1909  */
 
-	int		intVal;
-	char	*stringVal;
+    int     intVal;
+    char    *stringVal;
 
 #line 83 "subc.tab.h" /* yacc.c:1909  */
 };
