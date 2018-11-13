@@ -9,12 +9,12 @@
 
 #define  HASH_TABLE_SIZE   101
 
-typedef struct nlist {
-	struct nlist *next;
-	id *data;
-} nlist;
+struct nlist {
+    struct nlist *next;
+    struct id *data;
+};
 
-static nlist *hashTable[HASH_TABLE_SIZE];
+static struct nlist *hashTable[HASH_TABLE_SIZE];
 
 /* Print the Hash Table */
 void print(nlist* table[HASH_TABLE_SIZE]) {
@@ -30,8 +30,12 @@ void print(nlist* table[HASH_TABLE_SIZE]) {
     printf("==================================\n");
 }
 
+unsigned hash(char *name) {
+   /* implementation is given here */
+}
+
 /* Enter token to Hash Table */
-id *enter(int tokenType, char *name, int length) {
+struct id *enter(int tokenType, char *name, int length) {
     
     ////////////////
     /* FIND TOKEN */
@@ -92,4 +96,8 @@ id *enter(int tokenType, char *name, int length) {
     }
 
     return temp_nlist->data;
+}
+
+struct id *lookup(char *name) {
+   /* implementation is given here */
 }

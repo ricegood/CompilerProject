@@ -5,6 +5,7 @@
  */
 
 #include "subc.h"
+#include "subc.tab.h"
 
 int    yylex ();
 int    yyerror (char* s);

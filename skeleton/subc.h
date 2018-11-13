@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* structure for ID */
 typedef struct id {
 	int tokenType;
 	char *name;
@@ -24,6 +25,10 @@ typedef struct id {
 
 /* For hash table */
 unsigned hash(char *name);
-id *enter(int tokenType, char *name, int length);
+struct id *enter(int tokenType, char *name, int length);
+struct id *lookup(char *name);
+
+int read_line();
+
 
 #endif

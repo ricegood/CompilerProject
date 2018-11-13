@@ -25,15 +25,15 @@ static int lineno = 1;
 
 %}
 
+/* regular definitions */
+/* [TODO] operator .. remove or not ? */
 letter			[A-Za-z_]
-alnum			[A-Za-z0-9_]
 digit			[0-9]
-white-space		[ \t\n]
-integer-constant(([1-9]+{digit}*)|0)
-operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"%"|"+"|"-"|"<<"|">>"|"<"|"<="|">"|">="|"=="|"!="|"&"|"^"|"|"|"&&"|"||"|"?"|":"|";"|"="|"+="|"-="|"*="|"/="|"%="|"&="|"^="|"|="|"<<="|">>=")
-open-comment 	("/*")
-close-comment 	("*/")
+id				{letter}({letter}|{digit})*
+integer-const	([1-9]{digit}*)|"0"
+white-space		[ \t\n]+
 special-char	\\[nt]
+operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"%"|"+"|"-"|"<<"|">>"|"<"|"<="|">"|">="|"=="|"!="|"&"|"^"|"|"|"&&"|"||"|"?"|":"|";"|"="|"+="|"-="|"*="|"/="|"%="|"&="|"^="|"|="|"<<="|">>=")
 
 %x COMMENT
 
@@ -57,51 +57,55 @@ special-char	\\[nt]
 "."			{ return STRUCTOP; }
 
 
-{integer-constant}			{
-								  //printf("INT\t%s\n",yytext);
-								  yylval.intVal = atoi(yytext);
-								  return INTEGER_CONST;
-								}
+{integer-const}				{
+								//printf("INT\t%s\n",yytext);
+								yylval.intVal = atoi(yytext);
+								return INTEGER_CONST;
+							}
 {operator}					{
-								  //printf("OP\t%s\n",yytext);
-								  return yytext[0];
-								}
-{letter}+{alnum}*			{
-								  /* Determine the token type, and get the data */
-								  id* data = enter(UNDEFINED, yytext, strlen(yytext));
+								/* [TODO] remove here ??.... If remove, must add '.' , ';' operator. */
+								//printf("OP\t%s\n",yytext);
+								return yytext[0];
+							}
+{id}						{
+								/* Determine the token type, and get the data */
+								id* data = enter(UNDEFINED, yytext, strlen(yytext));
 
-								  /* Print the result */
-								  if (data->tokenType == KEYWORD) {
-								  	//printf("KEY\t%s\t%d\n",data->name,data->count);
-								  }
-								  else if(data->tokenType == ID_) {
-								  	//printf("ID\t%s\t%d\n",data->name,data->count);
-								    yylval.stringVal = data->name;
-								    return ID;
-								  }
+								/* Print the result */
+								if (data->tokenType == KEYWORD) {
+									//printf("KEY\t%s\t%d\n",data->name,data->count);
 								}
+								else if(data->tokenType == ID_) {
+									//printf("ID\t%s\t%d\n",data->name,data->count);
+									yylval.stringVal = data->name;
+									/* [TODO] why is here [return entered->lextype] in the skeleton? */
+									return ID;
+								}
+							}
 
 \"({special-char}|[^\\\"\n])*\"	{
-								  /* String Variable */
-								  yylval.stringVal = yytext;
-								  return STRING;
+									/* String Variable */
+									yylval.stringVal = yytext;
+									return STRING;
 								}
 '({special-char}|[^\\'\n])'		{
-								  /* Character Variable */
-								  yylval.stringVal = yytext;
-								  return CHAR_CONST;
+									/* Character Variable */
+									yylval.stringVal = yytext;
+									return CHAR_CONST;
 								}
+","								{ return ','; }
+";"								{ return yytext[0]; }
+{white-space}					{}
 
-<*>\n		   ++lineno;
-<INITIAL,COMMENT>"/*"	{
-		   ++comment_depth;
-		   BEGIN (COMMENT);
-		}
-<COMMENT>"*/"	   if(--comment_depth == 0) BEGIN (INITIAL);
-<COMMENT>.		 {}
+<*>\n		   					++lineno;
+<INITIAL,COMMENT>"/*"			{
+									++comment_depth;
+									BEGIN (COMMENT);
+								}
+<COMMENT>"*/"					if(--comment_depth == 0) BEGIN (INITIAL);
+<COMMENT>.						{}
 
-{white-space}					{ ; }
-. 								{ ; }
+. 								{}
 
 %%
 
@@ -112,25 +116,28 @@ int read_line()
 
 int main(int argc, char** argv)
 {
-   static char* keyWord[]={
-		"auto","break","case","char","continue","default","do","else","extern","for","goto","if","int","register","return","sizeof","static","struct","switch","while", "\0"
+	/* [TODO] modify this?? */
+	static char* keyWord[]={
+		"auto","break","case","char","continue","default","do","else","extern","for","goto","if","int","register","return","sizeof","static","struct","switch","while", NULL
 	};
-   static int tokentype[] = { TYPE, 0 };
-   int i;
-   /* Initilize Hash Tabel with Keywords */
-   for (i = 0; strcmp(keyWord[i], "\0") !=0; i++) {
-      enter(KEYWORD, keyWord[i],strlen(keyWord[i]));
-   }
 
-   if(argc >= 2) yyin = fopen(argv[1], "r");
-   else yyin = stdin;
-   if(!yyin) {
-      printf("Can't open input stream!\n");
-      exit(1);
-   }
+	static int tokentype[] = { TYPE, 0 }; // [TODO] oh this field is for keyword token type!!!!!!
+	int i;
+
+	/* Initilize Hash Tabel with Keywords */
+	for (i = 0; keyword[i] != NULL; i++) {
+		/*[TODO] change 'KEYWORD' to 'tokentype[i]'. */
+		enter(KEYWORD, keyWord[i], strlen(keyWord[i]));
+	}
+
+	if(argc >= 2) yyin = fopen(argv[1], "r");
+	else yyin = stdin;
+	if(!yyin) {
+		printf("Can't open input stream!\n");
+		exit(1);
+	}
 	
-   yyparse();
-   fclose(yyin);
-   return 0;
-
+	yyparse();
+	fclose(yyin);
+	return 0;
 }
