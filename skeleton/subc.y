@@ -31,7 +31,7 @@ void   REDUCE(char* s);
 %left   '*' '/' '%'
 %right  '!' PLUS_PLUS MINUS_MINUS
 %left   STRUCTOP
-%nonassoc   '[' ']' '(' ')'
+%nonassoc   '[' '(' ')'
 %nonassoc   ELSE
 
 /* Token and Types */

@@ -91,7 +91,6 @@ special-char	\\[nt]
 								  yylval.stringVal = yytext;
 								  return CHAR_CONST;
 								}
-";"								{ return yytext[0]; }
 
 <*>\n		   ++lineno;
 <INITIAL,COMMENT>"/*"	{
