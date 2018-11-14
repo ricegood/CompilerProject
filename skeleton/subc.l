@@ -126,14 +126,21 @@ void init_type()
 {
 	printf("==init_type() START==\n");
 
-	// 27page
-	// maketypedecl, declare function need
-
 	struct decl *inttype = maketypedecl(INT_);
+	struct decl *chartype = maketypedecl(CHAR_);
 	struct decl *voidtype = maketypedecl(VOID_);
-	//...
+	struct decl *structtype = maketypedecl(STRUCT_);
+	struct decl *stringtype = maketypedecl(STRING_);
+	struct decl *arraytype = maketypedecl(ARRAY_);
+	struct decl *pointertype = maketypedecl(POINTER_);
+
 	declare(enter(ID_, "int", 3), inttype);
+	declare(enter(ID_, "char", 5), chartype);
 	declare(enter(ID_, "void", 5), voidtype);
+	declare(enter(ID_, "struct", 5), structtype);
+	declare(enter(ID_, "string", 5), stringtype);
+	declare(enter(ID_, "array", 5), arraytype);
+	declare(enter(ID_, "pointer", 5), pointertype);
 
 	enter(ID_, "*return", 7);
 

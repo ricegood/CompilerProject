@@ -7,8 +7,8 @@
 #ifndef __SUBC_H__
 #define __SUBC_H__
 
-enum lextype_ {KEYWORD, UNDEFINED, ID_};
-enum typeclass_ {INT_, CHAR_, VOID_, STRUCT_, STRING_};
+enum lextype_ {KEYWORD, UNDEFINED, ID_}; // 0, 1, 2
+enum typeclass_ {INT_, CHAR_, VOID_, STRUCT_, STRING_, ARRAY_, POINTER_}; // 0, 1, 2, 3, 4
 
 #include <stdio.h>
 #include <strings.h>

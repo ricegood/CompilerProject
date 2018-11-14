@@ -1,6 +1,16 @@
 ==init_type() START==
 maketypedecl()
 maketypedecl()
+maketypedecl()
+maketypedecl()
+maketypedecl()
+maketypedecl()
+maketypedecl()
+declare()
+declare()
+declare()
+declare()
+declare()
 declare()
 declare()
 ==init_type() END==
