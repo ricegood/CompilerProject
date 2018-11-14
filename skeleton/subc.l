@@ -40,7 +40,7 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 %%
 "int"|"char" { return TYPE; }
 "void"		{ return VOID; }
-"struct" 	{ return STRUCT; }
+"struct"	{ return STRUCT; }
 "return"	{ return RETURN; }
 "if"		{ return IF; }
 "else"		{ return ELSE; }
@@ -72,10 +72,10 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 								id* data = enter(UNDEFINED, yytext, strlen(yytext));
 
 								/* Print the result */
-								if (data->tokenType == KEYWORD) {
+								if (data->lexType == KEYWORD) {
 									//printf("KEY\t%s\t%d\n",data->name,data->count);
 								}
-								else if(data->tokenType == ID_) {
+								else if(data->lexType == ID_) {
 									//printf("ID\t%s\t%d\n",data->name,data->count);
 									yylval.stringVal = data->name;
 									/* [TODO] why is here [return entered->lextype] in the skeleton? */

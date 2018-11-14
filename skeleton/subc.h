@@ -18,14 +18,14 @@
 
 /* structure for ID */
 typedef struct id {
-	int tokenType;
+	int lexType;
 	char *name;
 	int count;
 } id;
 
 /* For hash table */
 unsigned hash(char *name);
-struct id *enter(int tokenType, char *name, int length);
+struct id *enter(int lexType, char *name, int length);
 struct id *lookup(char *name);
 
 int read_line();

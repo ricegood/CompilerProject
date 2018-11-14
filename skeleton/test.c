@@ -9,6 +9,6 @@ int main(){
 	if ( a == 10 || b == 5 ){
 		return 1;
 	} else {
-		return 0;
+		return ;
 	}
 }

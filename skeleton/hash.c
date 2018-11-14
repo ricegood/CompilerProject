@@ -35,7 +35,7 @@ unsigned hash(char *name) {
 }
 
 /* Enter token to Hash Table */
-struct id *enter(int tokenType, char *name, int length) {
+struct id *enter(int lexType, char *name, int length) {
     
     ////////////////
     /* FIND TOKEN */
@@ -72,13 +72,13 @@ struct id *enter(int tokenType, char *name, int length) {
     struct id* temp_id = malloc(sizeof(struct id));
     char* temp_name = malloc(length+1); // due to yytext is pointer so value is changable.
     strcpy(temp_name, name);
-    temp_id->tokenType = tokenType;
+    temp_id->lexType = lexType;
     temp_id->name = temp_name;
     temp_id->count = 0;
 
     // If the token type is UNDEFINED, It must be ID.
-    if (tokenType == UNDEFINED) {
-        temp_id->tokenType = ID_;
+    if (lexType == UNDEFINED) {
+        temp_id->lexType = ID_;
         temp_id->count = 1;
     }
 
