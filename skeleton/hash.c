@@ -9,10 +9,10 @@
 
 #define  HASH_TABLE_SIZE   101
 
-struct nlist {
+typedef struct nlist {
     struct nlist *next;
     struct id *data;
-};
+} nlist;
 
 static struct nlist *hashTable[HASH_TABLE_SIZE];
 

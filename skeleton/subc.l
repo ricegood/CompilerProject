@@ -39,6 +39,7 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 
 %%
 "int"|"char" { return TYPE; }
+"void"		{ return VOID; }
 "struct" 	{ return STRUCT; }
 "return"	{ return RETURN; }
 "if"		{ return IF; }
@@ -47,14 +48,13 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 "for"		{ return FOR; }
 "break"		{ return BREAK; }
 "continue"	{ return CONTINUE; }
-"+="|"-="|"*="|"/="|"%=" { return ASSIGNOP; }
 "||"		{ return LOGICAL_OR; }
 "&&"		{ return LOGICAL_AND; }
 "<"|"<="|">"|">=" { return RELOP; }
 "=="|"!="	{ return EQUOP; }
-"++"		{ return PLUS_PLUS; }
-"--"		{ return MINUS_MINUS; }
-"."			{ return STRUCTOP; }
+"++"		{ return INCOP; }
+"--"		{ return DECOP; }
+"->"		{ return STRUCTOP; }
 
 
 {integer-const}				{
@@ -125,7 +125,7 @@ int main(int argc, char** argv)
 	int i;
 
 	/* Initilize Hash Tabel with Keywords */
-	for (i = 0; keyword[i] != NULL; i++) {
+	for (i = 0; keyWord[i] != NULL; i++) {
 		/*[TODO] change 'KEYWORD' to 'tokentype[i]'. */
 		enter(KEYWORD, keyWord[i], strlen(keyWord[i]));
 	}
