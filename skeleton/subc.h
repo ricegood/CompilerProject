@@ -23,6 +23,31 @@ typedef struct id {
 	int count;
 } id;
 
+/* structure for ste */
+typedef struct ste {
+	struct id *name;
+	struct decl *decl;
+	struct ste *prev;
+} ste;
+
+/* structure for decl */
+typedef struct decl {
+	int declclass;
+	struct decl *type;
+	int value;
+	float real_value;
+	struct ste *formals;
+	struct decl *returntype;
+	int typeclass;
+	struct decl *elementvar;
+	int num_index;
+	struct ste *fieldlist;
+	struct decl *ptrto;
+	int size;
+	struct ste **scope;
+	struct decl *next;
+} decl;
+
 /* For hash table */
 unsigned hash(char *name);
 struct id *enter(int lexType, char *name, int length);
