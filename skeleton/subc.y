@@ -15,8 +15,11 @@ void   REDUCE(char* s);
 
 /* yylval types */
 %union {
-    int     intVal;
-    char    *stringVal;
+    int intVal;
+    char *stringVal;
+    struct id *idptr;
+    struct decl *declptr;
+    struct ste *steptr;
 }
 
 /* Precedences and Associativities */
@@ -36,8 +39,10 @@ void   REDUCE(char* s);
 /* Token and Types */
 %token        VOID STRUCT RETURN IF ELSE WHILE FOR BREAK CONTINUE
 %token        LOGICAL_OR LOGICAL_AND RELOP EQUOP INCOP DECOP STRUCTOP
-%token<stringVal>   ID CHAR_CONST STRING
+%token<stringVal>   CHAR_CONST STRING
 %token<intVal>      TYPE INTEGER_CONST
+%token<idptr>       ID
+%type<declptr>      type type_id var var_list
 
 %%
 

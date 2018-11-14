@@ -61,11 +61,11 @@ extern int yydebug;
     FOR = 271,
     BREAK = 272,
     CONTINUE = 273,
-    ID = 274,
-    CHAR_CONST = 275,
-    STRING = 276,
-    TYPE = 277,
-    INTEGER_CONST = 278
+    CHAR_CONST = 274,
+    STRING = 275,
+    TYPE = 276,
+    INTEGER_CONST = 277,
+    ID = 278
   };
 #endif
 
@@ -76,10 +76,13 @@ union YYSTYPE
 {
 #line 17 "subc.y" /* yacc.c:1909  */
 
-    int     intVal;
-    char    *stringVal;
+    int intVal;
+    char *stringVal;
+    struct id *idptr;
+    struct decl *declptr;
+    struct ste *steptr;
 
-#line 83 "subc.tab.h" /* yacc.c:1909  */
+#line 86 "subc.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

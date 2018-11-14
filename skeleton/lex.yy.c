@@ -965,7 +965,7 @@ YY_RULE_SETUP
 								}
 								else if(data->lexType == ID_) {
 									//printf("ID\t%s\t%d\n",data->name,data->count);
-									yylval.stringVal = data->name;
+									yylval.idptr->lexType;
 									/* [TODO] why is here [return entered->lextype] in the skeleton? */
 									return ID;
 								}
@@ -2050,8 +2050,37 @@ int read_line()
    return lineno;
 }
 
+struct decl *maketypedecl(int typeclass) {
+	printf("maketypedecl()\n");
+}
+
+void declare(struct id *id_ptr, struct decl *decl_ptr) {
+	printf("declare()\n");
+}
+
+void init_type()
+{
+	printf("==init_type() START==\n");
+
+	// 27page
+	// maketypedecl, declare function need
+
+	struct decl *inttype = maketypedecl(INT_);
+	struct decl *voidtype = maketypedecl(VOID_);
+	//...
+	declare(enter(ID_, "int", 3), inttype);
+	declare(enter(ID_, "void", 5), voidtype);
+
+	enter(ID_, "*return", 7);
+
+	printf("==init_type() END==\n");
+}
+
 int main(int argc, char** argv)
 {
+	/* initialize type decl */
+	init_type();
+
 	/* [TODO] modify this?? */
 	static char* keyWord[]={
 		"auto","break","case","char","continue","default","do","else","extern","for","goto","if","int","register","return","sizeof","static","struct","switch","while", NULL

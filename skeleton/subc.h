@@ -7,30 +7,29 @@
 #ifndef __SUBC_H__
 #define __SUBC_H__
 
-#define KEYWORD   0
-#define UNDEFINED 1
-#define ID_       2
+enum lextype_ {KEYWORD, UNDEFINED, ID_};
+enum typeclass_ {INT_, CHAR_, VOID_, STRUCT_, STRING_};
 
 #include <stdio.h>
 #include <strings.h>
 #include <stdlib.h>
 #include <string.h>
 
-/* structure for ID */
+/* structure for IDs */
 typedef struct id {
 	int lexType;
 	char *name;
 	int count;
 } id;
 
-/* structure for ste */
+/* structure for symbol table entries */
 typedef struct ste {
 	struct id *name;
 	struct decl *decl;
 	struct ste *prev;
 } ste;
 
-/* structure for decl */
+/* structure for declarations */
 typedef struct decl {
 	int declclass;
 	struct decl *type;
