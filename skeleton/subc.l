@@ -182,6 +182,15 @@ struct decl *plustype(struct decl typedecl1, struct decl typedecl2) {
 	// 37p
 	// 39p definition!!
 	// no pointer in param..?
+	/*
+		I think 'minustype' and etc... are needed!!!
+     binary     : binary RELOP binary
+     				   | binary EQUOP binary
+       				 | binary '+' binary
+        			 | binary '-' binary
+        			 | unary %prec '='
+
+	*/
 }
 
 struct ste *makeste() {
