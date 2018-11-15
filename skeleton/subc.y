@@ -42,7 +42,8 @@ void   REDUCE(char* s);
 %token<stringVal>   CHAR_CONST STRING
 %token<intVal>      TYPE INTEGER_CONST
 %token<idptr>       ID
-%type<declptr>      type type_id var var_list
+%type<declptr>      unary /* type type_id var var_list */
+%type<declptr>      binary expr args /* => type decl */
 
 %%
 

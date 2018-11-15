@@ -213,6 +213,11 @@ int check_is_var(decl* decl_ptr) {
 	// return 0 or 1. (true or false)
 }
 
+int check_is_array(decl* decl_ptr) {
+	// 38p
+	// return 0 or 1. (true or false)
+}
+
 int check_is_proc(decl* decl_ptr) {
 	// 39p
 	// return 0 or 1. (true or false)
@@ -225,7 +230,13 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 }
 
 int check_compatible(decl* decl_ptr, decl* typedecl_ptr) {
-	// 37p
+	// 37p, 39p
+	// return 0 or 1. (true or false)
+}
+
+int check_same_type(decl* decl_ptr, decl* indexptr) {
+	// 38p
+	// decl_ptr = inttype. how?
 	// return 0 or 1. (true or false)
 }
 
