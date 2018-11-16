@@ -111,7 +111,10 @@ compound_stmt
             pushscope();
             printscopestack();
         }
-        local_defs stmt_list '}'
+        local_defs stmt_list '}' {
+            popscope();
+            printscopestack();
+        }
 
 local_defs  /* local definitions, of which scope is only inside of compound statement */
         :   def_list

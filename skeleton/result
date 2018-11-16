@@ -15,5 +15,28 @@ declare()
 declare()
 ==init_type() END==
 push scope
+=============PRINT SCOPE STACK=============
+=====Final Stack from the top=====
+===========================================
 push scope
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+=====Final Stack from the top=====
+===========================================
+pop scope
+=============PRINT SCOPE STACK=============
+=====Final Stack from the top=====
+===========================================
 push scope
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+=====Final Stack from the top=====
+===========================================
+pop scope
+=============PRINT SCOPE STACK=============
+=====Final Stack from the top=====
+===========================================
+pop scope
+=============PRINT SCOPE STACK=============
+stack is NULL!
+===========================================

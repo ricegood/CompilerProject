@@ -23,15 +23,15 @@ void printscopestack(){
     while (node_it->next != NULL) {
       printf("=====stack #%d from the top=====\n", i++);
       while (ste_it != node_it->next->data) {
-        printf ("node name : %s\n", ste_it->id->name);
+        printf ("node name : %s\n", ste_it->name->name);
         ste_it = ste_it->prev;
       }
       node_it = node_it->next;
     }
 
-    printf("=====Final Stack from the top=====\n", i++);
+    printf("=====Final Stack from the top=====\n");
     while (ste_it != NULL) {
-      printf ("node name : %s\n", ste_it->id->name);
+      printf ("node name : %s\n", ste_it->name->name);
       ste_it = ste_it->prev;
     }
   }
@@ -105,8 +105,8 @@ struct ste *popscope() {
 
   // [TODO] memory leak..
   
-  if (top == NULL || top->data == NULL) {
-    printf("Scope stack top node or ste is NULL!\n");
+  if (top == NULL) {
+    printf("Scope stack is NULL!\n");
     return NULL;
   } else {
     // get a pointer of next scope top ste.

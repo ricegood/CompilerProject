@@ -468,12 +468,12 @@ static const yytype_uint8 yyrline[] =
        0,    58,    58,    62,    63,    67,    68,    69,    70,    71,
       74,    75,    76,    79,    80,    83,    84,    85,    88,    89,
       92,    93,    96,    97,   100,   101,   104,   105,   106,   107,
-     110,   110,   117,   120,   121,   124,   125,   126,   127,   128,
-     129,   130,   131,   132,   133,   134,   137,   138,   141,   144,
-     145,   148,   151,   152,   155,   158,   159,   162,   163,   164,
-     165,   166,   169,   170,   171,   172,   173,   174,   175,   176,
-     177,   178,   179,   180,   181,   182,   183,   184,   185,   186,
-     187,   190,   191
+     110,   110,   120,   123,   124,   127,   128,   129,   130,   131,
+     132,   133,   134,   135,   136,   137,   140,   141,   144,   147,
+     148,   151,   154,   155,   158,   161,   162,   165,   166,   167,
+     168,   169,   172,   173,   174,   175,   176,   177,   178,   179,
+     180,   181,   182,   183,   184,   185,   186,   187,   188,   189,
+     190,   193,   194
 };
 #endif
 
@@ -1359,14 +1359,23 @@ yyreduce:
         case 30:
 #line 110 "subc.y" /* yacc.c:1646  */
     {
-            //enter();
-           pushscope();
+            pushscope();
+            printscopestack();
         }
 #line 1366 "subc.tab.c" /* yacc.c:1646  */
     break;
 
+  case 31:
+#line 114 "subc.y" /* yacc.c:1646  */
+    {
+            popscope();
+            printscopestack();
+        }
+#line 1375 "subc.tab.c" /* yacc.c:1646  */
+    break;
 
-#line 1370 "subc.tab.c" /* yacc.c:1646  */
+
+#line 1379 "subc.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1594,7 +1603,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 193 "subc.y" /* yacc.c:1906  */
+#line 196 "subc.y" /* yacc.c:1906  */
 
 
 /*  Additional C Codes 
