@@ -70,14 +70,16 @@ void pushstelist(struct ste* ste_list);
 struct ste *popscope();
 struct ste *popste();
 
-/* For symbol table declaration */
-struct decl *makedecl();
+
+// For symbol table declaration
+void declare(struct id* id_ptr, struct decl* decl_ptr);
+
 struct decl *maketypedecl(int typeclass);
 struct decl *makevardecl(struct decl* typedecl);
 struct decl *makearraydecl(int size, struct decl* vardecl);
 struct decl *makeconstdecl(struct decl* typedecl);
 struct decl *makeintconstdecl(struct decl* typedecl, int value);
-struct decl *makefloatconstdecl(struct decl* typedecl, float value)
+struct decl *makefloatconstdecl(struct decl* typedecl, float value);
 struct decl *makeptrdecl(struct decl* typedecl);
 struct decl *makeprocdecl();
 struct decl *makestructdecl();
@@ -86,15 +88,14 @@ struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr);
 struct decl *structaccess(struct decl* struct_ptr, struct id* field_id);
 struct decl *plustype(struct decl typedecl1, struct decl typedecl2);
 
-void declare(struct id* id_ptr, struct decl* decl_ptr);
 void add_type_to_var(struct decl* typedecl, struct decl* var_list);
-int check_is_type(decl* decl_ptr);
-int check_is_struct_type(decl* decl_ptr);
-int check_is_var(decl* decl_ptr);
-int check_is_array(decl* decl_ptr);
-int check_is_proc(decl* decl_ptr);
-struct decl* check_function_call(decl* proc_ptr, decl* actuals);
-int check_compatible(decl* decl_ptr, decl* typedecl_ptr);
-int check_same_type(decl* decl_ptr, decl* indexptr);
+int check_is_type(struct decl* decl_ptr);
+int check_is_struct_type(struct decl* decl_ptr);
+int check_is_var(struct decl* decl_ptr);
+int check_is_array(struct decl* decl_ptr);
+int check_is_proc(struct decl* decl_ptr);
+struct decl *check_function_call(struct decl* proc_ptr, struct decl* actuals);
+int check_compatible(struct decl* decl_ptr, struct decl* typedecl_ptr);
+int check_same_type(struct decl* decl_ptr, struct decl* indexptr);
 
 #endif

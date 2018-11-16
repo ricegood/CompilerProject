@@ -3,40 +3,68 @@ maketypedecl()
 maketypedecl()
 maketypedecl()
 maketypedecl()
-maketypedecl()
-maketypedecl()
-maketypedecl()
+push scope
 declare()
+insert ste to scope stack!
 declare()
+insert ste to scope stack!
 declare()
+insert ste to scope stack!
 declare()
-declare()
-declare()
-declare()
+insert ste to scope stack!
 ==init_type() END==
 push scope
 =============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
 =====Final Stack from the top=====
+node name : string
+node name : void
+node name : char
+node name : int
 ===========================================
 push scope
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====
+=====stack #1 from the top=====
 =====Final Stack from the top=====
+node name : string
+node name : void
+node name : char
+node name : int
 ===========================================
 pop scope
 =============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
 =====Final Stack from the top=====
+node name : string
+node name : void
+node name : char
+node name : int
 ===========================================
 push scope
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====
+=====stack #1 from the top=====
 =====Final Stack from the top=====
+node name : string
+node name : void
+node name : char
+node name : int
+===========================================
+pop scope
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+=====Final Stack from the top=====
+node name : string
+node name : void
+node name : char
+node name : int
 ===========================================
 pop scope
 =============PRINT SCOPE STACK=============
 =====Final Stack from the top=====
-===========================================
-pop scope
-=============PRINT SCOPE STACK=============
-stack is NULL!
+node name : string
+node name : void
+node name : char
+node name : int
 ===========================================

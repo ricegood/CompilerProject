@@ -124,7 +124,7 @@ void init_type()
 	struct decl *voidtype = maketypedecl(VOID_);
 	struct decl *stringtype = maketypedecl(STRING_);
 
-	pushstack();
+	pushscope();
 	declare(enter(ID_, "int", 3), inttype);
 	declare(enter(ID_, "char", 4), chartype);
 	declare(enter(ID_, "void", 4), voidtype);

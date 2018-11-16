@@ -2058,18 +2058,13 @@ void init_type()
 	struct decl *inttype = maketypedecl(INT_);
 	struct decl *chartype = maketypedecl(CHAR_);
 	struct decl *voidtype = maketypedecl(VOID_);
-	struct decl *structtype = maketypedecl(STRUCT_);
 	struct decl *stringtype = maketypedecl(STRING_);
-	struct decl *arraytype = maketypedecl(ARRAY_);
-	struct decl *pointertype = maketypedecl(POINTER_);
 
+	pushscope();
 	declare(enter(ID_, "int", 3), inttype);
-	declare(enter(ID_, "char", 5), chartype);
-	declare(enter(ID_, "void", 5), voidtype);
-	declare(enter(ID_, "struct", 5), structtype);
-	declare(enter(ID_, "string", 5), stringtype);
-	declare(enter(ID_, "array", 5), arraytype);
-	declare(enter(ID_, "pointer", 5), pointertype);
+	declare(enter(ID_, "char", 4), chartype);
+	declare(enter(ID_, "void", 4), voidtype);
+	declare(enter(ID_, "string", 6), stringtype);
 
 	enter(ID_, "*return", 7);
 
