@@ -7,7 +7,6 @@
 
 #include "subc.h"
 
-struct decl *makedecl();
 struct decl *maketypedecl(int typeclass) {
 	printf("maketypedecl()\n");
 	switch (typeclass) {
