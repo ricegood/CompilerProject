@@ -57,27 +57,27 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 "->"		{ return STRUCTOP; }
 
 
-{integer-const}				{
+{integer-const}	{
 								//printf("INT\t%s\n",yytext);
 								yylval.intVal = atoi(yytext);
 								return INTEGER_CONST;
 							}
-{operator}					{
+{operator}		{
 								/* [TODO] remove here ??.... If remove, must add '.' , ';' operator. */
 								//printf("OP\t%s\n",yytext);
 								return yytext[0];
 							}
-{id}						{
+{id}					{
 								/* Determine the token type, and get the data */
 								id* data = enter(UNDEFINED, yytext, strlen(yytext));
 
 								/* Print the result */
 								if (data->lexType == KEYWORD) {
-									//printf("KEY\t%s\t%d\n",data->name,data->count);
+									printf("KEY\t%s\t%d\n",data->name,data->count);
 								}
 								else if(data->lexType == ID_) {
-									//printf("ID\t%s\t%d\n",data->name,data->count);
-									yylval.idptr->lexType;
+									printf("ID\t%s\t%d\n",data->name,data->count);
+									yylval.idptr = data;
 									/* [TODO] why is here [return entered->lextype] in the skeleton? */
 									return ID;
 								}
@@ -125,12 +125,12 @@ void init_type()
 	struct decl *stringtype = maketypedecl(STRING_);
 
 	pushscope();
-	declare(enter(ID_, "int", 3), inttype);
-	declare(enter(ID_, "char", 4), chartype);
-	declare(enter(ID_, "void", 4), voidtype);
-	declare(enter(ID_, "string", 6), stringtype);
+	declare(enter(KEYWORD, "int", 3), inttype);
+	declare(enter(KEYWORD, "char", 4), chartype);
+	declare(enter(KEYWORD, "void", 4), voidtype);
+	declare(enter(KEYWORD, "string", 6), stringtype);
 
-	enter(ID_, "*return", 7);
+	enter(KEYWORD, "*return", 7);
 
 	printf("==init_type() END==\n");
 }
@@ -140,7 +140,8 @@ int main(int argc, char** argv)
 	/* initialize type decl */
 	init_type();
 
-	/* [TODO] modify this?? */
+	/*
+	// [TODO] modify this??
 	static char* keyWord[]={
 		"auto","break","case","char","continue","default","do","else","extern","for","goto","if","int","register","return","sizeof","static","struct","switch","while", NULL
 	};
@@ -148,11 +149,12 @@ int main(int argc, char** argv)
 	static int tokentype[] = { TYPE, 0 }; // [TODO] oh this field is for keyword token type!!!!!!
 	int i;
 
-	/* Initilize Hash Tabel with Keywords */
+	// Initilize Hash Tabel with Keywords
 	for (i = 0; keyWord[i] != NULL; i++) {
-		/*[TODO] change 'KEYWORD' to 'tokentype[i]'. */
+		// [TODO] change 'KEYWORD' to 'tokentype[i]'.
 		enter(KEYWORD, keyWord[i], strlen(keyWord[i]));
 	}
+	*/
 
 	if(argc >= 2) yyin = fopen(argv[1], "r");
 	else yyin = stdin;

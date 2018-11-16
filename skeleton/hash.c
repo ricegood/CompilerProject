@@ -99,5 +99,23 @@ struct id *enter(int lexType, char *name, int length) {
 }
 
 struct id *lookup_hash(char *name) {
-   /* implementation is given here */
+    // Hash Function : ((first char ascii code)*(length)) % HASH_TABLE_SIZE
+    struct nlist* node;
+    int key = ((*name) * (length)) % HASH_TABLE_SIZE;
+
+    // Allocation pointer to node
+    node = hashTable[key];
+
+    // While node is not NULL
+    while (node) {
+        // Check existence
+        if (strcmp(node->data->name,name) == 0) {
+            // If the token exists, return the data (id structure)
+            return node->data;
+        }
+        if(node->next)
+            node = node->next;
+        else break;
+    }
+    return NULL;
 }

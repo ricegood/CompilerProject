@@ -161,7 +161,10 @@ struct decl *makeprocdecl() {
 ////////////////////////////////////
 
 struct decl *findcurrentdecl(struct id* id_ptr) {
-
+	struct ste* result = lookup(id_ptr)->data;
+	if (result == NULL)
+		return NULL;
+	else return result->data;
 }
 
 struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr) {
