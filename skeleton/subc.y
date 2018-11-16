@@ -107,7 +107,11 @@ def
         | func_decl ';'
 
 compound_stmt
-        : '{' local_defs stmt_list '}'
+        : '{' {
+            //enter();
+           pushscope();
+        }
+        local_defs stmt_list '}'
 
 local_defs  /* local definitions, of which scope is only inside of compound statement */
         :   def_list

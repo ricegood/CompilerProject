@@ -15,7 +15,7 @@ clean :
 	rm -f *.o lex.yy.c subc.tab.c subc.tab.h subc.output subc
 
 subc : lex.yy.o hash.o scopestack.o subc.tab.o
-	${CC} -o subc lex.yy.o hash.o subc.tab.o ${LINK_OPTION}
+	${CC} -o subc lex.yy.o hash.o scopestack.o subc.tab.o ${LINK_OPTION}
 
 subc.tab.o : subc.tab.c subc.h
 	${CC} -c ${COMPILE_OPTION} subc.tab.c
@@ -23,7 +23,7 @@ subc.tab.o : subc.tab.c subc.h
 hash.o : hash.c subc.h
 	${CC} -c ${COMPILE_OPTION} hash.c
 
-scopestack.o : scopestack.c scopestack.h
+scopestack.o : scopestack.c subc.h
 	${CC} -c ${COMPILE_OPTION} scopestack.c
 
 lex.yy.o : lex.yy.c subc.tab.h subc.h

@@ -54,5 +54,18 @@ struct id *lookup_hash(char *name);
 
 int read_line();
 
+/* For scope stack */
+typedef struct node
+{
+    struct ste *data;
+    struct node *next;
+} node;
+
+void insert(struct id* id_ptr, struct decl* decl_ptr);
+struct ste *lookup(struct id* id_ptr); // return last pushed element
+void pushscope();
+void pushstelist(struct ste* ste_list);
+struct ste *popscope();
+struct ste *popste();
 
 #endif

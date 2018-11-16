@@ -5,9 +5,12 @@
  *
  ****************************************************************/
 
-#include "scopestack.h"
+#include "subc.h"
+
+static struct node *top = NULL;
 
 void insert(struct id* id_ptr, struct decl* decl_ptr) {
+  printf("insert ste to scope stack!\n");
   if (top != NULL) {
     // Declare new ste & initialization
     struct ste *ste_ptr = malloc(sizeof(struct ste));
@@ -42,6 +45,7 @@ struct ste *lookup(struct id* id_ptr) {
 }
 
 void pushscope() {
+  printf("push scope\n");
   // Declare new scope node & initialization
   struct node *node_ptr = malloc(sizeof(struct node));
   if (top != NULL)
@@ -64,6 +68,7 @@ void pushstelist(ste *ste_list) {
 }
 
 struct ste *popscope() {
+  printf("pop scope\n");
   /*
     return a ste linked list of stack top scope.
     *REVERSE ORDER*
@@ -98,6 +103,7 @@ struct ste *popscope() {
 }
 
 struct ste *popste() {
+  printf("pop ste\n");
   if (top == NULL || top->data == NULL) {
     printf("Scope stack top node or ste is NULL!\n");
     return NULL;
