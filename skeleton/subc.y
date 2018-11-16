@@ -47,10 +47,10 @@ void   REDUCE(char* s);
 %token<idptr>       ID
 
 /* decl */
-%type<declptr>      type_specifier struct_specifier func_decl param_list param_decl def_list def compound_stmt local_defs stmt_list stmt unary
+%type<declptr>      struct_specifier func_decl param_list param_decl def_list def compound_stmt local_defs stmt_list stmt unary
 
 /* type decl */
-%type<declptr>      expr_e const_expr expr or_expr or_list and_expr and_list binary args
+%type<declptr>      type_specifier expr_e const_expr expr or_expr or_list and_expr and_list binary args
 
 %%
 
