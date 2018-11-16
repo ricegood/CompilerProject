@@ -9,6 +9,7 @@
 
 enum lextype_ {KEYWORD, UNDEFINED, ID_}; // 0, 1, 2
 enum typeclass_ {INT_, CHAR_, VOID_, STRUCT_, STRING_, ARRAY_, POINTER_}; // 0, 1, 2, 3, 4
+enum declclass_ {VAR_, CONST_, FUNC_, TYPE_};
 
 #include <stdio.h>
 #include <strings.h>
@@ -75,14 +76,16 @@ struct decl *maketypedecl(int typeclass);
 struct decl *makevardecl(struct decl* typedecl);
 struct decl *makearraydecl(int size, struct decl* vardecl);
 struct decl *makeconstdecl(struct decl* typedecl);
-struct decl *makenumconstdecl(struct decl* typedecl, int value);
+struct decl *makeintconstdecl(struct decl* typedecl, int value);
+struct decl *makefloatconstdecl(struct decl* typedecl, float value)
 struct decl *makeptrdecl(struct decl* typedecl);
 struct decl *makeprocdecl();
+struct decl *makestructdecl();
 struct decl *findcurrentdecl(struct id* id_ptr);
 struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr);
 struct decl *structaccess(struct decl* struct_ptr, struct id* field_id);
 struct decl *plustype(struct decl typedecl1, struct decl typedecl2);
-struct ste *makeste();
+
 void declare(struct id* id_ptr, struct decl* decl_ptr);
 void add_type_to_var(struct decl* typedecl, struct decl* var_list);
 int check_is_type(decl* decl_ptr);
