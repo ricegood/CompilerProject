@@ -164,7 +164,7 @@ struct decl *findcurrentdecl(struct id* id_ptr) {
 	struct ste* result = lookup(id_ptr);
 	if (result == NULL)
 		return NULL;
-	else return result->data;
+	else return result->decl;
 }
 
 struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr) {

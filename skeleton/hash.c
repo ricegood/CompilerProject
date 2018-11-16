@@ -98,7 +98,7 @@ struct id *enter(int lexType, char *name, int length) {
     return temp_nlist->data;
 }
 
-struct id *lookup_hash(char *name) {
+struct id *lookup_hash(char *name, int length) {
     // Hash Function : ((first char ascii code)*(length)) % HASH_TABLE_SIZE
     struct nlist* node;
     int key = ((*name) * (length)) % HASH_TABLE_SIZE;

@@ -51,7 +51,7 @@ typedef struct decl {
 /* For hash table */
 unsigned hash(char *name);
 struct id *enter(int lexType, char *name, int length);
-struct id *lookup_hash(char *name);
+struct id *lookup_hash(char *name, int length);
 
 int read_line();
 
