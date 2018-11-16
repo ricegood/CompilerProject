@@ -9,6 +9,35 @@
 
 static struct node *top = NULL;
 
+void printscopestack(){
+  printf("=============PRINT SCOPE STACK=============\n");
+  struct node *node_it = top;
+  struct ste *ste_it = NULL;
+
+  if (node_it == NULL)
+    printf("stack is NULL!\n");
+  else {
+    ste_it = node_it->data;
+
+    int i = 0;
+    while (node_it->next != NULL) {
+      printf("=====stack #%d from the top=====\n", i++);
+      while (ste_it != node_it->next->data) {
+        printf ("node name : %s\n", ste_it->id->name);
+        ste_it = ste_it->prev;
+      }
+      node_it = node_it->next;
+    }
+
+    printf("=====Final Stack from the top=====\n", i++);
+    while (ste_it != NULL) {
+      printf ("node name : %s\n", ste_it->id->name);
+      ste_it = ste_it->prev;
+    }
+  }
+  printf("===========================================\n");
+}
+
 void insert(struct id* id_ptr, struct decl* decl_ptr) {
   printf("insert ste to scope stack!\n");
   if (top != NULL) {

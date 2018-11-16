@@ -108,8 +108,8 @@ def
 
 compound_stmt
         : '{' {
-            //enter();
-           pushscope();
+            pushscope();
+            printscopestack();
         }
         local_defs stmt_list '}'
 

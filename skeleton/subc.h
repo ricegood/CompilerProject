@@ -61,6 +61,7 @@ typedef struct node
     struct node *next;
 } node;
 
+void printscopestack();
 void insert(struct id* id_ptr, struct decl* decl_ptr);
 struct ste *lookup(struct id* id_ptr); // return last pushed element
 void pushscope();
