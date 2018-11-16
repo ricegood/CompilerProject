@@ -36,14 +36,21 @@ void   REDUCE(char* s);
 %left   '[' ']' '(' ')' '.' STRUCTOP
 %nonassoc   ELSE
 
-/* Token and Types */
+/* Tokens and Types */
+/* Tokens */
 %token        VOID STRUCT RETURN IF ELSE WHILE FOR BREAK CONTINUE
 %token        LOGICAL_OR LOGICAL_AND RELOP EQUOP INCOP DECOP STRUCTOP
+
+/* string, int, id */
 %token<stringVal>   CHAR_CONST STRING
 %token<intVal>      TYPE INTEGER_CONST
 %token<idptr>       ID
-%type<declptr>      unary /* type type_id var var_list */
-%type<declptr>      binary expr args /* => type decl */
+
+/* decl */
+%type<declptr>      type_specifier struct_specifier func_decl param_list param_decl def_list def compound_stmt local_defs stmt_list stmt unary
+
+/* type decl */
+%type<declptr>      expr_e const_expr expr or_expr or_list and_expr and_list binary args
 
 %%
 
