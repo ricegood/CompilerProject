@@ -161,7 +161,7 @@ struct decl *makeprocdecl() {
 ////////////////////////////////////
 
 struct decl *findcurrentdecl(struct id* id_ptr) {
-	struct ste* result = lookup(id_ptr)->data;
+	struct ste* result = lookup(id_ptr);
 	if (result == NULL)
 		return NULL;
 	else return result->data;
