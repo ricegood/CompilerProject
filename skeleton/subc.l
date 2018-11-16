@@ -249,20 +249,6 @@ int check_same_type(decl* decl_ptr, decl* indexptr) {
 	// return 0 or 1. (true or false)
 }
 
-void pushscope() {
-
-}
-
-void pushstescope(ste *ste_list) {
-	
-}
-
-struct ste *popscope() {
-
-}
-
-
-
 
 
 void init_type()
