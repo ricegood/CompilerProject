@@ -15,8 +15,8 @@ typedef struct node
 static struct node *top = NULL;
 
 void insert(struct id* id_ptr, struct decl* decl_ptr);
-struct ste *lookup(){struct id* id_ptr}; // return last pushed element
+struct ste *lookup(struct id* id_ptr); // return last pushed element
 void pushscope();
-void pushstelist(ste *ste_list);
+void pushstelist(struct ste* ste_list);
 struct ste *popscope();
 struct ste *popste();

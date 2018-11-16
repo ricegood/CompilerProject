@@ -98,6 +98,6 @@ struct id *enter(int lexType, char *name, int length) {
     return temp_nlist->data;
 }
 
-struct id *lookup(char *name) {
+struct id *lookup_hash(char *name) {
    /* implementation is given here */
 }

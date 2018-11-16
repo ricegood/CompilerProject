@@ -22,7 +22,7 @@ void insert(struct id* id_ptr, struct decl* decl_ptr) {
   }
 }
 
-struct ste *lookup(){struct id* id_ptr} {
+struct ste *lookup(struct id* id_ptr) {
   /*
     Return last pushed ste having same id_ptr
     If not, return NULL
@@ -59,7 +59,7 @@ void pushstelist(ste *ste_list) {
   struct ste *ste_it = ste_list;
   while (ste_it != NULL) {
     insert(ste_it->name, ste_it->decl);
-    ste_it = set_it->prev;
+    ste_it = ste_it->prev;
   }
 }
 

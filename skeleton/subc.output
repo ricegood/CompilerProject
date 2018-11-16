@@ -1,11 +1,3 @@
-Nonterminals useless in grammar
-
-   type
-   type_id
-   var
-   var_list
-
-
 Grammar
 
     0 $accept: program $end
