@@ -310,8 +310,11 @@ binary
         | binary '-' binary
         | unary %prec '='
         {
-            $$ = $1->type;
-            //printf("unary = %d\n", $1->value);
+            if ($$)
+                $$ = $1->type;
+            else {
+                printf("ERROR : unary is NULL!\n");
+            }
         }
 
 unary

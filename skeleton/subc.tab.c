@@ -471,9 +471,9 @@ static const yytype_uint16 yyrline[] =
      219,   228,   237,   238,   241,   241,   251,   254,   255,   258,
      259,   260,   264,   273,   274,   275,   276,   277,   278,   279,
      282,   283,   286,   289,   290,   293,   296,   297,   300,   303,
-     304,   307,   308,   309,   310,   311,   318,   319,   320,   325,
-     326,   327,   333,   334,   335,   336,   337,   338,   339,   340,
-     341,   342,   343,   344,   345,   348,   349
+     304,   307,   308,   309,   310,   311,   321,   322,   323,   328,
+     329,   330,   336,   337,   338,   339,   340,   341,   342,   343,
+     344,   345,   346,   347,   348,   351,   352
 };
 #endif
 
@@ -1628,34 +1628,37 @@ yyreduce:
   case 65:
 #line 312 "subc.y" /* yacc.c:1646  */
     {
-            (yyval.declptr) = (yyvsp[0].declptr)->type;
-            //printf("unary = %d\n", $1->value);
+            if ((yyval.declptr))
+                (yyval.declptr) = (yyvsp[0].declptr)->type;
+            else {
+                printf("ERROR : unary is NULL!\n");
+            }
         }
-#line 1635 "subc.tab.c" /* yacc.c:1646  */
+#line 1638 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 321 "subc.y" /* yacc.c:1646  */
+#line 324 "subc.y" /* yacc.c:1646  */
     {
             // [TODO] memory leak.. how can I send only integer? or without malloc..?
             (yyval.declptr) = makeintconstdecl(inttype, (yyvsp[0].intVal));
         }
-#line 1644 "subc.tab.c" /* yacc.c:1646  */
+#line 1647 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 327 "subc.y" /* yacc.c:1646  */
+#line 330 "subc.y" /* yacc.c:1646  */
     {
             // find ID
             (yyval.declptr) = findcurrentdecl((yyvsp[0].idptr));
             if (!(yyval.declptr))
                 printf("ERROR : There is no such ID.\n");
         }
-#line 1655 "subc.tab.c" /* yacc.c:1646  */
+#line 1658 "subc.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1659 "subc.tab.c" /* yacc.c:1646  */
+#line 1662 "subc.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1883,7 +1886,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 351 "subc.y" /* yacc.c:1906  */
+#line 354 "subc.y" /* yacc.c:1906  */
 
 
 /*  Additional C Codes  */
