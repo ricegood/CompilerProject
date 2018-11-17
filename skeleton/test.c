@@ -1,7 +1,6 @@
 int a;
 
 int main(){
-	int x, y, z;
 	int a;
 	char b;
 	int c[20];

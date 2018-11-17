@@ -1,6 +1,9 @@
 int main(){
 
-	int a = 10;
-
+	int a;
+	int *b;
+	{
+		int c;
+	}
 	return 0;
 }

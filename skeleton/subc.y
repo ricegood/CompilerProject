@@ -107,16 +107,16 @@ def
         : type_specifier pointers ID ';'
         {
             if ($2 == 0) // no pointer
-                declare($3, makevardecl($1));
+                declare($3, $$ = makevardecl($1));
             else // pointer
-                declare($3, makevardecl(makeptrdecl($1)));
+                declare($3, $$ = makevardecl(makeptrdecl($1)));
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
             if ($2 == 0) // no pointer
-                declare($3, makeconstdecl(makearraydecl($5->value, makevardecl($1))));
+                declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
             else // pointer
-                declare($3, makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
+                declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
         }
         | type_specifier ';'
         | func_decl ';'
