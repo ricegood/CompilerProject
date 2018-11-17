@@ -53,6 +53,8 @@ void   REDUCE(char* s);
 /* type decl */
 %type<declptr>      type_specifier expr_e const_expr expr or_expr or_list and_expr and_list binary args
 
+%type<intVal>       pointers;
+
 %%
 
 program
@@ -86,8 +88,8 @@ func_decl
         | type_specifier pointers ID '(' param_list ')'
 
 pointers
-        : '*'
-        | /* empty */
+        : '*' { $$ = 1; // pointer }
+        | /* empty */ { $$ = 0; }
 
 param_list  /* list of formal parameter declaration */
         : param_decl
@@ -104,11 +106,17 @@ def_list    /* list of definitions, definition can be type(struct), variable, fu
 def
         : type_specifier pointers ID ';'
         {
-            declare($3, makevardecl($1));
+            if ($2 == 0) // no pointer
+                declare($3, makevardecl($1));
+            else // pointer
+                declare($3, makevardecl(makeptrdecl($1)));
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
-            declare($3, makeconstdecl(makearraydecl($5->value, makevardecl($1))));
+            if ($2 == 0) // no pointer
+                declare($3, makeconstdecl(makearraydecl($5->value, makevardecl($1))));
+            else // pointer
+                declare($3, makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
         }
         | type_specifier ';'
         | func_decl ';'
