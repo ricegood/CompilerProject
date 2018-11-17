@@ -67,7 +67,7 @@ struct decl *makearraydecl(int size, struct decl* vardecl) {
 	return new_decl;
 }
 
-struct decl *makestructdecl() {
+struct decl *makestructdecl(struct ste* fields) {
 	printf("makestructdecl()\n");
 
 	/* make new decl */
@@ -76,6 +76,7 @@ struct decl *makestructdecl() {
 	/* initialization */
 	new_decl->declclass = TYPE_;
 	new_decl->typeclass = STRUCT_;
+	new_decl->fieldlist = fields;
 
 	return new_decl;
 }

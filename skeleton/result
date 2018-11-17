@@ -19,37 +19,13 @@ insert ste to scope stack!
 -------------------
 ID	main	1
 push scope
-=============PRINT SCOPE STACK=============
-=====stack #0 from the top=====
-=====Final Stack from the top=====
-node name : string, decl class : 3
-node name : void, decl class : 3
-node name : char, decl class : 3
-node name : int, decl class : 3
-===========================================
---Print Type Decl--
-* declclass = 3
-* typeclass = 0
--------------------
-ID	a	1
-makevardecl()
-declare()
-insert ste to scope stack!
---Print Type Decl--
-* declclass = 3
-* typeclass = 0
--------------------
-ID	b	1
-makeptrdecl()
-makevardecl()
-declare()
-insert ste to scope stack!
+push scope
+ID	temp	1
 push scope
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====
 =====stack #1 from the top=====
-node name : b, decl class : 0
-node name : a, decl class : 0
+=====stack #2 from the top=====
 =====Final Stack from the top=====
 node name : string, decl class : 3
 node name : void, decl class : 3
@@ -60,30 +36,102 @@ node name : int, decl class : 3
 * declclass = 3
 * typeclass = 0
 -------------------
-ID	c	1
+ID	x	1
 makevardecl()
 declare()
 insert ste to scope stack!
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : x, decl class : 0
+=====stack #1 from the top=====
+=====stack #2 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+===========================================
+def list!
+--Print Type Decl--
+* declclass = 3
+* typeclass = 0
+-------------------
+ID	y	1
+makeintconstdecl()
+makevardecl()
+makearraydecl()
+makeconstdecl()
+declare()
+insert ste to scope stack!
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : y, decl class : 1
+node name : x, decl class : 0
+=====stack #1 from the top=====
+=====stack #2 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+===========================================
+def list!
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : y, decl class : 1
+node name : x, decl class : 0
+=====stack #1 from the top=====
+=====stack #2 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+===========================================
 pop scope
+pop ste
 pop ste
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====
-node name : b, decl class : 0
-node name : a, decl class : 0
+=====stack #1 from the top=====
 =====Final Stack from the top=====
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
 node name : int, decl class : 3
 ===========================================
-makeintconstdecl()
+makestructdecl()
+declare()
+insert ste to scope stack!
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : temp, decl class : 3
+=====stack #1 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+===========================================
+ID	w	1
+makevardecl()
+declare()
+insert ste to scope stack!
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : w, decl class : 0
+node name : temp, decl class : 3
+=====stack #1 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+===========================================
+def list!
 pop scope
 pop ste
 pop ste
-=============PRINT SCOPE STACK=============
-=====Final Stack from the top=====
-node name : string, decl class : 3
-node name : void, decl class : 3
-node name : char, decl class : 3
-node name : int, decl class : 3
-===========================================
+push scope
+pop scope
+pop scope

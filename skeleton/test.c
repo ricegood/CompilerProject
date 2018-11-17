@@ -1,6 +1,13 @@
-int a;
+/*int a;*/
 
 int main(){
+	{
+		struct temp {int x; int y[20]; } w;
+	}
+	{
+
+	}
+/*
 	int a;
 	char b;
 	int c[20];
@@ -13,4 +20,5 @@ int main(){
 	} else {
 		return ;
 	}
+	*/
 }

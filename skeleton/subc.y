@@ -82,11 +82,15 @@ struct_specifier
         : STRUCT ID '{'
         {
             pushscope();
+            printscopestack();
         }
         def_list
         {
+            printscopestack();
             struct ste *fields = popscope();
+            printscopestack();
             declare($2, ($<declptr>$ = makestructdecl(fields)));
+            printscopestack();
         }
         '}'
         {
@@ -118,6 +122,9 @@ param_decl  /* formal parameter declaration */
 
 def_list    /* list of definitions, definition can be type(struct), variable, function */
         : def_list def
+        {
+            printf("def list!\n");
+        }
         | /* empty */
 
 def
@@ -127,6 +134,8 @@ def
                 declare($3, $$ = makevardecl($1));
             else // pointer
                 declare($3, $$ = makevardecl(makeptrdecl($1)));
+
+            printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
@@ -134,6 +143,8 @@ def
                 declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
             else // pointer
                 declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
+            
+            printscopestack();
         }
         | type_specifier ';'
         | func_decl ';'
@@ -141,11 +152,11 @@ def
 compound_stmt
         : '{' {
             pushscope();
-            printscopestack();
+            //printscopestack();
         }
         local_defs stmt_list '}' {
             popscope();
-            printscopestack();
+            //printscopestack();
         }
 
 local_defs  /* local definitions, of which scope is only inside of compound statement */
