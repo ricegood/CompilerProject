@@ -88,7 +88,7 @@ func_decl
         | type_specifier pointers ID '(' param_list ')'
 
 pointers
-        : '*' { $$ = 1; // pointer }
+        : '*' { $$ = 1; }
         | /* empty */ { $$ = 0; }
 
 param_list  /* list of formal parameter declaration */
