@@ -74,7 +74,7 @@ ext_def
         | func_decl
         {
             pushscope();
-            pushstelist($1->formals);
+            pushstelist($1->formalswithreturnid);
             printscopestack();
         }
         compound_stmt
@@ -135,6 +135,7 @@ func_decl
             formals = popscope();
 
             /* formals->decl is always returnid decl with return type*/
+            procdecl->formalswithreturnid = formals;
             procdecl->returntype = formals->decl;
             procdecl->formals = formals->prev; // null in this production
             
@@ -161,7 +162,9 @@ func_decl
             struct ste *formals;
             struct decl *procdecl = $<declptr>5;
             formals = popscope();
+
             /* formals->decl is always returnid decl with return type*/
+            procdecl->formalswithreturnid = formals;
             procdecl->returntype = formals->decl;
             procdecl->formals = formals->prev;
 
@@ -255,7 +258,18 @@ stmt
         : expr ';'
         | compound_stmt
         | RETURN ';'
+        {
+
+        }
         | RETURN expr ';'
+        {   
+            /* return type check */
+            if (check_same_type(findcurrentdecl(returnid), $2)) {
+                printf("return type is same type!\n");
+            } else {
+                printf("ERROR : return type error\n");
+            }
+        }
         | ';'
         | IF '(' expr ')' stmt
         | IF '(' expr ')' stmt ELSE stmt
@@ -296,6 +310,7 @@ binary
         | binary '-' binary
         | unary %prec '='
         {
+            $$ = $1->type;
             //printf("unary = %d\n", $1->value);
         }
 
@@ -309,7 +324,12 @@ unary
         }
         | CHAR_CONST
         | STRING
-        | ID
+        | ID {
+            // find ID
+            $$ = findcurrentdecl($1);
+            if (!$$)
+                printf("ERROR : There is no such ID.\n");
+        }
         | '-' unary %prec '!'
         | '!' unary
         | unary INCOP

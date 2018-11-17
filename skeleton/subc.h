@@ -43,6 +43,7 @@ typedef struct decl {
 	int value;
 	float real_value;
 	struct ste *formals;
+	struct ste *formalswithreturnid; /* add this for procdecl (FUNC decl) return type check */
 	struct decl *returntype;
 	int typeclass;
 	struct decl *elementvar;

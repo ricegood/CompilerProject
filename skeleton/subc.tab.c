@@ -466,14 +466,14 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint16 yyrline[] =
 {
        0,    61,    61,    65,    66,    70,    71,    72,    73,    75,
-      74,    89,    90,    91,    95,   100,    94,   111,   125,   147,
-     152,   151,   182,   183,   186,   187,   190,   198,   209,   213,
-     216,   225,   234,   235,   238,   238,   248,   251,   252,   255,
-     256,   257,   258,   259,   260,   261,   262,   263,   264,   265,
-     268,   269,   272,   275,   276,   279,   282,   283,   286,   289,
-     290,   293,   294,   295,   296,   297,   303,   304,   305,   310,
-     311,   312,   313,   314,   315,   316,   317,   318,   319,   320,
-     321,   322,   323,   324,   325,   328,   329
+      74,    89,    90,    91,    95,   100,    94,   111,   125,   148,
+     153,   152,   185,   186,   189,   190,   193,   201,   212,   216,
+     219,   228,   237,   238,   241,   241,   251,   254,   255,   258,
+     259,   260,   264,   273,   274,   275,   276,   277,   278,   279,
+     282,   283,   286,   289,   290,   293,   296,   297,   300,   303,
+     304,   307,   308,   309,   310,   311,   318,   319,   320,   325,
+     326,   327,   333,   334,   335,   336,   337,   338,   339,   340,
+     341,   342,   343,   344,   345,   348,   349
 };
 #endif
 
@@ -1367,7 +1367,7 @@ yyreduce:
 #line 75 "subc.y" /* yacc.c:1646  */
     {
             pushscope();
-            pushstelist((yyvsp[0].declptr)->formals);
+            pushstelist((yyvsp[0].declptr)->formalswithreturnid);
             printscopestack();
         }
 #line 1374 "subc.tab.c" /* yacc.c:1646  */
@@ -1455,6 +1455,7 @@ yyreduce:
             formals = popscope();
 
             /* formals->decl is always returnid decl with return type*/
+            procdecl->formalswithreturnid = formals;
             procdecl->returntype = formals->decl;
             procdecl->formals = formals->prev; // null in this production
             
@@ -1464,19 +1465,19 @@ yyreduce:
 
             (yyval.declptr) = procdecl;
         }
-#line 1468 "subc.tab.c" /* yacc.c:1646  */
+#line 1469 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 148 "subc.y" /* yacc.c:1646  */
+#line 149 "subc.y" /* yacc.c:1646  */
     {
             // what is VOID???????
         }
-#line 1476 "subc.tab.c" /* yacc.c:1646  */
+#line 1477 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 152 "subc.y" /* yacc.c:1646  */
+#line 153 "subc.y" /* yacc.c:1646  */
     {
             struct decl *procdecl = makeprocdecl();
             declare((yyvsp[-1].idptr), procdecl);
@@ -1484,16 +1485,18 @@ yyreduce:
             declare(returnid, (yyvsp[-3].declptr));
             (yyval.declptr) = procdecl;
         }
-#line 1488 "subc.tab.c" /* yacc.c:1646  */
+#line 1489 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 160 "subc.y" /* yacc.c:1646  */
+#line 161 "subc.y" /* yacc.c:1646  */
     {
             struct ste *formals;
             struct decl *procdecl = (yyvsp[-2].declptr);
             formals = popscope();
+
             /* formals->decl is always returnid decl with return type*/
+            procdecl->formalswithreturnid = formals;
             procdecl->returntype = formals->decl;
             procdecl->formals = formals->prev;
 
@@ -1509,23 +1512,23 @@ yyreduce:
             
             (yyval.declptr) = procdecl; 
         }
-#line 1513 "subc.tab.c" /* yacc.c:1646  */
+#line 1516 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 182 "subc.y" /* yacc.c:1646  */
+#line 185 "subc.y" /* yacc.c:1646  */
     { (yyval.intVal) = 1; }
-#line 1519 "subc.tab.c" /* yacc.c:1646  */
+#line 1522 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 183 "subc.y" /* yacc.c:1646  */
+#line 186 "subc.y" /* yacc.c:1646  */
     { (yyval.intVal) = 0; }
-#line 1525 "subc.tab.c" /* yacc.c:1646  */
+#line 1528 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 191 "subc.y" /* yacc.c:1646  */
+#line 194 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[-1].intVal) == 0) // no pointer
                 declare((yyvsp[0].idptr), (yyval.declptr) = makevardecl((yyvsp[-2].declptr)));
@@ -1533,11 +1536,11 @@ yyreduce:
                 declare((yyvsp[0].idptr), (yyval.declptr) = makevardecl(makeptrdecl((yyvsp[-2].declptr))));
             printscopestack();
         }
-#line 1537 "subc.tab.c" /* yacc.c:1646  */
+#line 1540 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 199 "subc.y" /* yacc.c:1646  */
+#line 202 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[-4].intVal) == 0) // no pointer
                 declare((yyvsp[-3].idptr), (yyval.declptr) = makeconstdecl(makearraydecl((yyvsp[-1].declptr)->value, makevardecl((yyvsp[-5].declptr)))));
@@ -1546,19 +1549,19 @@ yyreduce:
             
             printscopestack();
         }
-#line 1550 "subc.tab.c" /* yacc.c:1646  */
+#line 1553 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 210 "subc.y" /* yacc.c:1646  */
+#line 213 "subc.y" /* yacc.c:1646  */
     {
             printf("def list!\n");
         }
-#line 1558 "subc.tab.c" /* yacc.c:1646  */
+#line 1561 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 217 "subc.y" /* yacc.c:1646  */
+#line 220 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[-2].intVal) == 0) // no pointer
                 declare((yyvsp[-1].idptr), (yyval.declptr) = makevardecl((yyvsp[-3].declptr)));
@@ -1567,11 +1570,11 @@ yyreduce:
 
             printscopestack();
         }
-#line 1571 "subc.tab.c" /* yacc.c:1646  */
+#line 1574 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 226 "subc.y" /* yacc.c:1646  */
+#line 229 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[-5].intVal) == 0) // no pointer
                 declare((yyvsp[-4].idptr), (yyval.declptr) = makeconstdecl(makearraydecl((yyvsp[-2].declptr)->value, makevardecl((yyvsp[-6].declptr)))));
@@ -1580,46 +1583,79 @@ yyreduce:
             
             printscopestack();
         }
-#line 1584 "subc.tab.c" /* yacc.c:1646  */
+#line 1587 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 238 "subc.y" /* yacc.c:1646  */
+#line 241 "subc.y" /* yacc.c:1646  */
     {
             pushscope();
             //printscopestack();
         }
-#line 1593 "subc.tab.c" /* yacc.c:1646  */
+#line 1596 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 242 "subc.y" /* yacc.c:1646  */
+#line 245 "subc.y" /* yacc.c:1646  */
     {
             popscope();
             //printscopestack();
         }
-#line 1602 "subc.tab.c" /* yacc.c:1646  */
+#line 1605 "subc.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 41:
+#line 261 "subc.y" /* yacc.c:1646  */
+    {
+
+        }
+#line 1613 "subc.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 42:
+#line 265 "subc.y" /* yacc.c:1646  */
+    {   
+            /* return type check */
+            if (check_same_type(findcurrentdecl(returnid), (yyvsp[-1].declptr))) {
+                printf("return type is same type!\n");
+            } else {
+                printf("ERROR : return type error\n");
+            }
+        }
+#line 1626 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 298 "subc.y" /* yacc.c:1646  */
+#line 312 "subc.y" /* yacc.c:1646  */
     {
+            (yyval.declptr) = (yyvsp[0].declptr)->type;
             //printf("unary = %d\n", $1->value);
         }
-#line 1610 "subc.tab.c" /* yacc.c:1646  */
+#line 1635 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 306 "subc.y" /* yacc.c:1646  */
+#line 321 "subc.y" /* yacc.c:1646  */
     {
             // [TODO] memory leak.. how can I send only integer? or without malloc..?
             (yyval.declptr) = makeintconstdecl(inttype, (yyvsp[0].intVal));
         }
-#line 1619 "subc.tab.c" /* yacc.c:1646  */
+#line 1644 "subc.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 71:
+#line 327 "subc.y" /* yacc.c:1646  */
+    {
+            // find ID
+            (yyval.declptr) = findcurrentdecl((yyvsp[0].idptr));
+            if (!(yyval.declptr))
+                printf("ERROR : There is no such ID.\n");
+        }
+#line 1655 "subc.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1623 "subc.tab.c" /* yacc.c:1646  */
+#line 1659 "subc.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1847,7 +1883,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 331 "subc.y" /* yacc.c:1906  */
+#line 351 "subc.y" /* yacc.c:1906  */
 
 
 /*  Additional C Codes  */

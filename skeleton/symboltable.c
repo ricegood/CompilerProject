@@ -237,10 +237,11 @@ int check_compatible(decl* decl_ptr, decl* typedecl_ptr) {
 	// return 0 or 1. (true or false)
 }
 
-int check_same_type(decl* decl_ptr, decl* indexptr) {
-	// 38p
-	// decl_ptr = inttype. how?
-	// return 0 or 1. (true or false)
+int check_same_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
+	// 36p, 38p
+	if (typedecl_ptr1 == typedecl_ptr2)
+		return 1;
+	else return 0;
 }
 
 
