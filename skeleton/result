@@ -13,6 +13,10 @@ insert ste to scope stack!
 declare()
 insert ste to scope stack!
 ==init_type() END==
+--Print Type Decl--
+* declclass = 3
+* typeclass = 0
+-------------------
 ID	main	1
 push scope
 =============PRINT SCOPE STACK=============
@@ -23,7 +27,15 @@ node name : void
 node name : char
 node name : int
 ===========================================
+--Print Type Decl--
+* declclass = 3
+* typeclass = 0
+-------------------
 ID	a	1
+--Print Type Decl--
+* declclass = 3
+* typeclass = 1
+-------------------
 ID	b	1
 ID	a	2
 ID	b	2

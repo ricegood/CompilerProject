@@ -71,7 +71,7 @@ ext_def
         | func_decl compound_stmt
 
 type_specifier
-        : TYPE { printTypeDecl(yylval->declptr); }
+        : TYPE { printTypeDecl(yylval.declptr); }
         | VOID
         | struct_specifier
 
@@ -203,11 +203,4 @@ int yyerror (char* s) {
 
 void REDUCE( char* s) {
     printf("%s\n",s);
-}
-
-void printTypeDecl(struct decl* decl_ptr) {
-    printf("--Print Type Decl--\n")
-    printf("* declclass = %d\n", decl_ptr->declclass);
-    printf("* typeclass = %d\n", decl_ptr->typeclass);
-    printf("-------------------\n")
 }

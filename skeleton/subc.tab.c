@@ -1356,13 +1356,19 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 30:
+        case 10:
+#line 74 "subc.y" /* yacc.c:1646  */
+    { printTypeDecl(yylval.declptr); }
+#line 1363 "subc.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 30:
 #line 110 "subc.y" /* yacc.c:1646  */
     {
             pushscope();
             printscopestack();
         }
-#line 1366 "subc.tab.c" /* yacc.c:1646  */
+#line 1372 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
@@ -1371,11 +1377,11 @@ yyreduce:
             popscope();
             printscopestack();
         }
-#line 1375 "subc.tab.c" /* yacc.c:1646  */
+#line 1381 "subc.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1379 "subc.tab.c" /* yacc.c:1646  */
+#line 1385 "subc.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1606,16 +1612,12 @@ yyreturn:
 #line 196 "subc.y" /* yacc.c:1906  */
 
 
-/*  Additional C Codes 
-    Implemnt REDUCE function here */
+/*  Additional C Codes  */
 
-int yyerror (char* s)
-{
+int yyerror (char* s) {
     fprintf (stderr, "%s\n", s);
 }
 
-void REDUCE( char* s)
-{
+void REDUCE( char* s) {
     printf("%s\n",s);
 }
-

@@ -240,3 +240,17 @@ int check_same_type(decl* decl_ptr, decl* indexptr) {
 	// decl_ptr = inttype. how?
 	// return 0 or 1. (true or false)
 }
+
+
+
+///////////////////////////////////////
+////// print declaration function /////
+///////////////////////////////////////
+
+
+void printTypeDecl(struct decl* decl_ptr) {
+    printf("--Print Type Decl--\n");
+    printf("* declclass = %d\n", decl_ptr->declclass);
+    printf("* typeclass = %d\n", decl_ptr->typeclass);
+    printf("-------------------\n");
+}
