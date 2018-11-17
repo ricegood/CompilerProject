@@ -63,9 +63,9 @@ extern int yydebug;
     CONTINUE = 273,
     CHAR_CONST = 274,
     STRING = 275,
-    TYPE = 276,
-    INTEGER_CONST = 277,
-    ID = 278
+    INTEGER_CONST = 276,
+    ID = 277,
+    TYPE = 278
   };
 #endif
 

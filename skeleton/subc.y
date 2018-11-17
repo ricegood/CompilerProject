@@ -43,8 +43,9 @@ void   REDUCE(char* s);
 
 /* string, int, id */
 %token<stringVal>   CHAR_CONST STRING
-%token<intVal>      TYPE INTEGER_CONST
+%token<intVal>      INTEGER_CONST
 %token<idptr>       ID
+%token<declptr>     TYPE
 
 /* decl */
 %type<declptr>      struct_specifier func_decl param_list param_decl def_list def compound_stmt local_defs stmt_list stmt unary
@@ -64,14 +65,14 @@ ext_def_list
         ;
 
 ext_def
-        : type_specifier pointers ID ';'
+        : type_specifier pointers ID ';' { printf("ext_def;\n"); }
         | type_specifier pointers ID '[' const_expr ']' ';'
         | func_decl ';'
         | type_specifier ';'
         | func_decl compound_stmt
 
 type_specifier
-        : TYPE { printTypeDecl(yylval.declptr); }
+        : TYPE { printTypeDecl($1); }
         | VOID
         | struct_specifier
 
@@ -102,7 +103,13 @@ def_list    /* list of definitions, definition can be type(struct), variable, fu
 
 def
         : type_specifier pointers ID ';'
+        {
+            declare($3, makevardecl($1));
+        }
         | type_specifier pointers ID '[' const_expr ']' ';'
+        {
+            declare($3, makeconstdecl(makearraydecl($5->value, makevardecl($1))));
+        }
         | type_specifier ';'
         | func_decl ';'
 
@@ -167,11 +174,18 @@ binary
         | binary '+' binary
         | binary '-' binary
         | unary %prec '='
+        {
+            //printf("unary = %d\n", $1->value);
+        }
 
 unary
         : '(' expr ')'
         | '(' unary ')' 
         | INTEGER_CONST
+        {
+            // [TODO] memory leak.. how can I send only integer? or without malloc..?
+            $$ = makeintconstdecl(inttype, $1);
+        }
         | CHAR_CONST
         | STRING
         | ID

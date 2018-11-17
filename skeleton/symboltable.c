@@ -7,7 +7,6 @@
 
 #include "subc.h"
 
-
 /* Make ste and add to symbol table (ste stack linked list) */
 void declare(struct id* id_ptr, struct decl* decl_ptr) {
 	printf("declare()\n");
@@ -15,7 +14,6 @@ void declare(struct id* id_ptr, struct decl* decl_ptr) {
 	// add to ste stack linked list
 	insert(id_ptr, decl_ptr);
 }
-
 
 
 ////////////////////////////////////
@@ -247,6 +245,25 @@ int check_same_type(decl* decl_ptr, decl* indexptr) {
 ////// print declaration function /////
 ///////////////////////////////////////
 
+void init_type()
+{
+	printf("==init_type() START==\n");
+
+	inttype = maketypedecl(INT_);
+	chartype = maketypedecl(CHAR_);
+	voidtype = maketypedecl(VOID_);
+	stringtype = maketypedecl(STRING_);
+
+	pushscope();
+	declare(enter(KEYWORD, "int", 3), inttype);
+	declare(enter(KEYWORD, "char", 4), chartype);
+	declare(enter(KEYWORD, "void", 4), voidtype);
+	declare(enter(KEYWORD, "string", 6), stringtype);
+
+	enter(KEYWORD, "*return", 7);
+
+	printf("==init_type() END==\n");
+}
 
 void printTypeDecl(struct decl* decl_ptr) {
     printf("--Print Type Decl--\n");

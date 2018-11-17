@@ -16,6 +16,11 @@ enum declclass_ {VAR_, CONST_, FUNC_, TYPE_};
 #include <stdlib.h>
 #include <string.h>
 
+struct decl *inttype;
+struct decl *chartype;
+struct decl *voidtype;
+struct decl *stringtype;
+
 /* structure for IDs */
 typedef struct id {
 	int lexType;
@@ -98,6 +103,7 @@ struct decl *check_function_call(struct decl* proc_ptr, struct decl* actuals);
 int check_compatible(struct decl* decl_ptr, struct decl* typedecl_ptr);
 int check_same_type(struct decl* decl_ptr, struct decl* indexptr);
 
+void init_type();
 void printTypeDecl(struct decl* decl_ptr);
 
 #endif

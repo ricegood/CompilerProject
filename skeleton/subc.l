@@ -24,11 +24,6 @@
 static int comment_depth = 0;
 static int lineno = 1;
 
-struct decl *inttype = NULL;
-struct decl *chartype = NULL;
-struct decl *voidtype = NULL;
-struct decl *stringtype = NULL;
-
 %}
 
 /* regular definitions */
@@ -121,27 +116,6 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 int read_line()
 {
    return lineno;
-}
-
-
-void init_type()
-{
-	printf("==init_type() START==\n");
-
-	inttype = maketypedecl(INT_);
-	chartype = maketypedecl(CHAR_);
-	voidtype = maketypedecl(VOID_);
-	stringtype = maketypedecl(STRING_);
-
-	pushscope();
-	declare(enter(KEYWORD, "int", 3), inttype);
-	declare(enter(KEYWORD, "char", 4), chartype);
-	declare(enter(KEYWORD, "void", 4), voidtype);
-	declare(enter(KEYWORD, "string", 6), stringtype);
-
-	enter(KEYWORD, "*return", 7);
-
-	printf("==init_type() END==\n");
 }
 
 int main(int argc, char** argv)

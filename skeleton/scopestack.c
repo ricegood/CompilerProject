@@ -23,7 +23,7 @@ void printscopestack(){
     while (node_it->next != NULL) {
       printf("=====stack #%d from the top=====\n", i++);
       while (ste_it != node_it->next->data) {
-        printf ("node name : %s\n", ste_it->name->name);
+        printf ("node name : %s, decl class : %d\n", ste_it->name->name, ste_it->decl->declclass);
         ste_it = ste_it->prev;
       }
       node_it = node_it->next;
@@ -31,7 +31,7 @@ void printscopestack(){
 
     printf("=====Final Stack from the top=====\n");
     while (ste_it != NULL) {
-      printf ("node name : %s\n", ste_it->name->name);
+      printf ("node name : %s, decl class : %d\n", ste_it->name->name, ste_it->decl->declclass);
       ste_it = ste_it->prev;
     }
   }
