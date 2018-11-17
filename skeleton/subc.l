@@ -20,8 +20,14 @@
 
 #include "subc.h"
 #include "subc.tab.h"
+
 static int comment_depth = 0;
 static int lineno = 1;
+
+struct decl *inttype = NULL;
+struct decl *chartype = NULL;
+struct decl *voidtype = NULL;
+struct decl *stringtype = NULL;
 
 %}
 
@@ -38,7 +44,10 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 %x COMMENT
 
 %%
-"int"|"char" { return TYPE; }
+"int"			{ yylval.declptr = inttype;
+						return TYPE; }
+"char"		{ yylval.declptr = chartype;
+						return TYPE; }
 "void"		{ return VOID; }
 "struct"	{ return STRUCT; }
 "return"	{ return RETURN; }
@@ -119,10 +128,10 @@ void init_type()
 {
 	printf("==init_type() START==\n");
 
-	struct decl *inttype = maketypedecl(INT_);
-	struct decl *chartype = maketypedecl(CHAR_);
-	struct decl *voidtype = maketypedecl(VOID_);
-	struct decl *stringtype = maketypedecl(STRING_);
+	inttype = maketypedecl(INT_);
+	chartype = maketypedecl(CHAR_);
+	voidtype = maketypedecl(VOID_);
+	stringtype = maketypedecl(STRING_);
 
 	pushscope();
 	declare(enter(KEYWORD, "int", 3), inttype);

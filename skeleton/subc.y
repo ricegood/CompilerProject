@@ -71,7 +71,7 @@ ext_def
         | func_decl compound_stmt
 
 type_specifier
-        : TYPE
+        : TYPE { printTypeDecl(yylval->declptr); }
         | VOID
         | struct_specifier
 
@@ -195,16 +195,19 @@ args    /* actual parameters(function arguments) transferred to function */
 
 %%
 
-/*  Additional C Codes 
-    Implemnt REDUCE function here */
+/*  Additional C Codes  */
 
-int yyerror (char* s)
-{
+int yyerror (char* s) {
     fprintf (stderr, "%s\n", s);
 }
 
-void REDUCE( char* s)
-{
+void REDUCE( char* s) {
     printf("%s\n",s);
 }
 
+void printTypeDecl(struct decl* decl_ptr) {
+    printf("--Print Type Decl--\n")
+    printf("* declclass = %d\n", decl_ptr->declclass);
+    printf("* typeclass = %d\n", decl_ptr->typeclass);
+    printf("-------------------\n")
+}
