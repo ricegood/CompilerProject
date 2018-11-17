@@ -79,8 +79,25 @@ type_specifier
         | struct_specifier
 
 struct_specifier
-        : STRUCT ID '{' def_list '}'
+        : STRUCT ID '{'
+        {
+            pushscope();
+        }
+        def_list
+        {
+            struct ste *fields = popscope();
+            declare($2, ($<declptr>$ = makestructdecl(fields)));
+        }
+        '}'
+        {
+            $$ = $<declptr>6;
+        }
         | STRUCT ID
+        {
+            struct decl *decl_ptr = findcurrentdecl($2);
+            check_is_struct_type(decl_ptr);
+            $$ = decl_ptr;
+        }
 
 func_decl
         : type_specifier pointers ID '(' ')'
