@@ -76,7 +76,7 @@ ext_def
 type_specifier
         : TYPE { printTypeDecl($1); }
         | VOID
-        | struct_specifier
+        | struct_specifier { REDUCE("type_specifier => struct_specifier\n"); }
 
 struct_specifier
         : STRUCT ID '{'
@@ -99,12 +99,13 @@ struct_specifier
         | STRUCT ID
         {
             struct decl *decl_ptr = findcurrentdecl($2);
-            if(decl_ptr != NULL && check_is_struct_type(decl_ptr)){
+            if(decl_ptr != NULL && (check_is_struct_type(decl_ptr) == 1)){
                 $$ = decl_ptr;
                 //printf("this is struct type\n");
             }
             else {
-                //printf("ERROR : this is not struct type\n");
+                $$ = NULL;
+                printf("ERROR : this is not struct type\n");
             }
         }
 
@@ -125,10 +126,9 @@ func_decl
             procdecl->returntype = formals->decl;
             procdecl->formals = formals->prev; // null in this production
             
-            // check point
-            if (procdecl->formals == NULL) {
-                printf("yes, this is null.\n");
-            }
+            /* error ; struct_specifier returns NULL, because this is not a struct*/
+            if (procdecl->returntype == NULL)
+                printf("ERROR : this is not a struct\n");
 
             $$ = procdecl;
         }
@@ -153,8 +153,15 @@ func_decl
             procdecl->returntype = formals->decl;
             procdecl->formals = formals->prev;
 
-            // check point (formal list-first)
-            printf("formal list first param = %s\n", procdecl->formals->name->name);
+            /*
+                // check point (formal list-first)
+                printf("formal list first param = %s\n", procdecl->formals->name->name);
+                printf("formal list second param = %s\n", procdecl->formals->prev->name->name);
+            */
+
+            /* error ; struct_specifier returns NULL, because this is not a struct*/
+            if (procdecl->returntype == NULL)
+                printf("ERROR : this is not struct\n");
  
             $$ = procdecl;
         }
@@ -174,7 +181,6 @@ param_decl  /* formal parameter declaration */
                 declare($3, $$ = makevardecl($1));
             else // pointer
                 declare($3, $$ = makevardecl(makeptrdecl($1)));
-
             printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']'
