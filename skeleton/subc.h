@@ -20,6 +20,7 @@ struct decl *inttype;
 struct decl *chartype;
 struct decl *voidtype;
 struct decl *stringtype;
+struct id *returnid;
 
 /* structure for IDs */
 typedef struct id {

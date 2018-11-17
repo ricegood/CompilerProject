@@ -110,8 +110,54 @@ struct_specifier
 
 func_decl
         : type_specifier pointers ID '(' ')'
+        {
+            struct decl *procdecl = makeprocdecl();
+            declare($3, procdecl);
+            pushscope(); /* for collecting formals */
+            declare(returnid, $1);
+
+            // no formals
+
+            struct ste *formals;
+            formals = popscope();
+
+            /* formals->decl is always returnid decl with return type*/
+            procdecl->returntype = formals->decl;
+            procdecl->formals = formals->prev; // null in this production
+            
+            // check point
+            if (procdecl->formals == NULL) {
+                printf("yes, this is null.\n");
+            }
+
+            $$ = procdecl;
+        }
         | type_specifier pointers ID '(' VOID ')'
-        | type_specifier pointers ID '(' param_list ')'
+        {
+            // what is VOID???????
+        }
+        | type_specifier pointers ID '(' 
+        {
+            struct decl *procdecl = makeprocdecl();
+            declare($3, procdecl);
+            pushscope(); /* for collecting formals */
+            declare(returnid, $1);
+            $<declptr>$ = procdecl;
+        }
+        param_list ')'
+        {
+            struct ste *formals;
+            struct decl *procdecl = $<declptr>5;
+            formals = popscope();
+            /* formals->decl is always returnid decl with return type*/
+            procdecl->returntype = formals->decl;
+            procdecl->formals = formals->prev;
+
+            // check point (formal list-first)
+            printf("formal list first param = %s\n", procdecl->formals->name->name);
+ 
+            $$ = procdecl;
+        }
 
 pointers
         : '*' { $$ = 1; }

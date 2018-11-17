@@ -264,7 +264,7 @@ void init_type()
 	declare(enter(KEYWORD, "void", 4), voidtype);
 	declare(enter(KEYWORD, "string", 6), stringtype);
 
-	enter(KEYWORD, "*return", 7);
+	returnid = enter(KEYWORD, "*return", 7);
 
 	printf("==init_type() END==\n");
 }
