@@ -169,7 +169,23 @@ param_list  /* list of formal parameter declaration */
 
 param_decl  /* formal parameter declaration */
         : type_specifier pointers ID
+        {
+            if ($2 == 0) // no pointer
+                declare($3, $$ = makevardecl($1));
+            else // pointer
+                declare($3, $$ = makevardecl(makeptrdecl($1)));
+
+            printscopestack();
+        }
         | type_specifier pointers ID '[' const_expr ']'
+        {
+            if ($2 == 0) // no pointer
+                declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
+            else // pointer
+                declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
+            
+            printscopestack();
+        }
 
 def_list    /* list of definitions, definition can be type(struct), variable, function */
         : def_list def
