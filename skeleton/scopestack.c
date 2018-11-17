@@ -97,7 +97,7 @@ void pushstelist(ste *ste_list) {
   /* Should I do malloc? or it's jusk OK to link the pointer??.. */
   struct ste *ste_it = ste_list;
   while (ste_it != NULL) {
-    insert(ste_it->name, ste_it->decl);
+    insert(ste_it->name, ste_it->decl); //malloc
     ste_it = ste_it->prev;
   }
 }

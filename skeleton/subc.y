@@ -71,7 +71,19 @@ ext_def
         | type_specifier pointers ID '[' const_expr ']' ';'
         | func_decl ';'
         | type_specifier ';'
-        | func_decl compound_stmt
+        | func_decl
+        {
+            pushscope();
+            pushstelist($1->formals);
+            printscopestack();
+        }
+        compound_stmt
+        {
+            struct ste *pop = popscope();
+            printscopestack();
+            // [TODO] delete pop using loop (for prevent from memory leak)
+            // delete hash table id also!?
+        }
 
 type_specifier
         : TYPE { printTypeDecl($1); }
@@ -162,8 +174,8 @@ func_decl
             /* error ; struct_specifier returns NULL, because this is not a struct*/
             if (procdecl->returntype == NULL)
                 printf("ERROR : this is not struct\n");
- 
-            $$ = procdecl;
+            
+            $$ = procdecl; 
         }
 
 pointers
