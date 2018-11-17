@@ -21,6 +21,8 @@ struct decl *chartype;
 struct decl *voidtype;
 struct decl *stringtype;
 struct id *returnid;
+int is_func_decl;
+int block_number;
 
 /* structure for IDs */
 typedef struct id {

@@ -76,9 +76,13 @@ ext_def
             pushscope();
             pushstelist($1->formalswithreturnid);
             printscopestack();
+            is_func_decl = 1;
+            block_number = 0;
         }
         compound_stmt
         {
+            is_func_decl = 0;
+            block_number = 0;
             struct ste *pop = popscope();
             printscopestack();
             // [TODO] delete pop using loop (for prevent from memory leak)
@@ -239,12 +243,16 @@ def
 
 compound_stmt
         : '{' {
-            pushscope();
-            //printscopestack();
+            if (!is_func_decl || block_number > 0)
+                pushscope();
+            block_number++;
+            printscopestack();
         }
         local_defs stmt_list '}' {
-            popscope();
-            //printscopestack();
+            block_number--;
+            if (!is_func_decl || block_number > 0)
+                popscope();
+            printscopestack();
         }
 
 local_defs  /* local definitions, of which scope is only inside of compound statement */
