@@ -99,8 +99,13 @@ struct_specifier
         | STRUCT ID
         {
             struct decl *decl_ptr = findcurrentdecl($2);
-            check_is_struct_type(decl_ptr);
-            $$ = decl_ptr;
+            if(decl_ptr != NULL && check_is_struct_type(decl_ptr)){
+                $$ = decl_ptr;
+                //printf("this is struct type\n");
+            }
+            else {
+                //printf("ERROR : this is not struct type\n");
+            }
         }
 
 func_decl

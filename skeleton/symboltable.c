@@ -206,6 +206,9 @@ int check_is_type(decl* decl_ptr) {
 
 int check_is_struct_type(decl* decl_ptr) {
 	// return 0 or 1. (true or false)
+	if (decl_ptr->declclass == TYPE_ && decl_ptr->typeclass == STRUCT_)
+		return 1;
+	else return 0;
 }
 
 int check_is_var(decl* decl_ptr) {
