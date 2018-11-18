@@ -302,6 +302,9 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 int check_compatible(decl* decl_ptr, decl* typedecl_ptr) {
 	// 37p, 39p
 	// return 0 or 1. (true or false)
+	if (decl_ptr->type == typedecl_ptr)
+		return 1;
+	else return 0;
 }
 
 int check_same_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
