@@ -286,6 +286,8 @@ stmt
         | BREAK ';'
         | CONTINUE ';'
 
+/* binary~expr~args semantic value type = type decl */
+
 expr_e
         : expr
         | /* empty */
@@ -295,6 +297,13 @@ const_expr
 
 expr
         : unary '=' expr
+        {
+            /* assignment */
+            if (check_is_var($1) && check_compatible($1, $3))
+                $$ = $1->type;
+            else
+                printf("ERROR : assignment value is not compatible, or LHS value type is not variable!\n");
+        }
         | or_expr
 
 or_expr
@@ -302,6 +311,10 @@ or_expr
 
 or_list
         : or_list LOGICAL_OR and_expr
+        {
+            // [TODO] CHECK compatible,
+            // and assign $$ = plustype($1,$3) ?
+        }
         | and_expr
 
 and_expr
@@ -309,6 +322,10 @@ and_expr
 
 and_list
         : and_list LOGICAL_AND binary
+        {
+            // [TODO] CHECK compatible,
+            // and assign $$ = plustype($1,$3) ?
+        }
         | binary
 
 binary
@@ -471,7 +488,17 @@ unary
 
 args    /* actual parameters(function arguments) transferred to function */
         : expr
+        {
+            $$ = $1;
+        }
         | args ',' expr
+        {
+            // [TODO] args 에서 올라오는건 TYPE 이라 next 연결 못함..
+            /*
+            $1->next = $3;
+            $$ = $1;
+            */
+        }
 
 %%
 

@@ -220,8 +220,10 @@ struct decl *plustype(struct decl typedecl1, struct decl typedecl2) {
        				 | binary '+' binary
         			 | binary '-' binary
         			 | unary %prec '='
-
 	*/
+	struct decl *type_after;
+	type_after = check_compatible_type(typedecl1, typedecl2);
+	return type_after;
 }
 
 
@@ -312,6 +314,17 @@ int check_same_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
 	if (typedecl_ptr1 == typedecl_ptr2)
 		return 1;
 	else return 0;
+}
+
+struct decl *check_compatible_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
+	if (typedecl_ptr1 == typedecl_ptr2)
+		return typedecl_ptr1;
+	else {
+		// [TODO] maybe , int and float is compatible and plustype is int..??
+		// int+float = int ?
+		printf("ERROR : this is not compatible type!\n");
+		return NULL;
+	}
 }
 
 
