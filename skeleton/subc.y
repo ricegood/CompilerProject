@@ -327,14 +327,29 @@ binary
 
 unary
         : '(' expr ')'
+        {
+            // problem : expr is type decl....
+            // unary is just decl...
+        }
         | '(' unary ')' 
+        {
+            $$ = $2;
+        }
         | INTEGER_CONST
         {
-            // [TODO] memory leak.. how can I send only integer? or without malloc..?
             $$ = makeintconstdecl(inttype, $1);
         }
         | CHAR_CONST
+        {   
+            // [TODO] how about value ?
+            $$ = makeconstdecl(chartype);
+        }
         | STRING
+        {
+            // [TODO] how about value ?
+            // [Q] is this const ???
+            $$ = makeconstdecl(stringtype);
+        }
         | ID {
             // find ID
             $$ = findcurrentdecl($1);
@@ -342,18 +357,81 @@ unary
                 printf("ERROR : There is no such ID.\n");
         }
         | '-' unary %prec '!'
+        {   
+            // [TODO] ERROR : if unary type is char, is it error?
+            $$ = $2;
+        }
         | '!' unary
+        {
+            // [TODO] ERROR : if unary type is char, is it error?
+            $$ = $2;
+        }
         | unary INCOP
+        {
+            // [TODO] ERROR
+            // [TODO] [Q] should I really do '++' function?
+            $$ = $1;
+        }
         | unary DECOP
+        {
+            // [TODO] ERROR
+            // [TODO] [Q] should I really do '++' function?
+            $$ = $1;
+        }
         | INCOP unary
+        {
+            // [TODO] ERROR
+            // [TODO] [Q] should I really do '++' function?
+            $$ = $2;
+        }
         | DECOP unary
+        {
+            // [TODO] ERROR
+            // [TODO] [Q] should I really do '++' function?
+            $$ = $2;
+        }
         | '&' unary %prec '!'
+        {
+            // [TODO] get address ???
+            // [TODO] ERROR ?
+            $$ = $2;
+        }
         | '*' unary %prec '!'
+        {
+            // [TODO] get pointer ???
+            // [TODO] ERROR ?
+            $$ = $2;
+        }
         | unary '[' expr ']'
+        {
+            $$ = arrayaccess($1, $3);
+        }
         | unary '.' ID
+        {
+            $$ = structaccess($1, $3);
+        }
         | unary STRUCTOP ID
+        {
+            // STRUCTOP = '->'
+            // [TODO] [Q] is this for only pointer?
+            // if (check_is_pointer($1))
+            $$ = structaccess($1, $3);
+            // else printf("ERROR : this is not a pointer type!\n");
+        }
         | unary '(' args ')'
+        {
+            if (check_is_proc($1))
+                $$ = check_function_call($1, $3);
+            else
+                printf ("ERROR : this is not a function!\n");
+        }
         | unary '(' ')'
+        {
+            if (check_is_proc($1))
+                $$ = check_function_call($1, NULL);
+            else
+                printf ("ERROR : this is not a function!\n");
+        }
 
 args    /* actual parameters(function arguments) transferred to function */
         : expr

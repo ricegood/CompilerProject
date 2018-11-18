@@ -166,12 +166,43 @@ struct decl *findcurrentdecl(struct id* id_ptr) {
 	else return result->decl;
 }
 
+struct decl *find_decl_in_struct_fields(struct id* field_id, struct ste* fieldlist) {
+	while (fieldlist != NULL) {
+		if (fieldlist->name == field_id)
+			return fieldlist->decl;
+		else
+			fieldlist = fieldlist->prev;
+	}
+
+	printf ("ERROR : there is no such field name in this struct!\n");
+	return NULL;
+}
+
 struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr) {
 	/* 38p definition!! */
+	struct decl *arraytype = array_ptr->type;
+	if (check_is_array(arraytype)) {
+		printf("this is array!\n");
+		if (check_same_type(inttype, index_ptr))
+			return (arraytype->elementvar);
+		else {
+			printf("ERROR : array index is not int type.\n");
+		}
+	}
+	else {
+		printf("ERROR : this is not array type.\n");
+	}
+	return NULL;
 }
 
 struct decl *structaccess(struct decl* struct_ptr, struct id* field_id) {
 	/* 38p definition!! */
+	struct decl *type_ptr = struct_ptr->type;
+	if (check_is_struct_type(type_ptr))
+		return (find_decl_in_struct_fields(field_id, type_ptr->fieldlist));
+	else
+		printf("ERROR : This is not struct type!\n");
+	return NULL;
 }
 
 void add_type_to_var(struct decl* typedecl, struct decl* var_list) {
@@ -206,7 +237,7 @@ int check_is_type(decl* decl_ptr) {
 
 int check_is_struct_type(decl* decl_ptr) {
 	// return 0 or 1. (true or false)
-	if (decl_ptr->declclass == TYPE_ && decl_ptr->typeclass == STRUCT_)
+	if (decl_ptr != NULL && decl_ptr->declclass == TYPE_ && decl_ptr->typeclass == STRUCT_)
 		return 1;
 	else return 0;
 }
@@ -214,22 +245,58 @@ int check_is_struct_type(decl* decl_ptr) {
 int check_is_var(decl* decl_ptr) {
 	// 37p
 	// return 0 or 1. (true or false)
+	if (decl_ptr != NULL && decl_ptr->declclass == VAR_)
+		return 1;
+	else return 0;
 }
 
 int check_is_array(decl* decl_ptr) {
 	// 38p
 	// return 0 or 1. (true or false)
+	if (decl_ptr != NULL && decl_ptr->declclass == TYPE_ && decl_ptr->typeclass == ARRAY_)
+		return 1;
+	else return 0;
 }
 
 int check_is_proc(decl* decl_ptr) {
 	// 39p
 	// return 0 or 1. (true or false)
+	if (decl_ptr != NULL && decl_ptr->declclass == FUNC_)
+		return 1;
+	else return 0;
 }
 
 struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
-	// 39p
 	// 40p definition!!!
-	// return 0 or 1. (true or false)
+	struct ste *formals = proc_ptr->formals;
+
+	/*
+		1. compare the num of formals and actuals.
+		2. and check for type match
+	*/
+
+	while (formals != NULL && actuals != NULL) {
+		if (check_is_var(formals->decl->type) && check_compatible(formals->decl, actuals)) {
+			formals = formals->prev;
+			actuals = actuals->next;
+		}
+		else {
+			printf("ERROR : formals, actuals type is not compatible.\n");
+			return NULL;
+		}
+	}
+
+	// num of actuals, formals check
+	if (formals == NULL && actuals == NULL) {
+		// same number of formals, actuals
+		// [TODO] I'm not sure const decl is right type.
+  	return makeconstdecl(proc_ptr->returntype);
+	}
+	else {
+  	// different number of formals, actuals
+  	printf ("ERROR : different number of formals, actuals\n");
+  	return NULL;
+	}
 }
 
 int check_compatible(decl* decl_ptr, decl* typedecl_ptr) {
