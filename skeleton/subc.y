@@ -313,9 +313,45 @@ and_list
 
 binary
         : binary RELOP binary
+        {
+            // [TODO] compatible error
+            /*
+            if (compatible)
+                $$ = inttype; // true or false => int type
+            else
+                printf("ERROR : relop operands are not compatible!\n");
+            */
+        }
         | binary EQUOP binary
+        {
+            // [TODO] compatible error
+            /*
+            if (compatible)
+                $$ = inttype; // true or false => int type
+            else
+                printf("ERROR : EQUOP operands are not compatible!\n");
+            */
+        }
         | binary '+' binary
+        {
+            // [TODO] compatible error
+            /*
+            if (compatible)
+                $$ = plustype($1, $3);
+            else
+                printf("ERROR : '+' operands are not compatible!\n");
+            */
+        }
         | binary '-' binary
+        {
+            // [TODO] compatible error
+            /*
+            if (compatible)
+                $$ = plustype($1, $3); // plustype == minustype
+            else
+                printf("ERROR : '-' operands are not compatible!\n");
+            */
+        }
         | unary %prec '='
         {
             if ($$)
