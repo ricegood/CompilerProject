@@ -324,6 +324,7 @@ ID	a	2
 makeintconstdecl()
 ID	b	2
 makeintconstdecl()
+ERROR : assignment value is not compatible, or LHS value type is not variable!
 ID	a	3
 makeintconstdecl()
 ID	b	3

@@ -95,7 +95,7 @@ struct decl *makestructdecl();
 struct decl *findcurrentdecl(struct id* id_ptr);
 struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr);
 struct decl *structaccess(struct decl* struct_ptr, struct id* field_id);
-struct decl *plustype(struct decl typedecl1, struct decl typedecl2);
+struct decl *plustype(struct decl* typedecl1, struct decl* typedecl2);
 
 void add_type_to_var(struct decl* typedecl, struct decl* var_list);
 int check_is_type(struct decl* decl_ptr);
@@ -106,6 +106,7 @@ int check_is_proc(struct decl* decl_ptr);
 struct decl *check_function_call(struct decl* proc_ptr, struct decl* actuals);
 int check_compatible(struct decl* decl_ptr, struct decl* typedecl_ptr);
 int check_same_type(struct decl* decl_ptr, struct decl* indexptr);
+struct decl *check_compatible_type(decl* typedecl_ptr1, decl* typedecl_ptr2);
 
 void init_type();
 void printTypeDecl(struct decl* decl_ptr);

@@ -155,76 +155,7 @@ struct decl *makeprocdecl() {
 
 
 
-////////////////////////////////////
-////// find & access function //////
-////////////////////////////////////
 
-struct decl *findcurrentdecl(struct id* id_ptr) {
-	struct ste* result = lookup(id_ptr);
-	if (result == NULL)
-		return NULL;
-	else return result->decl;
-}
-
-struct decl *find_decl_in_struct_fields(struct id* field_id, struct ste* fieldlist) {
-	while (fieldlist != NULL) {
-		if (fieldlist->name == field_id)
-			return fieldlist->decl;
-		else
-			fieldlist = fieldlist->prev;
-	}
-
-	printf ("ERROR : there is no such field name in this struct!\n");
-	return NULL;
-}
-
-struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr) {
-	/* 38p definition!! */
-	struct decl *arraytype = array_ptr->type;
-	if (check_is_array(arraytype)) {
-		printf("this is array!\n");
-		if (check_same_type(inttype, index_ptr))
-			return (arraytype->elementvar);
-		else {
-			printf("ERROR : array index is not int type.\n");
-		}
-	}
-	else {
-		printf("ERROR : this is not array type.\n");
-	}
-	return NULL;
-}
-
-struct decl *structaccess(struct decl* struct_ptr, struct id* field_id) {
-	/* 38p definition!! */
-	struct decl *type_ptr = struct_ptr->type;
-	if (check_is_struct_type(type_ptr))
-		return (find_decl_in_struct_fields(field_id, type_ptr->fieldlist));
-	else
-		printf("ERROR : This is not struct type!\n");
-	return NULL;
-}
-
-void add_type_to_var(struct decl* typedecl, struct decl* var_list) {
-
-}
-
-struct decl *plustype(struct decl typedecl1, struct decl typedecl2) {
-	// 37p
-	// 39p definition!!
-	// no pointer in param..?
-	/*
-		I think 'minustype' and etc... are needed!!!
-     binary     : binary RELOP binary
-     				   | binary EQUOP binary
-       				 | binary '+' binary
-        			 | binary '-' binary
-        			 | unary %prec '='
-	*/
-	struct decl *type_after;
-	type_after = check_compatible_type(typedecl1, typedecl2);
-	return type_after;
-}
 
 
 
@@ -327,6 +258,76 @@ struct decl *check_compatible_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
 	}
 }
 
+////////////////////////////////////
+////// find & access function //////
+////////////////////////////////////
+
+struct decl *findcurrentdecl(struct id* id_ptr) {
+	struct ste* result = lookup(id_ptr);
+	if (result == NULL)
+		return NULL;
+	else return result->decl;
+}
+
+struct decl *find_decl_in_struct_fields(struct id* field_id, struct ste* fieldlist) {
+	while (fieldlist != NULL) {
+		if (fieldlist->name == field_id)
+			return fieldlist->decl;
+		else
+			fieldlist = fieldlist->prev;
+	}
+
+	printf ("ERROR : there is no such field name in this struct!\n");
+	return NULL;
+}
+
+struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr) {
+	/* 38p definition!! */
+	struct decl *arraytype = array_ptr->type;
+	if (check_is_array(arraytype)) {
+		printf("this is array!\n");
+		if (check_same_type(inttype, index_ptr))
+			return (arraytype->elementvar);
+		else {
+			printf("ERROR : array index is not int type.\n");
+		}
+	}
+	else {
+		printf("ERROR : this is not array type.\n");
+	}
+	return NULL;
+}
+
+struct decl *structaccess(struct decl* struct_ptr, struct id* field_id) {
+	/* 38p definition!! */
+	struct decl *type_ptr = struct_ptr->type;
+	if (check_is_struct_type(type_ptr))
+		return (find_decl_in_struct_fields(field_id, type_ptr->fieldlist));
+	else
+		printf("ERROR : This is not struct type!\n");
+	return NULL;
+}
+
+void add_type_to_var(struct decl* typedecl, struct decl* var_list) {
+
+}
+
+struct decl *plustype(struct decl* typedecl1, struct decl* typedecl2) {
+	// 37p
+	// 39p definition!!
+	// no pointer in param..?
+	/*
+		I think 'minustype' and etc... are needed!!!
+     binary     : binary RELOP binary
+     				   | binary EQUOP binary
+       				 | binary '+' binary
+        			 | binary '-' binary
+        			 | unary %prec '='
+	*/
+	struct decl *type_after;
+	type_after = check_compatible_type(typedecl1, typedecl2);
+	return type_after;
+}
 
 
 ///////////////////////////////////////
