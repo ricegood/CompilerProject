@@ -175,6 +175,12 @@ int check_is_struct_type(decl* decl_ptr) {
 	else return 0;
 }
 
+int check_is_pointer_type(decl* decl_ptr) {
+	if (decl_ptr != NULL && decl_ptr->declclass == TYPE_ && decl_ptr->typeclass == POINTER_)
+		return 1;
+	else return 0;
+}
+
 int check_is_var(decl* decl_ptr) {
 	// 37p
 	// return 0 or 1. (true or false)
@@ -232,12 +238,11 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 	}
 }
 
-int check_compatible(decl* decl_ptr, decl* typedecl_ptr) {
-	// 37p, 39p
-	// return 0 or 1. (true or false)
-	if (decl_ptr->type == typedecl_ptr)
-		return 1;
-	else return 0;
+int check_same_type_for_unary(decl* decl_ptr, decl* typedecl_ptr) {
+	if (!decl_ptr)
+		printf("decl_ptr is NULL, so can't check the type.\n");
+	else
+		return check_same_type(decl_ptr->type, typedecl_ptr);
 }
 
 int check_same_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
@@ -253,7 +258,7 @@ struct decl *check_compatible_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
 	else {
 		// [TODO] maybe , int and float is compatible and plustype is int..??
 		// int+float = int ?
-		printf("ERROR : this is not compatible type!\n");
+		printf("ERROR : this is not compatible(same) type!\n");
 		return NULL;
 	}
 }
@@ -324,6 +329,11 @@ struct decl *plustype(struct decl* typedecl1, struct decl* typedecl2) {
         			 | binary '-' binary
         			 | unary %prec '='
 	*/
+
+	// int+int = int.
+	// int+char = int ????? is it ok????? (ok for c..)
+	// int+char*(string) = char*(string)
+	// int+struct = invalid
 	struct decl *type_after;
 	type_after = check_compatible_type(typedecl1, typedecl2);
 	return type_after;

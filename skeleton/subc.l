@@ -43,7 +43,8 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 						return TYPE; }
 "char"		{ yylval.declptr = chartype;
 						return TYPE; }
-"void"		{ return VOID; }
+"void"		{ yylval.declptr = voidtype;
+						return VOID; }
 "struct"	{ return STRUCT; }
 "return"	{ return RETURN; }
 "if"		{ return IF; }

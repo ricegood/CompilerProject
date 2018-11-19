@@ -67,10 +67,34 @@ ext_def_list
         ;
 
 ext_def
-        : type_specifier pointers ID ';' { printf("ext_def;\n"); }
+        : type_specifier pointers ID ';'
+        {
+            if ($2 == 0) // no pointer
+                declare($3, $$ = makevardecl($1));
+            else // pointer
+                declare($3, $$ = makevardecl(makeptrdecl($1)));
+
+            printscopestack();
+        }
         | type_specifier pointers ID '[' const_expr ']' ';'
+        {
+            if ($2 == 0) // no pointer
+                declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
+            else // pointer
+                declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
+            
+            printscopestack();
+        }
         | func_decl ';'
+        {
+            pushscope();
+            pushstelist($1->formalswithreturnid);
+            printscopestack();
+        }
         | type_specifier ';'
+        {
+            // [TODO] what here?
+        }
         | func_decl
         {
             pushscope();
@@ -90,9 +114,18 @@ ext_def
         }
 
 type_specifier
-        : TYPE { printTypeDecl($1); }
+        : TYPE
+        {
+            printTypeDecl($1);
+        }
         | VOID
-        | struct_specifier { REDUCE("type_specifier => struct_specifier\n"); }
+        {
+            printTypeDecl($1);
+        }
+        | struct_specifier
+        {
+            REDUCE("type_specifier => struct_specifier\n");
+        }
 
 struct_specifier
         : STRUCT ID '{'
@@ -151,7 +184,7 @@ func_decl
         }
         | type_specifier pointers ID '(' VOID ')'
         {
-            // what is VOID???????
+            // [TODO] what is VOID???????
         }
         | type_specifier pointers ID '(' 
         {
@@ -239,7 +272,15 @@ def
             printscopestack();
         }
         | type_specifier ';'
+        {
+            // [TODO] what here?
+        }
         | func_decl ';'
+        {
+            pushscope();
+            pushstelist($1->formalswithreturnid);
+            printscopestack();
+        }
 
 compound_stmt
         : '{' {
@@ -299,10 +340,11 @@ expr
         : unary '=' expr
         {
             /* assignment */
-            if (check_is_var($1) && check_compatible($1, $3))
+            // should have same type (ppt 23p)
+            if (check_is_var($1) && check_same_type_for_unary($1, $3))
                 $$ = $1->type;
             else
-                printf("ERROR : assignment value is not compatible, or LHS value type is not variable!\n");
+                printf("ERROR : assignment value is not same, or LHS value type is not variable!\n");
         }
         | or_expr
 
@@ -312,8 +354,11 @@ or_expr
 or_list
         : or_list LOGICAL_OR and_expr
         {
-            // [TODO] CHECK compatible,
-            // and assign $$ = plustype($1,$3) ?
+            /* only for int type */
+            if (check_same_type($1, inttype) && check_same_type($3, inttype))
+                $$ = inttype;
+            else
+                printf("'||' operator is only for int type!\n");
         }
         | and_expr
 
@@ -323,58 +368,77 @@ and_expr
 and_list
         : and_list LOGICAL_AND binary
         {
-            // [TODO] CHECK compatible,
-            // and assign $$ = plustype($1,$3) ?
+            /* only for int type */
+            if (check_same_type($1, inttype) && check_same_type($3, inttype))
+                $$ = inttype;
+            else
+                printf("'&&' operator is only for int type!\n");
         }
         | binary
 
 binary
         : binary RELOP binary
         {
-            // [TODO] compatible error
-            /*
-            if (compatible)
-                $$ = inttype; // true or false => int type
-            else
-                printf("ERROR : relop operands are not compatible!\n");
-            */
+            /* char RELOP char */
+            if (check_same_type($1, chartype) && check_same_type($3, chartype))
+                $$ = inttype;
+
+            /* int RELOP int */
+            else if (check_same_type($1, inttype) && check_same_type($3, inttype))
+                $$ = inttype;
+
+            /* ERROR */
+            else {
+                printf("ERROR : binary RELOP binary is only for int, char type!");
+                $$ = NULL;
+            }
         }
         | binary EQUOP binary
         {
-            // [TODO] compatible error
-            /*
-            if (compatible)
-                $$ = inttype; // true or false => int type
-            else
-                printf("ERROR : EQUOP operands are not compatible!\n");
-            */
+            /* char EQUOP char */
+            if (check_same_type($1, chartype) && check_same_type($3, chartype))
+                $$ = inttype;
+
+            /* int EQUOP int */
+            else if (check_same_type($1, inttype) && check_same_type($3, inttype))
+                $$ = inttype;
+
+            /* pointer EQUOP pointer */
+            else if (check_is_pointer_type($1) && check_is_pointer_type($3))
+                $$ = inttype;
+
+            /* ERROR */
+            else {
+                printf("ERROR : binary EQUOP binary is only for int, char, pointer type!");
+                $$ = NULL;
+            }
         }
         | binary '+' binary
         {
-            // [TODO] compatible error
-            /*
-            if (compatible)
+            // [TODO] is it only okay for int+int ?
+            // then, plustype is always inttype ?
+
+            if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = plustype($1, $3);
             else
-                printf("ERROR : '+' operands are not compatible!\n");
-            */
+                printf("ERROR : binary '+' operands are only for integer!\n");
         }
         | binary '-' binary
         {
-            // [TODO] compatible error
-            /*
-            if (compatible)
-                $$ = plustype($1, $3); // plustype == minustype
+            // [TODO] is it only okay for int-int ?
+            // then, plustype is always inttype ?
+
+            if (check_same_type($1, inttype) && check_same_type($3, inttype))
+                $$ = plustype($1, $3);
             else
-                printf("ERROR : '-' operands are not compatible!\n");
-            */
+                printf("ERROR : binary '-' operands are only for integer!\n");
         }
         | unary %prec '='
         {
-            if ($$)
+            if ($1 && $1->type)
                 $$ = $1->type;
             else {
-                printf("ERROR : unary is NULL!\n");
+                printf("ERROR : unary is NULL or unary semantic value->type is null!\n");
             }
         }
 
@@ -411,37 +475,51 @@ unary
         }
         | '-' unary %prec '!'
         {   
-            // [TODO] ERROR : if unary type is char, is it error?
-            $$ = $2;
+            /* only integer */
+            if (check_same_type_for_unary($2, inttype))
+                $$ = $2;
+            else
+                printf("ERROR : '-' operator is only for integer.\n");
         }
         | '!' unary
         {
-            // [TODO] ERROR : if unary type is char, is it error?
-            $$ = $2;
+            /* only for int type */
+            if (check_same_type_for_unary($2, inttype))
+                $$ = inttype;
+            else
+                printf("'!' operator is only for int type!\n");
         }
         | unary INCOP
         {
-            // [TODO] ERROR
-            // [TODO] [Q] should I really do '++' function?
-            $$ = $1;
+            /* only char, integer */
+            if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
+                $$ = $1;
+            else
+                printf("ERROR : unary INCOP operator is only for char or integer.\n");
         }
         | unary DECOP
         {
-            // [TODO] ERROR
-            // [TODO] [Q] should I really do '++' function?
-            $$ = $1;
+            /* only char, integer */
+            if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
+                $$ = $1;
+            else
+                printf("ERROR : unary DECOP operator is only for char or integer.\n");
         }
         | INCOP unary
         {
-            // [TODO] ERROR
-            // [TODO] [Q] should I really do '++' function?
-            $$ = $2;
+            /* only char, integer */
+            if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
+                $$ = $2;
+            else
+                printf("ERROR : unary INCOP operator is only for char or integer.\n");
         }
         | DECOP unary
         {
-            // [TODO] ERROR
-            // [TODO] [Q] should I really do '++' function?
-            $$ = $2;
+            /* only char, integer */
+            if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
+                $$ = $2;
+            else
+                printf("ERROR : unary DECOP operator is only for char or integer.\n");
         }
         | '&' unary %prec '!'
         {

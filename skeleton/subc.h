@@ -104,7 +104,8 @@ int check_is_var(struct decl* decl_ptr);
 int check_is_array(struct decl* decl_ptr);
 int check_is_proc(struct decl* decl_ptr);
 struct decl *check_function_call(struct decl* proc_ptr, struct decl* actuals);
-int check_compatible(struct decl* decl_ptr, struct decl* typedecl_ptr);
+//int check_compatible(struct decl* decl_ptr, struct decl* typedecl_ptr);
+int check_same_type_for_unary(decl* decl_ptr, decl* typedecl_ptr);
 int check_same_type(struct decl* decl_ptr, struct decl* indexptr);
 struct decl *check_compatible_type(decl* typedecl_ptr1, decl* typedecl_ptr2);
 
