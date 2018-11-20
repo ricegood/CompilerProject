@@ -115,17 +115,8 @@ ext_def
 
 type_specifier
         : TYPE
-        {
-            printTypeDecl($1);
-        }
         | VOID
-        {
-            printTypeDecl($1);
-        }
         | struct_specifier
-        {
-            REDUCE("type_specifier => struct_specifier\n");
-        }
 
 struct_specifier
         : STRUCT ID '{'
@@ -340,10 +331,7 @@ const_expr
 
 expr
         : unary '=' expr
-        {   
-
-            printTypeDecl($1->type);
-            printTypeDecl($3);
+        {
             /* assignment */
             // should have same type (ppt 23p) & not const! (=>check_is_var)
             if ($1 && check_is_var($1) && check_same_type_for_unary($1, $3))
@@ -352,10 +340,6 @@ expr
                 printf("ERROR : assignment value is not same, or LHS value type is not variable!\n");
         }
         | or_expr
-        {
-        REDUCE("expr => or_expr\n");
-        printTypeDecl($1);
-        }
         | NULL_TOKEN
         {
             // [TODO]
@@ -364,10 +348,6 @@ expr
 
 or_expr
         : or_list
-        {
-        REDUCE("or_expr => or_list\n");
-        printTypeDecl($1);
-        }
 
 or_list
         : or_list LOGICAL_OR and_expr
@@ -379,18 +359,9 @@ or_list
                 printf("ERROR : '||' operator is only for int type!\n");
         }
         | and_expr
-        {
-        
-        REDUCE("or_list => and_expr\n");
-        printTypeDecl($1);
-        }
 
 and_expr
         : and_list
-        {
-        REDUCE("and_expr => and_list\n");
-        printTypeDecl($1);
-        }
 
 and_list
         : and_list LOGICAL_AND binary
@@ -401,10 +372,7 @@ and_list
             else
                 printf("ERROR : '&&' operator is only for int type!\n");
         }
-        | binary {
-            REDUCE("and_list => binary\n");
-            printTypeDecl($1);
-        }
+        | binary
 
 binary
         : binary RELOP binary
@@ -442,9 +410,6 @@ binary
                 printf("ERROR : binary EQUOP binary is only for int, char, pointer type!\n");
                 $$ = NULL;
             }
-
-            REDUCE("binary EQUOP binary\n");
-            printTypeDecl($$);
         }
         | binary '+' binary
         {
@@ -473,8 +438,6 @@ binary
             else {
                 printf("ERROR : unary is NULL or unary semantic value->type is null!\n");
             }
-            REDUCE ("binary => unary");
-            printTypeDecl($1);
         }
 
 unary
@@ -566,7 +529,6 @@ unary
                 ex) int* a -> &a -> int**
                 ex2) int a -> &a -> int*
             */
-            printTypeDecl($2->type);
             if (check_is_var($2)) {
                 $$ = makeconstdecl(makeptrdecl($2->type));
             }
