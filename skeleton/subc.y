@@ -38,17 +38,17 @@ void   REDUCE(char* s);
 
 /* Tokens and Types */
 /* Tokens */
-%token        VOID STRUCT RETURN IF ELSE WHILE FOR BREAK CONTINUE
+%token        STRUCT RETURN IF ELSE WHILE FOR BREAK CONTINUE
 %token        LOGICAL_OR LOGICAL_AND RELOP EQUOP INCOP DECOP STRUCTOP
 
 /* string, int, id */
 %token<stringVal>   CHAR_CONST STRING
 %token<intVal>      INTEGER_CONST
 %token<idptr>       ID
-%token<declptr>     TYPE
+%token<declptr>     TYPE VOID
 
 /* decl */
-%type<declptr>      struct_specifier func_decl param_list param_decl def_list def compound_stmt local_defs stmt_list stmt unary
+%type<declptr>      ext_def struct_specifier func_decl param_list param_decl def_list def compound_stmt local_defs stmt_list stmt unary
 
 /* type decl */
 %type<declptr>      type_specifier expr_e const_expr expr or_expr or_list and_expr and_list binary args
@@ -358,7 +358,7 @@ or_list
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = inttype;
             else
-                printf("'||' operator is only for int type!\n");
+                printf("ERROR : '||' operator is only for int type!\n");
         }
         | and_expr
 
@@ -372,7 +372,7 @@ and_list
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = inttype;
             else
-                printf("'&&' operator is only for int type!\n");
+                printf("ERROR : '&&' operator is only for int type!\n");
         }
         | binary
 
@@ -389,7 +389,7 @@ binary
 
             /* ERROR */
             else {
-                printf("ERROR : binary RELOP binary is only for int, char type!");
+                printf("ERROR : binary RELOP binary is only for int, char type!\n");
                 $$ = NULL;
             }
         }
@@ -409,7 +409,7 @@ binary
 
             /* ERROR */
             else {
-                printf("ERROR : binary EQUOP binary is only for int, char, pointer type!");
+                printf("ERROR : binary EQUOP binary is only for int, char, pointer type!\n");
                 $$ = NULL;
             }
         }
@@ -487,7 +487,7 @@ unary
             if (check_same_type_for_unary($2, inttype))
                 $$ = inttype;
             else
-                printf("'!' operator is only for int type!\n");
+                printf("ERROR : '!' operator is only for int type!\n");
         }
         | unary INCOP
         {

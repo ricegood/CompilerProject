@@ -1,9 +1,7 @@
 int main(){
 
-	int a;
-	int *b;
-	{
-		int c;
+	int foo(){}
+	int foo2(){
+		int a;
 	}
-	return 0;
 }

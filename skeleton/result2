@@ -1,0 +1,63 @@
+==init_type() START==
+maketypedecl()
+maketypedecl()
+maketypedecl()
+maketypedecl()
+push scope
+declare()
+insert ste to scope stack!
+declare()
+insert ste to scope stack!
+declare()
+insert ste to scope stack!
+declare()
+insert ste to scope stack!
+==init_type() END==
+--Print Type Decl--
+* declclass = 3
+* typeclass = 0
+-------------------
+ID	main	1
+makeprocdecl()
+declare()
+insert ste to scope stack!
+push scope
+declare()
+insert ste to scope stack!
+pop scope
+pop ste
+push scope
+insert ste to scope stack!
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : *return, decl class : 3
+=====Final Stack from the top=====
+node name : main, decl class : 2
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : *return, decl class : 3
+=====Final Stack from the top=====
+node name : main, decl class : 2
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+===========================================
+--Print Type Decl--
+* declclass = 3
+* typeclass = 0
+-------------------
+ID	foo	1
+makeprocdecl()
+declare()
+insert ste to scope stack!
+push scope
+declare()
+insert ste to scope stack!
+pop scope
+pop ste

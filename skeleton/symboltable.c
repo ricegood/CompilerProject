@@ -214,8 +214,8 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 		2. and check for type match
 	*/
 
-	while (formals != NULL && actuals != NULL) {
-		if (check_is_var(formals->decl->type) && check_compatible(formals->decl, actuals)) {
+	while (formals != NULL && formals->decl != NULL && actuals != NULL) {
+		if (check_is_var(formals->decl->type) && check_compatible_type(formals->decl->type, actuals)) {
 			formals = formals->prev;
 			actuals = actuals->next;
 		}

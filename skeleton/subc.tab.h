@@ -53,19 +53,19 @@ extern int yydebug;
     DECOP = 263,
     STRUCTOP = 264,
     ELSE = 265,
-    VOID = 266,
-    STRUCT = 267,
-    RETURN = 268,
-    IF = 269,
-    WHILE = 270,
-    FOR = 271,
-    BREAK = 272,
-    CONTINUE = 273,
-    CHAR_CONST = 274,
-    STRING = 275,
-    INTEGER_CONST = 276,
-    ID = 277,
-    TYPE = 278
+    STRUCT = 266,
+    RETURN = 267,
+    IF = 268,
+    WHILE = 269,
+    FOR = 270,
+    BREAK = 271,
+    CONTINUE = 272,
+    CHAR_CONST = 273,
+    STRING = 274,
+    INTEGER_CONST = 275,
+    ID = 276,
+    TYPE = 277,
+    VOID = 278
   };
 #endif
 

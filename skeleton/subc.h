@@ -100,6 +100,7 @@ struct decl *plustype(struct decl* typedecl1, struct decl* typedecl2);
 void add_type_to_var(struct decl* typedecl, struct decl* var_list);
 int check_is_type(struct decl* decl_ptr);
 int check_is_struct_type(struct decl* decl_ptr);
+int check_is_pointer_type(decl* decl_ptr);
 int check_is_var(struct decl* decl_ptr);
 int check_is_array(struct decl* decl_ptr);
 int check_is_proc(struct decl* decl_ptr);

@@ -16,7 +16,7 @@ int main(){
 	a = 10;
 	b = 5;
 
-	if ( a == 10 || b == 5 ){
+	if ( a == 10 || b == 'a' ){
 		return 1;
 	} else {
 		return ;

@@ -150,19 +150,19 @@ INCOP (262) 73 75
 DECOP (263) 74 76
 STRUCTOP (264) 81
 ELSE (265) 44
-VOID (266) 11 18
-STRUCT (267) 15 16
-RETURN (268) 40 41
-IF (269) 43 44
-WHILE (270) 45
-FOR (271) 46
-BREAK (272) 47
-CONTINUE (273) 48
-CHAR_CONST (274) 68
-STRING (275) 69
-INTEGER_CONST (276) 67
-ID (277) 4 5 15 16 17 18 20 25 26 29 30 70 80 81
-TYPE (278) 10
+STRUCT (266) 15 16
+RETURN (267) 40 41
+IF (268) 43 44
+WHILE (269) 45
+FOR (270) 46
+BREAK (271) 47
+CONTINUE (272) 48
+CHAR_CONST (273) 68
+STRING (274) 69
+INTEGER_CONST (275) 67
+ID (276) 4 5 15 16 17 18 20 25 26 29 30 70 80 81
+TYPE (277) 10
+VOID (278) 11 18
 
 
 Nonterminals, with rules where they appear
@@ -255,9 +255,9 @@ State 2
     1 program: ext_def_list .
     2 ext_def_list: ext_def_list . ext_def
 
-    VOID    shift, and go to state 4
-    STRUCT  shift, and go to state 5
-    TYPE    shift, and go to state 6
+    STRUCT  shift, and go to state 4
+    TYPE    shift, and go to state 5
+    VOID    shift, and go to state 6
 
     $default  reduce using rule 1 (program)
 
@@ -276,24 +276,24 @@ State 3
 
 State 4
 
-   11 type_specifier: VOID .
-
-    $default  reduce using rule 11 (type_specifier)
-
-
-State 5
-
    15 struct_specifier: STRUCT . ID '{' $@2 def_list @3 '}'
    16                 | STRUCT . ID
 
     ID  shift, and go to state 11
 
 
-State 6
+State 5
 
    10 type_specifier: TYPE .
 
     $default  reduce using rule 10 (type_specifier)
+
+
+State 6
+
+   11 type_specifier: VOID .
+
+    $default  reduce using rule 11 (type_specifier)
 
 
 State 7
@@ -500,9 +500,9 @@ State 26
    15 struct_specifier: STRUCT ID '{' $@2 def_list . @3 '}'
    27 def_list: def_list . def
 
-    VOID    shift, and go to state 4
-    STRUCT  shift, and go to state 5
-    TYPE    shift, and go to state 6
+    STRUCT  shift, and go to state 4
+    TYPE    shift, and go to state 5
+    VOID    shift, and go to state 6
 
     $default  reduce using rule 14 (@3)
 
@@ -786,9 +786,9 @@ State 48
 
    20 func_decl: type_specifier pointers ID '(' @4 . param_list ')'
 
-    VOID    shift, and go to state 4
-    STRUCT  shift, and go to state 5
-    TYPE    shift, and go to state 6
+    STRUCT  shift, and go to state 4
+    TYPE    shift, and go to state 5
+    VOID    shift, and go to state 6
 
     type_specifier    go to state 78
     struct_specifier  go to state 9
@@ -801,9 +801,9 @@ State 49
    27 def_list: def_list . def
    35 local_defs: def_list .
 
-    VOID    shift, and go to state 4
-    STRUCT  shift, and go to state 5
-    TYPE    shift, and go to state 6
+    STRUCT  shift, and go to state 4
+    TYPE    shift, and go to state 5
+    VOID    shift, and go to state 6
 
     $default  reduce using rule 35 (local_defs)
 
@@ -1536,9 +1536,9 @@ State 104
 
    24 param_list: param_list ',' . param_decl
 
-    VOID    shift, and go to state 4
-    STRUCT  shift, and go to state 5
-    TYPE    shift, and go to state 6
+    STRUCT  shift, and go to state 4
+    TYPE    shift, and go to state 5
+    VOID    shift, and go to state 6
 
     type_specifier    go to state 78
     struct_specifier  go to state 9
