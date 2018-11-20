@@ -482,6 +482,7 @@ unary
         {
             // [TODO] problem : expr is type decl....
             // unary is just decl...
+            $$ = makeconstdecl($2);
         }
         | '(' unary ')' 
         {

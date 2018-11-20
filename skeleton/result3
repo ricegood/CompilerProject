@@ -166,39 +166,40 @@ expr => or_expr
 * declclass = 3
 * typeclass = 0
 -------------------
+makeconstdecl()
 binary => unary
 --Print Type Decl--
-* declclass = 2
+* declclass = 1
 * typeclass = 0
 -------------------
 and_list => binary
 
 --Print Type Decl--
-* declclass = 99
+* declclass = 3
 * typeclass = 0
 -------------------
 and_expr => and_list
 
 --Print Type Decl--
-* declclass = 99
+* declclass = 3
 * typeclass = 0
 -------------------
 or_list => and_expr
 
 --Print Type Decl--
-* declclass = 99
+* declclass = 3
 * typeclass = 0
 -------------------
 or_expr => or_list
 
 --Print Type Decl--
-* declclass = 99
+* declclass = 3
 * typeclass = 0
 -------------------
 expr => or_expr
 
 --Print Type Decl--
-* declclass = 99
+* declclass = 3
 * typeclass = 0
 -------------------
 --Print Type Decl--
@@ -206,10 +207,9 @@ expr => or_expr
 * typeclass = 0
 -------------------
 --Print Type Decl--
-* declclass = 99
+* declclass = 3
 * typeclass = 0
 -------------------
-ERROR : assignment value is not same, or LHS value type is not variable!
 ID	c	3
 ID : c
 binary => unary
