@@ -345,7 +345,7 @@ expr
             printTypeDecl($1->type);
             printTypeDecl($3);
             /* assignment */
-            // should have same type (ppt 23p)
+            // should have same type (ppt 23p) & not const! (=>check_is_var)
             if ($1 && check_is_var($1) && check_same_type_for_unary($1, $3))
                 $$ = $1->type;
             else
@@ -560,15 +560,30 @@ unary
         }
         | '&' unary %prec '!'
         {
-            // [TODO] get address ???
-            // [TODO] ERROR ?
-            $$ = $2;
+            // [TODO]
+            /*
+                if use '&', unary becomes pointer type value.
+                ex) int* a -> &a -> int**
+                ex2) int a -> &a -> int*
+            */
+            printTypeDecl($2->type);
+            if (check_is_var($2)) {
+                $$ = makeconstdecl(makeptrdecl($2->type));
+            }
+            else {
+                printf("ERROR : Can't use operator '&' for non-variable type value.\n");
+            }
+            
         }
         | '*' unary %prec '!'
         {
-            // [TODO] get pointer ???
-            // [TODO] ERROR ?
-            $$ = $2;
+            // [TODO]
+            if (check_is_pointer_type($2->type)) {
+                $$ = makevardecl($2->ptrto);
+            }
+            else {
+                printf("ERROR : Can't use point operator '*' for non-pointer value.\n");
+            }
         }
         | unary '[' expr ']'
         {
