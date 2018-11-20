@@ -1706,7 +1706,7 @@ yyreduce:
     {
             /* assignment */
             // should have same type (ppt 23p)
-            if (check_is_var((yyvsp[-2].declptr)) && check_same_type_for_unary((yyvsp[-2].declptr), (yyvsp[0].declptr)))
+            if (check_is_var((yyvsp[-2].declptr)) && (yyvsp[-2].declptr)->type && (yyvsp[0].declptr) && check_same_type((yyvsp[-2].declptr)->type->ptrto, (yyvsp[0].declptr)->ptrto))
                 (yyval.declptr) = (yyvsp[-2].declptr)->type;
             else
                 printf("ERROR : assignment value is not same, or LHS value type is not variable!\n");

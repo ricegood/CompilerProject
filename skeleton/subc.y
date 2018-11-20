@@ -45,7 +45,7 @@ void   REDUCE(char* s);
 %token<stringVal>   CHAR_CONST STRING
 %token<intVal>      INTEGER_CONST
 %token<idptr>       ID
-%token<declptr>     TYPE VOID NULL
+%token<declptr>     TYPE VOID
 
 /* decl */
 %type<declptr>      ext_def struct_specifier func_decl param_list param_decl def_list def compound_stmt local_defs stmt_list stmt unary
@@ -349,11 +349,6 @@ expr
                 printf("ERROR : assignment value is not same, or LHS value type is not variable!\n");
         }
         | or_expr
-        | NULL
-        {
-            // [TODO] type check error? only for LHS is POINTER?
-            //$$ = NULL;
-        }
 
 or_expr
         : or_list
