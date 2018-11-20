@@ -212,12 +212,15 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 	/*
 		1. compare the num of formals and actuals.
 		2. and check for type match
+		* actuals = const decl (const is not important. it is just temporal decl to save type field and next ptr.)
 	*/
 
-	while (formals != NULL && formals->decl != NULL && actuals != NULL) {
-		if (check_is_var(formals->decl->type) && check_compatible_type(formals->decl->type, actuals)) {
+	while (formals != NULL && formals->decl != NULL && actuals != NULL && actuals->type != NULL) {
+		if (check_is_var(formals->decl) && check_compatible_type(formals->decl->type, actuals->type)) {
 			formals = formals->prev;
+			// [TODO] save this actual pointer.. to delete??
 			actuals = actuals->next;
+			// [TODO] memory leak? delete prev actuals?
 		}
 		else {
 			printf("ERROR : formals, actuals type is not compatible.\n");
@@ -229,7 +232,7 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 	if (formals == NULL && actuals == NULL) {
 		// same number of formals, actuals
 		// [TODO] I'm not sure const decl is right type.
-  	return makeconstdecl(proc_ptr->returntype);
+  		return makeconstdecl(proc_ptr->returntype);
 	}
 	else {
   	// different number of formals, actuals

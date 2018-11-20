@@ -473,7 +473,7 @@ static const yytype_uint16 yyrline[] =
      335,   336,   339,   342,   351,   354,   357,   365,   368,   371,
      379,   382,   398,   418,   428,   438,   448,   453,   457,   461,
      466,   472,   478,   486,   494,   502,   510,   518,   526,   532,
-     538,   542,   546,   554,   561,   570,   574
+     538,   542,   546,   554,   561,   570,   576
 };
 #endif
 
@@ -2022,19 +2022,19 @@ yyreduce:
   case 85:
 #line 571 "subc.y" /* yacc.c:1646  */
     {
-            (yyval.declptr) = (yyvsp[0].declptr);
+            // expr semantic value type is TYPEDECL.
+            //$$ = $1;
+            (yyval.declptr) = makeconstdecl((yyvsp[0].declptr));
         }
-#line 2028 "subc.tab.c" /* yacc.c:1646  */
+#line 2030 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 575 "subc.y" /* yacc.c:1646  */
+#line 577 "subc.y" /* yacc.c:1646  */
     {
-            // [TODO] args 에서 올라오는건 TYPE 이라 next 연결 못함..
-            /*
-            $1->next = $3;
-            $$ = $1;
-            */
+            // [TODO] args,expr 에서 올라오는건 TYPE 이라 next 연결 못함..
+            (yyvsp[-2].declptr)->next = makeconstdecl((yyvsp[0].declptr));
+            (yyval.declptr) = (yyvsp[-2].declptr);
         }
 #line 2040 "subc.tab.c" /* yacc.c:1646  */
     break;

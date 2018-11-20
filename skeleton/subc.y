@@ -569,15 +569,15 @@ unary
 args    /* actual parameters(function arguments) transferred to function */
         : expr
         {
-            $$ = $1;
+            // expr semantic value type is TYPEDECL.
+            //$$ = $1;
+            $$ = makeconstdecl($1);
         }
         | args ',' expr
         {
-            // [TODO] args 에서 올라오는건 TYPE 이라 next 연결 못함..
-            /*
-            $1->next = $3;
+            // [TODO] args,expr 에서 올라오는건 TYPE 이라 next 연결 못함..
+            $1->next = makeconstdecl($3);
             $$ = $1;
-            */
         }
 
 %%

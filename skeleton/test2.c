@@ -1,7 +1,6 @@
+int foo(int a, char b);
 int main(){
-
-	int foo(){}
-	int foo2(){
-		int a;
-	}
+	int a;
+	char b;
+	foo(a, b);
 }
