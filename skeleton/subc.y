@@ -87,8 +87,8 @@ ext_def
         }
         | func_decl ';'
         {
-            pushscope();
-            pushstelist($1->formalswithreturnid);
+            //pushscope();
+            //pushstelist($1->formalswithreturnid);
             printscopestack();
         }
         | type_specifier ';'
@@ -277,19 +277,21 @@ def
         }
         | func_decl ';'
         {
-            pushscope();
-            pushstelist($1->formalswithreturnid);
+            //pushscope();
+            //pushstelist($1->formalswithreturnid);
             printscopestack();
         }
 
 compound_stmt
-        : '{' {
+        : '{'
+        {
             if (!is_func_decl || block_number > 0)
                 pushscope();
             block_number++;
             printscopestack();
         }
-        local_defs stmt_list '}' {
+        local_defs stmt_list '}'
+        {
             block_number--;
             if (!is_func_decl || block_number > 0)
                 popscope();
