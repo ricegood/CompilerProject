@@ -45,6 +45,8 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 						return TYPE; }
 "void"		{ yylval.declptr = voidtype;
 						return VOID; }
+"NULL"		{ yylval.declptr = nulltype;
+						return NULL_TOKEN; }
 "struct"	{ return STRUCT; }
 "return"	{ return RETURN; }
 "if"		{ return IF; }

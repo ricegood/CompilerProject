@@ -256,9 +256,20 @@ int check_same_type_for_unary(decl* decl_ptr, decl* typedecl_ptr) {
 
 int check_same_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
 	// 36p, 38p
-	if (typedecl_ptr1 == typedecl_ptr2)
+	if (typedecl_ptr1 == typedecl_ptr2){
 		return 1;
-	else return 0;
+	}
+
+	// if Lvalue is pointer type, have to check ptrto of Rvalue, OR NULL
+	else if (check_is_pointer_type(typedecl_ptr1)){
+		if (check_is_pointer_type(typedecl_ptr2) && typedecl_ptr1->ptrto == typedecl_ptr2->ptrto)
+			return 1;
+		else if (typedecl_ptr2 == nulltype)
+			return 1;
+	}
+
+	// not the same type
+	return 0;
 }
 
 struct decl *check_compatible_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
@@ -370,14 +381,16 @@ void init_type()
 	chartype = maketypedecl(CHAR_);
 	voidtype = maketypedecl(VOID_);
 	stringtype = maketypedecl(STRING_);
-	// nulltype
+	nulltype = maketypedecl(NULL_);
 
 	pushscope();
 	declare(enter(KEYWORD, "int", 3), inttype);
 	declare(enter(KEYWORD, "char", 4), chartype);
 	declare(enter(KEYWORD, "void", 4), voidtype);
 	declare(enter(KEYWORD, "string", 6), stringtype);
-	// declare nulltype?
+	// declare nulltype? no.
+	// can't find on ID..,,?
+	// actually this declaration does't need for every int,char..w
 
 	returnid = enter(KEYWORD, "*return", 7);
 

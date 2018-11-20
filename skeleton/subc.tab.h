@@ -65,7 +65,8 @@ extern int yydebug;
     INTEGER_CONST = 275,
     ID = 276,
     TYPE = 277,
-    VOID = 278
+    VOID = 278,
+    NULL_TOKEN = 279
   };
 #endif
 
@@ -82,7 +83,7 @@ union YYSTYPE
     struct decl *declptr;
     struct ste *steptr;
 
-#line 86 "subc.tab.h" /* yacc.c:1909  */
+#line 87 "subc.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

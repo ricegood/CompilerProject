@@ -8,7 +8,7 @@
 #define __SUBC_H__
 
 enum lextype_ {KEYWORD, UNDEFINED, ID_}; // 0, 1, 2
-enum typeclass_ {INT_, CHAR_, VOID_, STRUCT_, STRING_, ARRAY_, POINTER_}; // 0, 1, 2, 3, 4
+enum typeclass_ {INT_, CHAR_, VOID_, STRUCT_, STRING_, ARRAY_, POINTER_, NULL_}; // 0, 1, 2, 3, 4
 enum declclass_ {VAR_, CONST_, FUNC_, TYPE_};
 
 #include <stdio.h>
@@ -20,6 +20,7 @@ struct decl *inttype;
 struct decl *chartype;
 struct decl *voidtype;
 struct decl *stringtype;
+struct decl *nulltype;
 struct id *returnid;
 int is_func_decl;
 int block_number;

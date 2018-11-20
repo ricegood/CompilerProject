@@ -45,7 +45,7 @@ void   REDUCE(char* s);
 %token<stringVal>   CHAR_CONST STRING
 %token<intVal>      INTEGER_CONST
 %token<idptr>       ID
-%token<declptr>     TYPE VOID
+%token<declptr>     TYPE VOID NULL_TOKEN
 
 /* decl */
 %type<declptr>      ext_def struct_specifier func_decl param_list param_decl def_list def compound_stmt local_defs stmt_list stmt unary
@@ -340,18 +340,34 @@ const_expr
 
 expr
         : unary '=' expr
-        {
+        {   
+
+            printTypeDecl($1->type);
+            printTypeDecl($3);
             /* assignment */
             // should have same type (ppt 23p)
-            if (check_is_var($1) && $1->type && $3 && check_same_type($1->type->ptrto, $3->ptrto))
+            if ($1 && check_is_var($1) && check_same_type_for_unary($1, $3))
                 $$ = $1->type;
             else
                 printf("ERROR : assignment value is not same, or LHS value type is not variable!\n");
         }
         | or_expr
+        {
+        REDUCE("expr => or_expr\n");
+        printTypeDecl($1);
+        }
+        | NULL_TOKEN
+        {
+            // [TODO]
+            $$ = nulltype;
+        }
 
 or_expr
         : or_list
+        {
+        REDUCE("or_expr => or_list\n");
+        printTypeDecl($1);
+        }
 
 or_list
         : or_list LOGICAL_OR and_expr
@@ -363,9 +379,18 @@ or_list
                 printf("ERROR : '||' operator is only for int type!\n");
         }
         | and_expr
+        {
+        
+        REDUCE("or_list => and_expr\n");
+        printTypeDecl($1);
+        }
 
 and_expr
         : and_list
+        {
+        REDUCE("and_expr => and_list\n");
+        printTypeDecl($1);
+        }
 
 and_list
         : and_list LOGICAL_AND binary
@@ -376,7 +401,10 @@ and_list
             else
                 printf("ERROR : '&&' operator is only for int type!\n");
         }
-        | binary
+        | binary {
+            REDUCE("and_list => binary\n");
+            printTypeDecl($1);
+        }
 
 binary
         : binary RELOP binary
@@ -414,6 +442,9 @@ binary
                 printf("ERROR : binary EQUOP binary is only for int, char, pointer type!\n");
                 $$ = NULL;
             }
+
+            REDUCE("binary EQUOP binary\n");
+            printTypeDecl($$);
         }
         | binary '+' binary
         {
@@ -436,18 +467,20 @@ binary
                 printf("ERROR : binary '-' operands are only for integer!\n");
         }
         | unary %prec '='
-        {
+        {   
             if ($1 && $1->type)
                 $$ = $1->type;
             else {
                 printf("ERROR : unary is NULL or unary semantic value->type is null!\n");
             }
+            REDUCE ("binary => unary");
+            printTypeDecl($1);
         }
 
 unary
         : '(' expr ')'
         {
-            // problem : expr is type decl....
+            // [TODO] problem : expr is type decl....
             // unary is just decl...
         }
         | '(' unary ')' 
@@ -474,6 +507,7 @@ unary
             $$ = findcurrentdecl($1);
             if (!$$)
                 printf("ERROR : There is no such ID.\n");
+            printf("ID : %s\n", $1->name);
         }
         | '-' unary %prec '!'
         {   
