@@ -335,7 +335,7 @@ struct decl *structaccess(struct decl* struct_ptr, struct id* field_id) {
 	if (check_is_struct_type(type_ptr))
 		return (find_decl_in_struct_fields(field_id, type_ptr->fieldlist));
 	else
-		printf("ERROR : This is not struct type!\n");
+		printf("ERROR : incomplete type error (This is not struct type!)\n");
 	return NULL;
 }
 

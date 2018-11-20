@@ -69,20 +69,26 @@ ext_def_list
 ext_def
         : type_specifier pointers ID ';'
         {
-            if ($2 == 0) // no pointer
-                declare($3, $$ = makevardecl($1));
-            else // pointer
-                declare($3, $$ = makevardecl(makeptrdecl($1)));
-
+            if ($1) {
+                if ($2 == 0) // no pointer
+                    declare($3, $$ = makevardecl($1));
+                else // pointer
+                    declare($3, $$ = makevardecl(makeptrdecl($1)));
+            }
+            else
+                $$ = NULL;
             printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
-            if ($2 == 0) // no pointer
-                declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
-            else // pointer
-                declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
-            
+            if ($1) {
+                if ($2 == 0) // no pointer
+                    declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
+                else // pointer
+                    declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
+            }
+            else
+                $$ = NULL;
             printscopestack();
         }
         | func_decl ';'
@@ -96,21 +102,25 @@ ext_def
             // [TODO] what here?
         }
         | func_decl
-        {
-            pushscope();
-            pushstelist($1->formalswithreturnid);
-            printscopestack();
-            is_func_decl = 1;
-            block_number = 0;
+        {   
+            if ($1) {
+                pushscope();
+                pushstelist($1->formalswithreturnid);
+                printscopestack();
+                is_func_decl = 1;
+                block_number = 0;
+            }
         }
         compound_stmt
         {
-            is_func_decl = 0;
-            block_number = 0;
-            struct ste *pop = popscope();
-            printscopestack();
-            // [TODO] delete pop using loop (for prevent from memory leak)
-            // delete hash table id also!?
+            if ($1) {
+                is_func_decl = 0;
+                block_number = 0;
+                struct ste *pop = popscope();
+                printscopestack();
+                // [TODO] delete pop using loop (for prevent from memory leak)
+                // delete hash table id also!?
+            }
         }
 
 type_specifier
@@ -141,37 +151,40 @@ struct_specifier
             struct decl *decl_ptr = findcurrentdecl($2);
             if(decl_ptr != NULL && (check_is_struct_type(decl_ptr) == 1)){
                 $$ = decl_ptr;
-                //printf("this is struct type\n");
             }
             else {
                 $$ = NULL;
-                printf("ERROR : this is not struct type\n");
+                printf("ERROR : incomplete type error (this is not struct type)\n");
             }
         }
 
 func_decl
         : type_specifier pointers ID '(' ')'
         {
-            struct decl *procdecl = makeprocdecl();
-            declare($3, procdecl);
-            pushscope(); /* for collecting formals */
-            declare(returnid, $1);
+            if ($1) {
+                struct decl *procdecl = makeprocdecl();
+                declare($3, procdecl);
+                pushscope(); /* for collecting formals */
+                declare(returnid, $1);
 
-            // no formals
+                // no formals
 
-            struct ste *formals;
-            formals = popscope();
+                struct ste *formals;
+                formals = popscope();
 
-            /* formals->decl is always returnid decl with return type*/
-            procdecl->formalswithreturnid = formals;
-            procdecl->returntype = formals->decl;
-            procdecl->formals = formals->prev; // null in this production
-            
-            /* error ; struct_specifier returns NULL, because this is not a struct*/
-            if (procdecl->returntype == NULL)
-                printf("ERROR : this is not a struct\n");
+                /* formals->decl is always returnid decl with return type*/
+                procdecl->formalswithreturnid = formals;
+                procdecl->returntype = formals->decl;
+                procdecl->formals = formals->prev; // null in this production
+                
+                /* error ; struct_specifier returns NULL, because this is not a struct*/
+                if (procdecl->returntype == NULL)
+                    printf("ERROR : this is not a struct\n");
 
-            $$ = procdecl;
+                $$ = procdecl;
+            }
+            else
+                $$ = NULL;
         }
         | type_specifier pointers ID '(' VOID ')'
         {
@@ -179,34 +192,40 @@ func_decl
         }
         | type_specifier pointers ID '(' 
         {
-            struct decl *procdecl = makeprocdecl();
-            declare($3, procdecl);
-            pushscope(); /* for collecting formals */
-            declare(returnid, $1);
-            $<declptr>$ = procdecl;
+            if ($1) {
+                struct decl *procdecl = makeprocdecl();
+                declare($3, procdecl);
+                pushscope(); /* for collecting formals */
+                declare(returnid, $1);
+                $<declptr>$ = procdecl;
+            }
         }
         param_list ')'
         {
-            struct ste *formals;
-            struct decl *procdecl = $<declptr>5;
-            formals = popscope();
+            if ($1) {
+                struct ste *formals;
+                struct decl *procdecl = $<declptr>5;
+                formals = popscope();
 
-            /* formals->decl is always returnid decl with return type*/
-            procdecl->formalswithreturnid = formals;
-            procdecl->returntype = formals->decl;
-            procdecl->formals = formals->prev;
+                /* formals->decl is always returnid decl with return type*/
+                procdecl->formalswithreturnid = formals;
+                procdecl->returntype = formals->decl;
+                procdecl->formals = formals->prev;
 
-            /*
-                // check point (formal list-first)
-                printf("formal list first param = %s\n", procdecl->formals->name->name);
-                printf("formal list second param = %s\n", procdecl->formals->prev->name->name);
-            */
+                /*
+                    // check point (formal list-first)
+                    printf("formal list first param = %s\n", procdecl->formals->name->name);
+                    printf("formal list second param = %s\n", procdecl->formals->prev->name->name);
+                */
 
-            /* error ; struct_specifier returns NULL, because this is not a struct*/
-            if (procdecl->returntype == NULL)
-                printf("ERROR : this is not struct\n");
-            
-            $$ = procdecl; 
+                /* error ; struct_specifier returns NULL, because this is not a struct*/
+                if (procdecl->returntype == NULL)
+                    printf("ERROR : incomplete type error (this is not struct)\n");
+                
+                $$ = procdecl; 
+            }
+            else
+                $$ = NULL;
         }
 
 pointers
@@ -219,20 +238,27 @@ param_list  /* list of formal parameter declaration */
 
 param_decl  /* formal parameter declaration */
         : type_specifier pointers ID
-        {
-            if ($2 == 0) // no pointer
-                declare($3, $$ = makevardecl($1));
-            else // pointer
-                declare($3, $$ = makevardecl(makeptrdecl($1)));
+        {   
+            if ($1) {
+                if ($2 == 0) // no pointer
+                    declare($3, $$ = makevardecl($1));
+                else // pointer
+                    declare($3, $$ = makevardecl(makeptrdecl($1)));
+            }
+            else
+                $$ = NULL;
             printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']'
         {
-            if ($2 == 0) // no pointer
-                declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
-            else // pointer
-                declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
-            
+            if ($1) {
+                if ($2 == 0) // no pointer
+                    declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
+                else // pointer
+                    declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
+            }
+            else
+                $$ = NULL;
             printscopestack();
         }
 
@@ -246,20 +272,26 @@ def_list    /* list of definitions, definition can be type(struct), variable, fu
 def
         : type_specifier pointers ID ';'
         {
-            if ($2 == 0) // no pointer
-                declare($3, $$ = makevardecl($1));
-            else // pointer 
-                declare($3, $$ = makevardecl(makeptrdecl($1)));
-
+            if ($1) {
+                if ($2 == 0) // no pointer
+                    declare($3, $$ = makevardecl($1));
+                else // pointer 
+                    declare($3, $$ = makevardecl(makeptrdecl($1)));
+            }
+            else
+                $$ = NULL;
             printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
-            if ($2 == 0) // no pointer
-                declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
-            else // pointer
-                declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
-            
+            if ($1) {
+                if ($2 == 0) // no pointer
+                    declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
+                else // pointer
+                    declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
+            }
+            else
+                $$ = NULL;
             printscopestack();
         }
         | type_specifier ';'
