@@ -343,7 +343,7 @@ expr
         {
             /* assignment */
             // should have same type (ppt 23p)
-            if (check_is_var($1) && check_same_type_for_unary($1, $3))
+            if (check_is_var($1) && check_same_type($1->type->ptrto, $3->ptrto))
                 $$ = $1->type;
             else
                 printf("ERROR : assignment value is not same, or LHS value type is not variable!\n");

@@ -11,8 +11,13 @@
 void declare(struct id* id_ptr, struct decl* decl_ptr) {
 	printf("declare()\n");
 	
-	// add to ste stack linked list
-	insert(id_ptr, decl_ptr);
+	if (check_redeclaration(id_ptr)) {
+		printf("ERROR : redeclaration of same variables at same scope!\n");
+		// [TODO] memory leak (free ptr)
+	}
+	else
+		// add to ste stack linked list
+		insert(id_ptr, decl_ptr);
 }
 
 
@@ -318,6 +323,15 @@ struct decl *structaccess(struct decl* struct_ptr, struct id* field_id) {
 
 void add_type_to_var(struct decl* typedecl, struct decl* var_list) {
 
+}
+
+int check_redeclaration(struct id* id_ptr) {
+	/*
+		check redeclaration in THIS SCOPE.
+		if redeclaration, return 1
+		else, initial declaration, return 0
+	*/
+	return 0;
 }
 
 struct decl *plustype(struct decl* typedecl1, struct decl* typedecl2) {
