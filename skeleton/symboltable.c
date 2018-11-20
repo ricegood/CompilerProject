@@ -29,6 +29,7 @@ struct decl *maketypedecl(int typeclass) {
 	/*
 		This function is only for init_type();
 		int, char, void, string
+		+ NULL decl ???
 	*/
 
 	printf("maketypedecl()\n");
@@ -369,12 +370,14 @@ void init_type()
 	chartype = maketypedecl(CHAR_);
 	voidtype = maketypedecl(VOID_);
 	stringtype = maketypedecl(STRING_);
+	// nulltype
 
 	pushscope();
 	declare(enter(KEYWORD, "int", 3), inttype);
 	declare(enter(KEYWORD, "char", 4), chartype);
 	declare(enter(KEYWORD, "void", 4), voidtype);
 	declare(enter(KEYWORD, "string", 6), stringtype);
+	// declare nulltype?
 
 	returnid = enter(KEYWORD, "*return", 7);
 
