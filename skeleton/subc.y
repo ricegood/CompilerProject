@@ -248,7 +248,7 @@ def
         {
             if ($2 == 0) // no pointer
                 declare($3, $$ = makevardecl($1));
-            else // pointer
+            else // pointer 
                 declare($3, $$ = makevardecl(makeptrdecl($1)));
 
             printscopestack();
@@ -471,7 +471,6 @@ unary
             $$ = findcurrentdecl($1);
             if (!$$)
                 printf("ERROR : There is no such ID.\n");
-            printf("ID : %s\n", $1->name);
         }
         | '-' unary %prec '!'
         {   
@@ -539,7 +538,6 @@ unary
         }
         | '*' unary %prec '!'
         {
-            // [TODO]
             if (check_is_pointer_type($2->type)) {
                 $$ = makevardecl($2->ptrto);
             }
@@ -553,15 +551,23 @@ unary
         }
         | unary '.' ID
         {
-            $$ = structaccess($1, $3);
+            /* This is only for structure type on $1 */
+            if (!check_is_pointer_type($1->type)){
+                $$ = structaccess($1, $3);
+            }
+            else {
+                printf("ERROR : this is a POINTER to structure type!\n");
+            }
         }
         | unary STRUCTOP ID
         {
-            // STRUCTOP = '->'
-            // [TODO] [Q] is this for only pointer?
-            // if (check_is_pointer($1))
-            $$ = structaccess($1, $3);
-            // else printf("ERROR : this is not a pointer type!\n");
+            // [TODO] this is only for pointer to structure type on $1
+            if (check_is_pointer_type($1->type)){
+                $$ = structaccess($1, $3);
+            }
+            else {
+                printf("ERROR : this is not a pointer to structure type!\n");
+            }
         }
         | unary '(' args ')'
         {

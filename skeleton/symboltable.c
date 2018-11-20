@@ -325,7 +325,13 @@ struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr) {
 
 struct decl *structaccess(struct decl* struct_ptr, struct id* field_id) {
 	/* 38p definition!! */
-	struct decl *type_ptr = struct_ptr->type;
+
+	struct decl *type_ptr;
+	if (check_is_pointer_type(struct_ptr->type))
+		type_ptr = struct_ptr->type->ptrto;
+	else
+		type_ptr = struct_ptr->type;
+
 	if (check_is_struct_type(type_ptr))
 		return (find_decl_in_struct_fields(field_id, type_ptr->fieldlist));
 	else
