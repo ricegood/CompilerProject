@@ -62,17 +62,67 @@ void insert(struct id* id_ptr, struct decl* decl_ptr) {
 
 struct ste *lookup(struct id* id_ptr) {
   /*
-    Return last pushed ste having same id_ptr
+    Return ste linked list having same id_ptr in GLOBAL SCOPE
     If not, return NULL
   */
+  // [TODO] This malloc has temporary objective. memory leak..
+  struct ste *ste_list = malloc(sizeof(struct ste));
+  struct ste *ste_list_result = ste_list;
 
   if (top != NULL) {
     struct ste *ste_it = top->data;
     while (ste_it != NULL) {
-      if (ste_it->name == id_ptr) return ste_it;
-      else ste_it = ste_it->prev;
+      // make list of same id decl until stack end
+      if (ste_it->name == id_ptr) {
+        ste_list->name = ste_it->name;
+        ste_list->decl = ste_it->decl;
+        // [TODO] memory leak
+        struct ste *new_ste_list = malloc(sizeof(struct ste));
+        ste_list->prev = new_ste_list;
+        ste_list = ste_list->prev;
+        //return ste_it;
+      }
+      ste_it = ste_it->prev;
     }
+    ste_list = NULL;
+    return ste_list_result;
+  } else {
+    printf("Scope stack top is NULL!\n");
     return NULL;
+  }
+}
+
+struct ste *lookup_local_scope(struct id* id_ptr) {
+  /*
+    Return ste linked list having same id_ptr in LOCAL SCOPE
+    If not, return NULL
+  */
+
+  // [TODO] This malloc has temporary objective. memory leak..
+  struct ste *ste_list = malloc(sizeof(struct ste));
+  struct ste *ste_list_result = ste_list;
+  struct ste *ste_end_flag = NULL;
+
+  if (top != NULL) {
+    if (top->next)
+      ste_end_flag = top->next->data;
+
+    struct ste *ste_it = top->data;
+    while (ste_it != ste_end_flag) {
+      // make list of same id decl until stack end
+      if (ste_it->name == id_ptr) {
+        ste_list->name = ste_it->name;
+        ste_list->decl = ste_it->decl;
+        // [TODO] memory leak
+        struct ste *new_ste_list = malloc(sizeof(struct ste));
+        ste_list->prev = new_ste_list;
+        ste_list = ste_list->prev;
+        //return ste_it;
+      }
+      ste_it = ste_it->prev;
+    }
+    ste_list = NULL;
+    return ste_list_result;
   } else {
     printf("Scope stack top is NULL!\n");
     return NULL;

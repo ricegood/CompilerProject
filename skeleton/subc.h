@@ -74,7 +74,8 @@ typedef struct node
 
 void printscopestack();
 void insert(struct id* id_ptr, struct decl* decl_ptr);
-struct ste *lookup(struct id* id_ptr); // return last pushed element
+struct ste *lookup(struct id* id_ptr);
+struct ste *lookup_local_scope(struct id* id_ptr);
 void pushscope();
 void pushstelist(struct ste* ste_list);
 struct ste *popscope();
@@ -93,13 +94,15 @@ struct decl *makefloatconstdecl(struct decl* typedecl, float value);
 struct decl *makeptrdecl(struct decl* typedecl);
 struct decl *makeprocdecl();
 struct decl *makestructdecl();
-struct decl *findcurrentdecl(struct id* id_ptr);
+struct decl *findcurrentdecl(struct id* id_ptr); // return last pushed decl (global scope)
+struct ste *findcurrentdecls(struct id* id_ptr); // return linked list of ste (global scope)
+struct ste *findcurrentdecls_local(struct id* id_ptr); // return linked list of ste (local scope)
 struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr);
 struct decl *structaccess(struct decl* struct_ptr, struct id* field_id);
 struct decl *plustype(struct decl* typedecl1, struct decl* typedecl2);
 
 void add_type_to_var(struct decl* typedecl, struct decl* var_list);
-int check_redeclaration(struct id* id_ptr);
+int check_redeclaration(struct id* id_ptr, struct decl* decl_ptr);
 int check_is_type(struct decl* decl_ptr);
 int check_is_struct_type(struct decl* decl_ptr);
 int check_is_pointer_type(decl* decl_ptr);
@@ -110,6 +113,7 @@ struct decl *check_function_call(struct decl* proc_ptr, struct decl* actuals);
 //int check_compatible(struct decl* decl_ptr, struct decl* typedecl_ptr);
 int check_same_type_for_unary(decl* decl_ptr, decl* typedecl_ptr);
 int check_same_type(struct decl* decl_ptr, struct decl* indexptr);
+int check_same_decl(decl* decl_ptr1, decl* decl_ptr2);
 struct decl *check_compatible_type(decl* typedecl_ptr1, decl* typedecl_ptr2);
 
 void init_type();

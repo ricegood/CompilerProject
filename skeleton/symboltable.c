@@ -10,11 +10,15 @@
 /* Make ste and add to symbol table (ste stack linked list) */
 void declare(struct id* id_ptr, struct decl* decl_ptr) {
 	printf("declare()\n");
-	
-	if (check_redeclaration(id_ptr)) {
+	if (!id_ptr || !decl_ptr) {
+		printf("ERROR : declare failed! id_ptr or decl_ptr is null!\n");
+	}
+
+	else if (check_redeclaration(id_ptr, decl_ptr)) {
 		printf("ERROR : redeclaration of same variables at same scope!\n");
 		// [TODO] memory leak (free ptr)
 	}
+
 	else
 		// add to ste stack linked list
 		insert(id_ptr, decl_ptr);
@@ -272,6 +276,15 @@ int check_same_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
 	return 0;
 }
 
+int check_same_decl(decl* decl_ptr1, decl* decl_ptr2) {
+	if (decl_ptr1 && decl_ptr2) {
+		if (decl_ptr1->declclass == decl_ptr2->declclass) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 struct decl *check_compatible_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
 	if (typedecl_ptr1 == typedecl_ptr2)
 		return typedecl_ptr1;
@@ -292,6 +305,16 @@ struct decl *findcurrentdecl(struct id* id_ptr) {
 	if (result == NULL)
 		return NULL;
 	else return result->decl;
+}
+
+struct ste *findcurrentdecls(struct id* id_ptr) {
+	struct ste* result = lookup(id_ptr);
+	return result;
+}
+
+struct ste *findcurrentdecls_local(struct id* id_ptr) {
+	struct ste* result = lookup_local_scope(id_ptr);
+	return result;
 }
 
 struct decl *find_decl_in_struct_fields(struct id* field_id, struct ste* fieldlist) {
@@ -343,12 +366,51 @@ void add_type_to_var(struct decl* typedecl, struct decl* var_list) {
 
 }
 
-int check_redeclaration(struct id* id_ptr) {
+int check_redeclaration(struct id* id_ptr, struct decl* decl_ptr) {
 	/*
-		check redeclaration in THIS SCOPE.
+		check redeclaration in LOCAL SCOPE (** structure : global scope).
 		if redeclaration, return 1
 		else, initial declaration, return 0
 	*/
+
+	if (id_ptr == returnid) {
+		// returnid redeclaration is OK!
+		return 0;
+	}
+
+	// struct type = find in global scope
+	else if (check_is_struct_type(decl_ptr)) {
+		struct ste *same_id_ste_list = findcurrentdecls(id_ptr);
+		while (same_id_ste_list) {
+			if (check_is_struct_type(same_id_ste_list->decl)) {
+				return 1;
+			}
+			else
+				same_id_ste_list = same_id_ste_list->prev;
+		}
+		return 0;
+	}
+
+	/* [non struct type (else case)]
+			procdecl
+			vardecl(type)
+			vardecl(ptrdecl(type))
+			constdecl(arraydecl(size, vardecl(type)))
+
+			so, decl type = proc | var | const
+	*/
+	// else case = find in local scope
+	else {
+		struct ste *same_id_ste_list = findcurrentdecls_local(id_ptr);
+		while (same_id_ste_list) {
+			if (check_same_decl(same_id_ste_list->decl, decl_ptr)) {
+				return 1;
+			}
+			else
+				same_id_ste_list = same_id_ste_list->prev;
+		}
+		return 0;
+	}
 	return 0;
 }
 
