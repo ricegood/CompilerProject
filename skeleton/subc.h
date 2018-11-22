@@ -20,6 +20,7 @@ char* filename;
 
 /* for scope stack */
 struct node *top;
+struct node *bottom;
 struct ste *bottom_ste;
 
 /* for default type decl */
@@ -87,8 +88,8 @@ void printscopestack();
 struct ste *insert(struct id* id_ptr, struct decl* decl_ptr);
 void insert_bottom(struct id* id_ptr, struct decl* decl_ptr); /* for insert struct to global scope */
 struct ste *lookup(struct id* id_ptr);
-struct ste *lookup_local_scope(struct id* id_ptr);
-void pushscope();
+struct ste *lookup_local_scope(struct id* id_ptr, struct node* scope);
+struct node *pushscope();
 void pushstelist(struct ste* ste_list);
 struct ste *popscope();
 struct ste *popste();
@@ -112,6 +113,7 @@ void rollback_struct_of(struct decl* procdecl);
 struct decl *findcurrentdecl(struct id* id_ptr); // return last pushed decl (global scope)
 struct ste *findcurrentdecls(struct id* id_ptr); // return linked list of ste (global scope)
 struct ste *findcurrentdecls_local(struct id* id_ptr); // return linked list of ste (local scope)
+struct decl *findstructdecl(struct id* id_ptr); // return struct decl (bottom scope)
 
 struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr);
 struct decl *structaccess(struct decl* struct_ptr, struct id* field_id);

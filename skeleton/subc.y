@@ -10,6 +10,7 @@
 int    yylex ();
 int    yyerror (char* s);
 void   REDUCE(char* s);
+void   ERROR(char* s);
 
 /* flag for subc.y */
 int is_func_decl = 0;
@@ -76,7 +77,6 @@ ext_def_list
 ext_def
         : type_specifier pointers ID ';'
         {
-            printf("filename : %s\n", filename);
             if ($1) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makevardecl($1));
@@ -184,13 +184,13 @@ struct_specifier
         }
         | STRUCT ID
         {
-            struct decl *decl_ptr = findcurrentdecl($2);
-            if(decl_ptr != NULL && (check_is_struct_type(decl_ptr) == 1)){
+            struct decl *decl_ptr = findstructdecl($2);
+            if(check_is_struct_type(decl_ptr)){
                 $$ = decl_ptr;
             }
             else {
                 $$ = NULL;
-                printf("ERROR : incomplete type error (this is not struct type)\n");
+                ERROR("ERROR : incomplete type error (this is not struct type)\n");
             }
         }
 
@@ -221,7 +221,7 @@ func_decl
                     
                     /* error ; struct_specifier returns NULL, because this is not a struct*/
                     if (procdecl->returntype == NULL)
-                        printf("ERROR : this is not a struct\n");
+                        ERROR("ERROR : this is not a struct\n");
 
                     $$ = procdecl;
                 }
@@ -275,7 +275,7 @@ func_decl
 
                 /* error ; struct_specifier returns NULL, because this is not a struct*/
                 if (procdecl->returntype == NULL)
-                    printf("ERROR : incomplete type error (this is not struct)\n");
+                    ERROR("ERROR : incomplete type error (this is not struct)\n");
                 
                 $$ = procdecl; 
             }
@@ -409,7 +409,7 @@ stmt
                     printf("return type is same type!\n");
                     return_type_error = 0;
                 } else {
-                    printf("ERROR : return type error\n");
+                    ERROR("ERROR : return type error\n");
                     return_type_error = 1;
                 }
             }
@@ -439,7 +439,7 @@ expr
             if ($1 && check_is_var($1) && check_same_type_for_unary($1, $3))
                 $$ = $1->type;
             else
-                printf("ERROR : assignment value is not same, or LHS value type is not variable!\n");
+                ERROR("ERROR : assignment value is not same, or LHS value type is not variable!\n");
         }
         | or_expr
         | NULL_TOKEN
@@ -458,7 +458,7 @@ or_list
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = inttype;
             else
-                printf("ERROR : '||' operator is only for int type!\n");
+                ERROR("ERROR : '||' operator is only for int type!\n");
         }
         | and_expr
 
@@ -472,7 +472,7 @@ and_list
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = inttype;
             else
-                printf("ERROR : '&&' operator is only for int type!\n");
+                ERROR("ERROR : '&&' operator is only for int type!\n");
         }
         | binary
 
@@ -489,7 +489,7 @@ binary
 
             /* ERROR */
             else {
-                printf("ERROR : binary RELOP binary is only for int, char type!\n");
+                ERROR("ERROR : binary RELOP binary is only for int, char type!\n");
                 $$ = NULL;
             }
         }
@@ -509,7 +509,7 @@ binary
 
             /* ERROR */
             else {
-                printf("ERROR : binary EQUOP binary is only for int, char, pointer type!\n");
+                ERROR("ERROR : binary EQUOP binary is only for int, char, pointer type!\n");
                 $$ = NULL;
             }
         }
@@ -521,7 +521,7 @@ binary
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = plustype($1, $3);
             else
-                printf("ERROR : binary '+' operands are only for integer!\n");
+                ERROR("ERROR : binary '+' operands are only for integer!\n");
         }
         | binary '-' binary
         {
@@ -531,14 +531,14 @@ binary
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = plustype($1, $3);
             else
-                printf("ERROR : binary '-' operands are only for integer!\n");
+                ERROR("ERROR : binary '-' operands are only for integer!\n");
         }
         | unary %prec '='
         {   
             if ($1 && $1->type)
                 $$ = $1->type;
             else {
-                printf("ERROR : unary is NULL or unary semantic value->type is null!\n");
+                ERROR("ERROR : unary is NULL or unary semantic value->type is null!\n");
             }
         }
 
@@ -572,7 +572,7 @@ unary
             // find ID
             $$ = findcurrentdecl($1);
             if (!$$)
-                printf("ERROR : There is no such ID.\n");
+                ERROR("ERROR : There is no such ID.\n");
         }
         | '-' unary %prec '!'
         {   
@@ -580,7 +580,7 @@ unary
             if (check_same_type_for_unary($2, inttype))
                 $$ = $2;
             else
-                printf("ERROR : '-' operator is only for integer.\n");
+                ERROR("ERROR : '-' operator is only for integer.\n");
         }
         | '!' unary
         {
@@ -588,7 +588,7 @@ unary
             if (check_same_type_for_unary($2, inttype))
                 $$ = inttype;
             else
-                printf("ERROR : '!' operator is only for int type!\n");
+                ERROR("ERROR : '!' operator is only for int type!\n");
         }
         | unary INCOP
         {
@@ -596,7 +596,7 @@ unary
             if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
                 $$ = $1;
             else
-                printf("ERROR : unary INCOP operator is only for char or integer.\n");
+                ERROR("ERROR : unary INCOP operator is only for char or integer.\n");
         }
         | unary DECOP
         {
@@ -604,7 +604,7 @@ unary
             if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
                 $$ = $1;
             else
-                printf("ERROR : unary DECOP operator is only for char or integer.\n");
+                ERROR("ERROR : unary DECOP operator is only for char or integer.\n");
         }
         | INCOP unary
         {
@@ -612,7 +612,7 @@ unary
             if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
                 $$ = $2;
             else
-                printf("ERROR : unary INCOP operator is only for char or integer.\n");
+                ERROR("ERROR : unary INCOP operator is only for char or integer.\n");
         }
         | DECOP unary
         {
@@ -620,7 +620,7 @@ unary
             if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
                 $$ = $2;
             else
-                printf("ERROR : unary DECOP operator is only for char or integer.\n");
+                ERROR("ERROR : unary DECOP operator is only for char or integer.\n");
         }
         | '&' unary %prec '!'
         {
@@ -634,7 +634,7 @@ unary
                 $$ = makeconstdecl(makeptrdecl($2->type));
             }
             else {
-                printf("ERROR : Can't use operator '&' for non-variable type value.\n");
+                ERROR("ERROR : Can't use operator '&' for non-variable type value.\n");
                 $$ = NULL;
             }
             
@@ -645,7 +645,7 @@ unary
                 $$ = makevardecl($2->ptrto);
             }
             else {
-                printf("ERROR : Can't use point operator '*' for non-pointer value.\n");
+                ERROR("ERROR : Can't use point operator '*' for non-pointer value.\n");
                 $$ = NULL;
             }
         }
@@ -660,7 +660,7 @@ unary
                 $$ = structaccess($1, $3);
             }
             else {
-                printf("ERROR : this is a POINTER to structure type or NULL\n");
+                ERROR("ERROR : this is a POINTER to structure type or NULL\n");
             }
         }
         | unary STRUCTOP ID
@@ -670,7 +670,7 @@ unary
                 $$ = structaccess($1, $3);
             }
             else {
-                printf("ERROR : this is not a pointer to structure type or NULL\n");
+                ERROR("ERROR : this is not a pointer to structure type or NULL\n");
             }
         }
         | unary '(' args ')'
@@ -678,14 +678,14 @@ unary
             if (check_is_proc($1))
                 $$ = check_function_call($1, $3);
             else
-                printf ("ERROR : this is not a function!\n");
+                ERROR ("ERROR : this is not a function!\n");
         }
         | unary '(' ')'
         {
             if (check_is_proc($1))
                 $$ = check_function_call($1, NULL);
             else
-                printf ("ERROR : this is not a function!\n");
+                ERROR ("ERROR : this is not a function!\n");
         }
 
 args    /* actual parameters(function arguments) transferred to function */
@@ -710,6 +710,10 @@ int yyerror (char* s) {
     fprintf (stderr, "%s\n", s);
 }
 
-void REDUCE( char* s) {
+void REDUCE(char* s) {
     printf("%s\n",s);
+}
+
+void ERROR(char* s) {
+    printf("%s:%d: error:%s\n", filename, read_line(), s);
 }

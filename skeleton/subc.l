@@ -32,7 +32,7 @@ letter			[A-Za-z_]
 digit			[0-9]
 id				{letter}({letter}|{digit})*
 integer-const	([1-9]{digit}*)|"0"
-white-space		[ \t\n]+
+white-space		[ \t]+
 special-char	\\[nt]
 operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"%"|"+"|"-"|"<<"|">>"|"<"|"<="|">"|">="|"=="|"!="|"&"|"^"|"|"|"&&"|"||"|"?"|":"|";"|"="|"+="|"-="|"*="|"/="|"%="|"&="|"^="|"|="|"<<="|">>=")
 
@@ -102,9 +102,8 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 								}
 ","								{ return ','; }
 ";"								{ return yytext[0]; }
+<*>\n		   					{ ++lineno; }
 {white-space}					{}
-
-<*>\n		   					++lineno;
 <INITIAL,COMMENT>"/*"			{
 									++comment_depth;
 									BEGIN (COMMENT);

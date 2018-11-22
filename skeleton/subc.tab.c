@@ -75,6 +75,7 @@
 int    yylex ();
 int    yyerror (char* s);
 void   REDUCE(char* s);
+void   ERROR(char* s);
 
 /* flag for subc.y */
 int is_func_decl = 0;
@@ -84,7 +85,7 @@ int error_found_in_struct_specifier = 0; /* for def_list & error_found flag */
 int return_type_error = 0; /* It can work because func inside func is impossible. no synchronization problem. */
 
 
-#line 88 "subc.tab.c" /* yacc.c:339  */
+#line 89 "subc.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -149,7 +150,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 24 "subc.y" /* yacc.c:355  */
+#line 25 "subc.y" /* yacc.c:355  */
 
     int intVal;
     char *stringVal;
@@ -157,7 +158,7 @@ union YYSTYPE
     struct decl *declptr;
     struct ste *steptr;
 
-#line 161 "subc.tab.c" /* yacc.c:355  */
+#line 162 "subc.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -174,7 +175,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 178 "subc.tab.c" /* yacc.c:358  */
+#line 179 "subc.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -473,7 +474,7 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    68,    68,    72,    73,    77,    90,   102,   110,   115,
+       0,    69,    69,    73,    74,    78,    90,   102,   110,   115,
      114,   151,   152,   153,   157,   167,   156,   185,   198,   236,
      241,   240,   289,   290,   293,   294,   297,   309,   323,   327,
      330,   342,   354,   360,   371,   370,   391,   394,   395,   398,
@@ -1370,9 +1371,8 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 78 "subc.y" /* yacc.c:1646  */
+#line 79 "subc.y" /* yacc.c:1646  */
     {
-            printf("filename : %s\n", filename);
             if ((yyvsp[-3].declptr)) {
                 if ((yyvsp[-2].intVal) == 0) // no pointer
                     declare((yyvsp[-1].idptr), (yyval.declptr) = makevardecl((yyvsp[-3].declptr)));
@@ -1509,13 +1509,13 @@ yyreduce:
   case 17:
 #line 186 "subc.y" /* yacc.c:1646  */
     {
-            struct decl *decl_ptr = findcurrentdecl((yyvsp[0].idptr));
-            if(decl_ptr != NULL && (check_is_struct_type(decl_ptr) == 1)){
+            struct decl *decl_ptr = findstructdecl((yyvsp[0].idptr));
+            if(check_is_struct_type(decl_ptr)){
                 (yyval.declptr) = decl_ptr;
             }
             else {
                 (yyval.declptr) = NULL;
-                printf("ERROR : incomplete type error (this is not struct type)\n");
+                ERROR("ERROR : incomplete type error (this is not struct type)\n");
             }
         }
 #line 1522 "subc.tab.c" /* yacc.c:1646  */
@@ -1548,7 +1548,7 @@ yyreduce:
                     
                     /* error ; struct_specifier returns NULL, because this is not a struct*/
                     if (procdecl->returntype == NULL)
-                        printf("ERROR : this is not a struct\n");
+                        ERROR("ERROR : this is not a struct\n");
 
                     (yyval.declptr) = procdecl;
                 }
@@ -1614,7 +1614,7 @@ yyreduce:
 
                 /* error ; struct_specifier returns NULL, because this is not a struct*/
                 if (procdecl->returntype == NULL)
-                    printf("ERROR : incomplete type error (this is not struct)\n");
+                    ERROR("ERROR : incomplete type error (this is not struct)\n");
                 
                 (yyval.declptr) = procdecl; 
             }
@@ -1776,7 +1776,7 @@ yyreduce:
                     printf("return type is same type!\n");
                     return_type_error = 0;
                 } else {
-                    printf("ERROR : return type error\n");
+                    ERROR("ERROR : return type error\n");
                     return_type_error = 1;
                 }
             }
@@ -1792,7 +1792,7 @@ yyreduce:
             if ((yyvsp[-2].declptr) && check_is_var((yyvsp[-2].declptr)) && check_same_type_for_unary((yyvsp[-2].declptr), (yyvsp[0].declptr)))
                 (yyval.declptr) = (yyvsp[-2].declptr)->type;
             else
-                printf("ERROR : assignment value is not same, or LHS value type is not variable!\n");
+                ERROR("ERROR : assignment value is not same, or LHS value type is not variable!\n");
         }
 #line 1798 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1813,7 +1813,7 @@ yyreduce:
             if (check_same_type((yyvsp[-2].declptr), inttype) && check_same_type((yyvsp[0].declptr), inttype))
                 (yyval.declptr) = inttype;
             else
-                printf("ERROR : '||' operator is only for int type!\n");
+                ERROR("ERROR : '||' operator is only for int type!\n");
         }
 #line 1819 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1825,7 +1825,7 @@ yyreduce:
             if (check_same_type((yyvsp[-2].declptr), inttype) && check_same_type((yyvsp[0].declptr), inttype))
                 (yyval.declptr) = inttype;
             else
-                printf("ERROR : '&&' operator is only for int type!\n");
+                ERROR("ERROR : '&&' operator is only for int type!\n");
         }
 #line 1831 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1843,7 +1843,7 @@ yyreduce:
 
             /* ERROR */
             else {
-                printf("ERROR : binary RELOP binary is only for int, char type!\n");
+                ERROR("ERROR : binary RELOP binary is only for int, char type!\n");
                 (yyval.declptr) = NULL;
             }
         }
@@ -1867,7 +1867,7 @@ yyreduce:
 
             /* ERROR */
             else {
-                printf("ERROR : binary EQUOP binary is only for int, char, pointer type!\n");
+                ERROR("ERROR : binary EQUOP binary is only for int, char, pointer type!\n");
                 (yyval.declptr) = NULL;
             }
         }
@@ -1883,7 +1883,7 @@ yyreduce:
             if (check_same_type((yyvsp[-2].declptr), inttype) && check_same_type((yyvsp[0].declptr), inttype))
                 (yyval.declptr) = plustype((yyvsp[-2].declptr), (yyvsp[0].declptr));
             else
-                printf("ERROR : binary '+' operands are only for integer!\n");
+                ERROR("ERROR : binary '+' operands are only for integer!\n");
         }
 #line 1889 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1897,7 +1897,7 @@ yyreduce:
             if (check_same_type((yyvsp[-2].declptr), inttype) && check_same_type((yyvsp[0].declptr), inttype))
                 (yyval.declptr) = plustype((yyvsp[-2].declptr), (yyvsp[0].declptr));
             else
-                printf("ERROR : binary '-' operands are only for integer!\n");
+                ERROR("ERROR : binary '-' operands are only for integer!\n");
         }
 #line 1903 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1908,7 +1908,7 @@ yyreduce:
             if ((yyvsp[0].declptr) && (yyvsp[0].declptr)->type)
                 (yyval.declptr) = (yyvsp[0].declptr)->type;
             else {
-                printf("ERROR : unary is NULL or unary semantic value->type is null!\n");
+                ERROR("ERROR : unary is NULL or unary semantic value->type is null!\n");
             }
         }
 #line 1915 "subc.tab.c" /* yacc.c:1646  */
@@ -1965,7 +1965,7 @@ yyreduce:
             // find ID
             (yyval.declptr) = findcurrentdecl((yyvsp[0].idptr));
             if (!(yyval.declptr))
-                printf("ERROR : There is no such ID.\n");
+                ERROR("ERROR : There is no such ID.\n");
         }
 #line 1971 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1977,7 +1977,7 @@ yyreduce:
             if (check_same_type_for_unary((yyvsp[0].declptr), inttype))
                 (yyval.declptr) = (yyvsp[0].declptr);
             else
-                printf("ERROR : '-' operator is only for integer.\n");
+                ERROR("ERROR : '-' operator is only for integer.\n");
         }
 #line 1983 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1989,7 +1989,7 @@ yyreduce:
             if (check_same_type_for_unary((yyvsp[0].declptr), inttype))
                 (yyval.declptr) = inttype;
             else
-                printf("ERROR : '!' operator is only for int type!\n");
+                ERROR("ERROR : '!' operator is only for int type!\n");
         }
 #line 1995 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2001,7 +2001,7 @@ yyreduce:
             if (check_same_type_for_unary((yyvsp[-1].declptr), inttype) || check_same_type_for_unary((yyvsp[-1].declptr), chartype))
                 (yyval.declptr) = (yyvsp[-1].declptr);
             else
-                printf("ERROR : unary INCOP operator is only for char or integer.\n");
+                ERROR("ERROR : unary INCOP operator is only for char or integer.\n");
         }
 #line 2007 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2013,7 +2013,7 @@ yyreduce:
             if (check_same_type_for_unary((yyvsp[-1].declptr), inttype) || check_same_type_for_unary((yyvsp[-1].declptr), chartype))
                 (yyval.declptr) = (yyvsp[-1].declptr);
             else
-                printf("ERROR : unary DECOP operator is only for char or integer.\n");
+                ERROR("ERROR : unary DECOP operator is only for char or integer.\n");
         }
 #line 2019 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2025,7 +2025,7 @@ yyreduce:
             if (check_same_type_for_unary((yyvsp[0].declptr), inttype) || check_same_type_for_unary((yyvsp[0].declptr), chartype))
                 (yyval.declptr) = (yyvsp[0].declptr);
             else
-                printf("ERROR : unary INCOP operator is only for char or integer.\n");
+                ERROR("ERROR : unary INCOP operator is only for char or integer.\n");
         }
 #line 2031 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2037,7 +2037,7 @@ yyreduce:
             if (check_same_type_for_unary((yyvsp[0].declptr), inttype) || check_same_type_for_unary((yyvsp[0].declptr), chartype))
                 (yyval.declptr) = (yyvsp[0].declptr);
             else
-                printf("ERROR : unary DECOP operator is only for char or integer.\n");
+                ERROR("ERROR : unary DECOP operator is only for char or integer.\n");
         }
 #line 2043 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2055,7 +2055,7 @@ yyreduce:
                 (yyval.declptr) = makeconstdecl(makeptrdecl((yyvsp[0].declptr)->type));
             }
             else {
-                printf("ERROR : Can't use operator '&' for non-variable type value.\n");
+                ERROR("ERROR : Can't use operator '&' for non-variable type value.\n");
                 (yyval.declptr) = NULL;
             }
             
@@ -2070,7 +2070,7 @@ yyreduce:
                 (yyval.declptr) = makevardecl((yyvsp[0].declptr)->ptrto);
             }
             else {
-                printf("ERROR : Can't use point operator '*' for non-pointer value.\n");
+                ERROR("ERROR : Can't use point operator '*' for non-pointer value.\n");
                 (yyval.declptr) = NULL;
             }
         }
@@ -2093,7 +2093,7 @@ yyreduce:
                 (yyval.declptr) = structaccess((yyvsp[-2].declptr), (yyvsp[0].idptr));
             }
             else {
-                printf("ERROR : this is a POINTER to structure type or NULL\n");
+                ERROR("ERROR : this is a POINTER to structure type or NULL\n");
             }
         }
 #line 2100 "subc.tab.c" /* yacc.c:1646  */
@@ -2107,7 +2107,7 @@ yyreduce:
                 (yyval.declptr) = structaccess((yyvsp[-2].declptr), (yyvsp[0].idptr));
             }
             else {
-                printf("ERROR : this is not a pointer to structure type or NULL\n");
+                ERROR("ERROR : this is not a pointer to structure type or NULL\n");
             }
         }
 #line 2114 "subc.tab.c" /* yacc.c:1646  */
@@ -2119,7 +2119,7 @@ yyreduce:
             if (check_is_proc((yyvsp[-3].declptr)))
                 (yyval.declptr) = check_function_call((yyvsp[-3].declptr), (yyvsp[-1].declptr));
             else
-                printf ("ERROR : this is not a function!\n");
+                ERROR ("ERROR : this is not a function!\n");
         }
 #line 2125 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2130,7 +2130,7 @@ yyreduce:
             if (check_is_proc((yyvsp[-2].declptr)))
                 (yyval.declptr) = check_function_call((yyvsp[-2].declptr), NULL);
             else
-                printf ("ERROR : this is not a function!\n");
+                ERROR ("ERROR : this is not a function!\n");
         }
 #line 2136 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2393,6 +2393,10 @@ int yyerror (char* s) {
     fprintf (stderr, "%s\n", s);
 }
 
-void REDUCE( char* s) {
+void REDUCE(char* s) {
     printf("%s\n",s);
+}
+
+void ERROR(char* s) {
+    printf("%s:%d: error:%s\n", filename, read_line(), s);
 }

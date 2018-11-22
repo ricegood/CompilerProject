@@ -357,8 +357,15 @@ struct ste *findcurrentdecls(struct id* id_ptr) {
 }
 
 struct ste *findcurrentdecls_local(struct id* id_ptr) {
-	struct ste* result = lookup_local_scope(id_ptr);
+	struct ste* result = lookup_local_scope(id_ptr, top);
 	return result;
+}
+
+struct decl *findstructdecl(struct id* id_ptr) {
+	struct ste* result = lookup_local_scope(id_ptr, bottom);
+	if (result == NULL)
+		return NULL;
+	else return result->decl;
 }
 
 struct decl *find_decl_in_struct_fields(struct id* field_id, struct ste* fieldlist) {
@@ -492,6 +499,7 @@ void init_type()
 	printf("==init_type() START==\n");
 
 	top = NULL;
+	bottom = NULL;
 	current_parsing_function_ste = NULL;
 
 	inttype = maketypedecl(INT_);
@@ -500,7 +508,7 @@ void init_type()
 	stringtype = maketypedecl(STRING_);
 	nulltype = maketypedecl(NULL_);
 
-	pushscope();
+	bottom = pushscope();
 
 	bottom_ste = insert(enter(KEYWORD, "int", 3), inttype); // set bottom ste
 	inttype_ste = bottom_ste; // fixed inttype ste pointer
@@ -511,6 +519,8 @@ void init_type()
 	returnid = enter(KEYWORD, "*return", 7);
 
 	printf("==init_type() END==\n");
+	
+	pushscope();
 }
 
 void printTypeDecl(struct decl* decl_ptr) {

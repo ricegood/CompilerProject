@@ -114,7 +114,7 @@ struct ste *lookup(struct id* id_ptr) {
   }
 }
 
-struct ste *lookup_local_scope(struct id* id_ptr) {
+struct ste *lookup_local_scope(struct id* id_ptr, struct node* scope) {
   /*
     Return ste linked list having same id_ptr in LOCAL SCOPE
     If not, return NULL
@@ -125,11 +125,11 @@ struct ste *lookup_local_scope(struct id* id_ptr) {
   struct ste *ste_list_result = ste_list;
   struct ste *ste_end_flag = NULL;
 
-  if (top != NULL) {
-    if (top->next)
-      ste_end_flag = top->next->data;
+  if (scope != NULL) {
+    if (scope->next)
+      ste_end_flag = scope->next->data;
 
-    struct ste *ste_it = top->data;
+    struct ste *ste_it = scope->data;
     while (ste_it != ste_end_flag) {
       // make list of same id decl until stack end
       if (ste_it->name == id_ptr) {
@@ -146,12 +146,12 @@ struct ste *lookup_local_scope(struct id* id_ptr) {
     ste_list = NULL;
     return ste_list_result;
   } else {
-    printf("Scope stack top is NULL!\n");
+    printf("Local scope stack is NULL!\n");
     return NULL;
   }
 }
 
-void pushscope() {
+struct node *pushscope() {
   printf("push scope\n");
   // Declare new scope node & initialization
   struct node *node_ptr = malloc(sizeof(struct node));
@@ -163,6 +163,8 @@ void pushscope() {
 
   // Set the top of the scope stack
   top = node_ptr;
+
+  return node_ptr;
 }
 
 void pushstelist(ste *ste_list) {

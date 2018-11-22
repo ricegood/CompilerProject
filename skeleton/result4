@@ -10,20 +10,33 @@ insert ste to scope stack!
 insert ste to scope stack!
 insert ste to scope stack!
 ==init_type() END==
+push scope
+ID	temp	1
 ID	a	1
-filename : test4.c
-makevardecl()
-declare()
-insert ste to scope stack!
+test4.c:1: error:ERROR : incomplete type error (this is not struct type)
+
 =============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
 =====Final Stack from the top=====
-node name : a, decl class : 0
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
 node name : int, decl class : 3
 ===========================================
 ID	a	2
+makevardecl()
+declare()
+insert ste to scope stack!
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : a, decl class : 0
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+===========================================
+ID	a	3
 makestructdecl()
 *** THIS STRUCT's PARENT FUNCTION is GLOBAL
 declare()
@@ -31,8 +44,9 @@ insert struct ste to scope stack bottom!
 push scope
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====
-=====Final Stack from the top=====
+=====stack #1 from the top=====
 node name : a, decl class : 0
+=====Final Stack from the top=====
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
@@ -48,8 +62,9 @@ push scope
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====
 =====stack #1 from the top=====
-=====Final Stack from the top=====
+=====stack #2 from the top=====
 node name : a, decl class : 0
+=====Final Stack from the top=====
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
@@ -57,62 +72,6 @@ node name : int, decl class : 3
 node name : a, decl class : 3
 node name : b, decl class : 3
 ===========================================
-ID	a	3
-makevardecl()
-declare()
-insert ste to scope stack!
-=============PRINT SCOPE STACK=============
-=====stack #0 from the top=====
-node name : a, decl class : 0
-=====stack #1 from the top=====
-=====Final Stack from the top=====
-node name : a, decl class : 0
-node name : string, decl class : 3
-node name : void, decl class : 3
-node name : char, decl class : 3
-node name : int, decl class : 3
-node name : a, decl class : 3
-node name : b, decl class : 3
-===========================================
-def list!
-=============PRINT SCOPE STACK=============
-=====stack #0 from the top=====
-node name : a, decl class : 0
-=====stack #1 from the top=====
-=====Final Stack from the top=====
-node name : a, decl class : 0
-node name : string, decl class : 3
-node name : void, decl class : 3
-node name : char, decl class : 3
-node name : int, decl class : 3
-node name : a, decl class : 3
-node name : b, decl class : 3
-===========================================
-pop scope
-pop ste
-=============PRINT SCOPE STACK=============
-=====stack #0 from the top=====
-=====Final Stack from the top=====
-node name : a, decl class : 0
-node name : string, decl class : 3
-node name : void, decl class : 3
-node name : char, decl class : 3
-node name : int, decl class : 3
-node name : a, decl class : 3
-node name : b, decl class : 3
-===========================================
-=============PRINT SCOPE STACK=============
-=====stack #0 from the top=====
-=====Final Stack from the top=====
-node name : a, decl class : 0
-node name : string, decl class : 3
-node name : void, decl class : 3
-node name : char, decl class : 3
-node name : int, decl class : 3
-node name : a, decl class : 3
-node name : b, decl class : 3
-===========================================
-def list!
 ID	a	4
 makevardecl()
 declare()
@@ -120,8 +79,10 @@ insert ste to scope stack!
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====
 node name : a, decl class : 0
-=====Final Stack from the top=====
+=====stack #1 from the top=====
+=====stack #2 from the top=====
 node name : a, decl class : 0
+=====Final Stack from the top=====
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
@@ -133,8 +94,10 @@ def list!
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====
 node name : a, decl class : 0
-=====Final Stack from the top=====
+=====stack #1 from the top=====
+=====stack #2 from the top=====
 node name : a, decl class : 0
+=====Final Stack from the top=====
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
@@ -145,8 +108,10 @@ node name : b, decl class : 3
 pop scope
 pop ste
 =============PRINT SCOPE STACK=============
-=====Final Stack from the top=====
+=====stack #0 from the top=====
+=====stack #1 from the top=====
 node name : a, decl class : 0
+=====Final Stack from the top=====
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
@@ -155,8 +120,86 @@ node name : a, decl class : 3
 node name : b, decl class : 3
 ===========================================
 =============PRINT SCOPE STACK=============
-=====Final Stack from the top=====
+=====stack #0 from the top=====
+=====stack #1 from the top=====
 node name : a, decl class : 0
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : a, decl class : 3
+node name : b, decl class : 3
+===========================================
+ID	b	2
+makevardecl()
+declare()
+insert ste to scope stack!
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : b, decl class : 0
+=====stack #1 from the top=====
+node name : a, decl class : 0
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : a, decl class : 3
+node name : b, decl class : 3
+===========================================
+def list!
+ID	a	5
+makevardecl()
+declare()
+insert ste to scope stack!
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : a, decl class : 0
+node name : b, decl class : 0
+=====stack #1 from the top=====
+node name : a, decl class : 0
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : a, decl class : 3
+node name : b, decl class : 3
+===========================================
+def list!
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : a, decl class : 0
+node name : b, decl class : 0
+=====stack #1 from the top=====
+node name : a, decl class : 0
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : a, decl class : 3
+node name : b, decl class : 3
+===========================================
+pop scope
+pop ste
+pop ste
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : a, decl class : 0
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : a, decl class : 3
+node name : b, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : a, decl class : 0
+=====Final Stack from the top=====
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
@@ -178,9 +221,10 @@ insert ste to scope stack!
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====
 node name : *return, decl class : 3
-=====Final Stack from the top=====
+=====stack #1 from the top=====
 node name : main, decl class : 2
 node name : a, decl class : 0
+=====Final Stack from the top=====
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
@@ -191,9 +235,10 @@ node name : b, decl class : 3
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====
 node name : *return, decl class : 3
-=====Final Stack from the top=====
+=====stack #1 from the top=====
 node name : main, decl class : 2
 node name : a, decl class : 0
+=====Final Stack from the top=====
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
@@ -201,15 +246,19 @@ node name : int, decl class : 3
 node name : a, decl class : 3
 node name : b, decl class : 3
 ===========================================
-ID	a	5
-ID	temp	1
-ERROR : incomplete type error (this is not struct type)
+ID	a	6
+ID	temp	2
+makevardecl()
+declare()
+insert ste to scope stack!
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====
+node name : temp, decl class : 0
 node name : *return, decl class : 3
-=====Final Stack from the top=====
+=====stack #1 from the top=====
 node name : main, decl class : 2
 node name : a, decl class : 0
+=====Final Stack from the top=====
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
@@ -218,7 +267,7 @@ node name : a, decl class : 3
 node name : b, decl class : 3
 ===========================================
 def list!
-ID	b	2
+ID	b	3
 ID	temp2	1
 makevardecl()
 declare()
@@ -226,30 +275,12 @@ insert ste to scope stack!
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====
 node name : temp2, decl class : 0
+node name : temp, decl class : 0
 node name : *return, decl class : 3
-=====Final Stack from the top=====
+=====stack #1 from the top=====
 node name : main, decl class : 2
 node name : a, decl class : 0
-node name : string, decl class : 3
-node name : void, decl class : 3
-node name : char, decl class : 3
-node name : int, decl class : 3
-node name : a, decl class : 3
-node name : b, decl class : 3
-===========================================
-def list!
-ID	a	6
-makevardecl()
-declare()
-insert ste to scope stack!
-=============PRINT SCOPE STACK=============
-=====stack #0 from the top=====
-node name : a, decl class : 0
-node name : temp2, decl class : 0
-node name : *return, decl class : 3
 =====Final Stack from the top=====
-node name : main, decl class : 2
-node name : a, decl class : 0
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
@@ -259,58 +290,69 @@ node name : b, decl class : 3
 ===========================================
 def list!
 ID	a	7
-ID	temp	2
-ERROR : There is no such ID.
-ID	a	8
-ERROR : this is a POINTER to structure type or NULL
-ERROR : unary is NULL or unary semantic value->type is null!
-ERROR : assignment value is not same, or LHS value type is not variable!
-ID	a	9
-ID	temp	3
-ERROR : There is no such ID.
-ID	a	10
-ERROR : this is a POINTER to structure type or NULL
-ID	b	3
-ERROR : this is a POINTER to structure type or NULL
-ERROR : unary is NULL or unary semantic value->type is null!
-ERROR : assignment value is not same, or LHS value type is not variable!
-ID	a	11
-ID	temp	4
-ERROR : There is no such ID.
-ID	c	1
-ERROR : this is a POINTER to structure type or NULL
-ERROR : unary is NULL or unary semantic value->type is null!
-ERROR : assignment value is not same, or LHS value type is not variable!
-ID	a	12
-ID	temp	5
-ERROR : There is no such ID.
-ID	b	4
-ERROR : this is a POINTER to structure type or NULL
-ID	a	13
-ERROR : this is a POINTER to structure type or NULL
-ERROR : unary is NULL or unary semantic value->type is null!
-ERROR : assignment value is not same, or LHS value type is not variable!
-ID	a	14
-ID	temp	6
-ERROR : There is no such ID.
-ID	b	5
-ERROR : this is a POINTER to structure type or NULL
-ERROR : unary is NULL or unary semantic value->type is null!
-ERROR : assignment value is not same, or LHS value type is not variable!
-ID	temp	7
-ERROR : There is no such ID.
-ID	b	6
-ERROR : this is a POINTER to structure type or NULL
-ID	temp2	2
-ERROR : assignment value is not same, or LHS value type is not variable!
+makevardecl()
+declare()
+insert ste to scope stack!
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====
 node name : a, decl class : 0
 node name : temp2, decl class : 0
+node name : temp, decl class : 0
 node name : *return, decl class : 3
-=====Final Stack from the top=====
+=====stack #1 from the top=====
 node name : main, decl class : 2
 node name : a, decl class : 0
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : a, decl class : 3
+node name : b, decl class : 3
+===========================================
+def list!
+ID	a	8
+ID	temp	3
+ID	a	9
+ID	a	10
+ID	temp	4
+ID	a	11
+ID	b	4
+ERROR : incomplete type error (This is not struct type!)
+test4.c:15: error:ERROR : unary is NULL or unary semantic value->type is null!
+
+test4.c:15: error:ERROR : assignment value is not same, or LHS value type is not variable!
+
+ID	a	12
+ID	temp	5
+ID	c	1
+ERROR : there is no such field name in this struct!
+test4.c:16: error:ERROR : unary is NULL or unary semantic value->type is null!
+
+test4.c:16: error:ERROR : assignment value is not same, or LHS value type is not variable!
+
+ID	a	13
+ID	temp	6
+ID	b	5
+ID	a	14
+ID	a	15
+ID	temp	7
+ID	b	6
+test4.c:18: error:ERROR : assignment value is not same, or LHS value type is not variable!
+
+ID	temp	8
+ID	b	7
+ID	temp2	2
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : a, decl class : 0
+node name : temp2, decl class : 0
+node name : temp, decl class : 0
+node name : *return, decl class : 3
+=====stack #1 from the top=====
+node name : main, decl class : 2
+node name : a, decl class : 0
+=====Final Stack from the top=====
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
@@ -322,10 +364,12 @@ pop scope
 pop ste
 pop ste
 pop ste
+pop ste
 =============PRINT SCOPE STACK=============
-=====Final Stack from the top=====
+=====stack #0 from the top=====
 node name : main, decl class : 2
 node name : a, decl class : 0
+=====Final Stack from the top=====
 node name : string, decl class : 3
 node name : void, decl class : 3
 node name : char, decl class : 3
