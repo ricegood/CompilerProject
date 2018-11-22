@@ -481,7 +481,7 @@ static const yytype_uint16 yyrline[] =
      427,   428,   431,   434,   443,   444,   451,   454,   462,   465,
      468,   476,   479,   495,   515,   525,   535,   545,   551,   555,
      559,   564,   570,   576,   584,   592,   600,   608,   616,   624,
-     640,   649,   653,   663,   673,   680,   689,   695
+     641,   651,   655,   665,   675,   682,   691,   697
 };
 #endif
 
@@ -1579,7 +1579,7 @@ yyreduce:
                 error_found_in_func_decl = declare((yyvsp[-1].idptr), procdecl);
                 if (!error_found_in_func_decl) {
                     pushscope(); /* for collecting formals */
-                    
+
                     if ((yyvsp[-2].intVal) == 0) // no pointer
                         declare(returnid, (yyvsp[-3].declptr));
                     else // pointer
@@ -2055,35 +2055,37 @@ yyreduce:
             }
             else {
                 printf("ERROR : Can't use operator '&' for non-variable type value.\n");
+                (yyval.declptr) = NULL;
             }
             
         }
-#line 2062 "subc.tab.c" /* yacc.c:1646  */
+#line 2063 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 641 "subc.y" /* yacc.c:1646  */
+#line 642 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[0].declptr) && check_is_pointer_type((yyvsp[0].declptr)->type)) {
                 (yyval.declptr) = makevardecl((yyvsp[0].declptr)->ptrto);
             }
             else {
                 printf("ERROR : Can't use point operator '*' for non-pointer value.\n");
+                (yyval.declptr) = NULL;
             }
         }
-#line 2075 "subc.tab.c" /* yacc.c:1646  */
+#line 2077 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 650 "subc.y" /* yacc.c:1646  */
+#line 652 "subc.y" /* yacc.c:1646  */
     {
             (yyval.declptr) = arrayaccess((yyvsp[-3].declptr), (yyvsp[-1].declptr));
         }
-#line 2083 "subc.tab.c" /* yacc.c:1646  */
+#line 2085 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 654 "subc.y" /* yacc.c:1646  */
+#line 656 "subc.y" /* yacc.c:1646  */
     {
             /* This is only for structure type on $1 */
             if ((yyvsp[-2].declptr) && !check_is_pointer_type((yyvsp[-2].declptr)->type)){
@@ -2093,11 +2095,11 @@ yyreduce:
                 printf("ERROR : this is a POINTER to structure type or NULL\n");
             }
         }
-#line 2097 "subc.tab.c" /* yacc.c:1646  */
+#line 2099 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 664 "subc.y" /* yacc.c:1646  */
+#line 666 "subc.y" /* yacc.c:1646  */
     {
             // [TODO] this is only for pointer to structure type on $1
             if ((yyvsp[-2].declptr) && check_is_pointer_type((yyvsp[-2].declptr)->type)){
@@ -2107,53 +2109,53 @@ yyreduce:
                 printf("ERROR : this is not a pointer to structure type or NULL\n");
             }
         }
-#line 2111 "subc.tab.c" /* yacc.c:1646  */
+#line 2113 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 674 "subc.y" /* yacc.c:1646  */
+#line 676 "subc.y" /* yacc.c:1646  */
     {
             if (check_is_proc((yyvsp[-3].declptr)))
                 (yyval.declptr) = check_function_call((yyvsp[-3].declptr), (yyvsp[-1].declptr));
             else
                 printf ("ERROR : this is not a function!\n");
         }
-#line 2122 "subc.tab.c" /* yacc.c:1646  */
+#line 2124 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 681 "subc.y" /* yacc.c:1646  */
+#line 683 "subc.y" /* yacc.c:1646  */
     {
             if (check_is_proc((yyvsp[-2].declptr)))
                 (yyval.declptr) = check_function_call((yyvsp[-2].declptr), NULL);
             else
                 printf ("ERROR : this is not a function!\n");
         }
-#line 2133 "subc.tab.c" /* yacc.c:1646  */
+#line 2135 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 690 "subc.y" /* yacc.c:1646  */
+#line 692 "subc.y" /* yacc.c:1646  */
     {
             // expr semantic value type is TYPEDECL.
             //$$ = $1;
             (yyval.declptr) = makeconstdecl((yyvsp[0].declptr));
         }
-#line 2143 "subc.tab.c" /* yacc.c:1646  */
+#line 2145 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 696 "subc.y" /* yacc.c:1646  */
+#line 698 "subc.y" /* yacc.c:1646  */
     {
             // [TODO] args,expr 에서 올라오는건 TYPE 이라 next 연결 못함..
             (yyvsp[-2].declptr)->next = makeconstdecl((yyvsp[0].declptr));
             (yyval.declptr) = (yyvsp[-2].declptr);
         }
-#line 2153 "subc.tab.c" /* yacc.c:1646  */
+#line 2155 "subc.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2157 "subc.tab.c" /* yacc.c:1646  */
+#line 2159 "subc.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2381,7 +2383,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 702 "subc.y" /* yacc.c:1906  */
+#line 704 "subc.y" /* yacc.c:1906  */
 
 
 /*  Additional C Codes  */

@@ -244,7 +244,7 @@ func_decl
                 error_found_in_func_decl = declare($3, procdecl);
                 if (!error_found_in_func_decl) {
                     pushscope(); /* for collecting formals */
-                    
+
                     if ($2 == 0) // no pointer
                         declare(returnid, $1);
                     else // pointer
@@ -634,6 +634,7 @@ unary
             }
             else {
                 printf("ERROR : Can't use operator '&' for non-variable type value.\n");
+                $$ = NULL;
             }
             
         }
@@ -644,6 +645,7 @@ unary
             }
             else {
                 printf("ERROR : Can't use point operator '*' for non-pointer value.\n");
+                $$ = NULL;
             }
         }
         | unary '[' expr ']'
