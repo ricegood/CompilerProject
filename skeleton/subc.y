@@ -76,6 +76,7 @@ ext_def_list
 ext_def
         : type_specifier pointers ID ';'
         {
+            printf("filename : %s\n", filename);
             if ($1) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makevardecl($1));

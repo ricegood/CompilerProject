@@ -16,6 +16,8 @@ enum declclass_ {VAR_, CONST_, FUNC_, TYPE_};
 #include <stdlib.h>
 #include <string.h>
 
+char* filename;
+
 /* for scope stack */
 struct node *top;
 struct ste *bottom_ste;

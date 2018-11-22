@@ -2096,7 +2096,9 @@ int main(int argc, char** argv)
 		printf("Can't open input stream!\n");
 		exit(1);
 	}
-	
+
+	filename = argv[1];
+
 	yyparse();
 	fclose(yyin);
 	return 0;

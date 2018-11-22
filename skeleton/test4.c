@@ -1,3 +1,5 @@
+int a;
+
 struct a {
 	struct b {int a;};
 	int a;
