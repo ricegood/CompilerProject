@@ -16,6 +16,7 @@ int is_func_decl = 0;
 int block_number = 0;
 int error_found_in_func_decl = 0;
 int error_found_in_struct_specifier = 0; /* for def_list & error_found flag */
+int return_type_error = 0; /* It can work because func inside func is impossible. no synchronization problem. */
 
 %}
 
@@ -129,6 +130,17 @@ ext_def
                 // delete hash table id also!?
             }
             error_found_in_func_decl = 0;
+
+            /* if return type is wrong, rollback here (remove top ste) */
+            if (return_type_error) {
+                // [TODO] memory leak (free wrong_func_decl)
+                struct ste* wrong_func_decl = popste();
+                printf("rollback: remove wrong func decl (%s)\n", wrong_func_decl->name->name);
+                printscopestack();
+            }
+
+            // reset value
+            return_type_error = 0;
         }
 
 type_specifier
@@ -380,8 +392,10 @@ stmt
                 /* return type check */
                 if (check_same_type(findcurrentdecl(returnid), $2)) {
                     printf("return type is same type!\n");
+                    return_type_error = 0;
                 } else {
                     printf("ERROR : return type error\n");
+                    return_type_error = 1;
                 }
             }
         }
