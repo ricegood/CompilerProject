@@ -92,10 +92,11 @@ ext_def
             printscopestack();
         }
         | func_decl ';'
-        {
+        { 
             //pushscope();
             //pushstelist($1->formalswithreturnid);
             printscopestack();
+            error_found_in_func_decl = 0;
         }
         | type_specifier ';'
         {
@@ -121,6 +122,7 @@ ext_def
                 // [TODO] delete pop using loop (for prevent from memory leak)
                 // delete hash table id also!?
             }
+            error_found_in_func_decl = 0;
         }
 
 type_specifier
@@ -203,8 +205,6 @@ func_decl
             }
             else
                 $$ = NULL;
-
-            error_found_in_func_decl = 0;
         }
         | type_specifier pointers ID '(' VOID ')'
         {
@@ -297,7 +297,7 @@ def_list    /* list of definitions, definition can be type(struct), variable, fu
 def
         : type_specifier pointers ID ';'
         {
-            if ($1 && !error_found_in_struct_specifier) {
+            if ($1 && !error_found_in_struct_specifier && !error_found_in_func_decl) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makevardecl($1));
                 else // pointer 
@@ -309,7 +309,7 @@ def
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
-            if ($1 && !error_found_in_struct_specifier) {
+            if ($1 && !error_found_in_struct_specifier && !error_found_in_func_decl) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
                 else // pointer
@@ -321,7 +321,7 @@ def
         }
         | type_specifier ';'
         {
-            if ($1 && !error_found_in_struct_specifier) {
+            if ($1 && !error_found_in_struct_specifier && !error_found_in_func_decl) {
                 // [TODO] what here?
             }
         }
@@ -330,24 +330,28 @@ def
             //pushscope();
             //pushstelist($1->formalswithreturnid);
             printscopestack();
+            error_found_in_func_decl = 0;
         }
 
 compound_stmt
         : '{'
         {
             // **[TODO] add error_found_in_func_decl flag in this option!!
-
-            if (!is_func_decl || block_number > 0)
-                pushscope();
-            block_number++;
-            printscopestack();
+            if (!error_found_in_func_decl) {
+                if (!is_func_decl || block_number > 0)
+                    pushscope();
+                block_number++;
+                printscopestack();
+            }
         }
         local_defs stmt_list '}'
         {
-            block_number--;
-            if (!is_func_decl || block_number > 0)
-                popscope();
-            printscopestack();
+            if (!error_found_in_func_decl) {
+                block_number--;
+                if (!is_func_decl || block_number > 0)
+                    popscope();
+                printscopestack();
+            }
         }
 
 local_defs  /* local definitions, of which scope is only inside of compound statement */
@@ -366,11 +370,13 @@ stmt
         }
         | RETURN expr ';'
         {   
-            /* return type check */
-            if (check_same_type(findcurrentdecl(returnid), $2)) {
-                printf("return type is same type!\n");
-            } else {
-                printf("ERROR : return type error\n");
+            if (!error_found_in_func_decl) {
+                /* return type check */
+                if (check_same_type(findcurrentdecl(returnid), $2)) {
+                    printf("return type is same type!\n");
+                } else {
+                    printf("ERROR : return type error\n");
+                }
             }
         }
         | ';'
