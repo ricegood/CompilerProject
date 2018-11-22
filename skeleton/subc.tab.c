@@ -2036,7 +2036,7 @@ yyreduce:
   case 80:
 #line 613 "subc.y" /* yacc.c:1646  */
     {
-            if (check_is_pointer_type((yyvsp[0].declptr)->type)) {
+            if ((yyvsp[0].declptr) && check_is_pointer_type((yyvsp[0].declptr)->type)) {
                 (yyval.declptr) = makevardecl((yyvsp[0].declptr)->ptrto);
             }
             else {
@@ -2058,11 +2058,11 @@ yyreduce:
 #line 626 "subc.y" /* yacc.c:1646  */
     {
             /* This is only for structure type on $1 */
-            if (!check_is_pointer_type((yyvsp[-2].declptr)->type)){
+            if ((yyvsp[-2].declptr) && !check_is_pointer_type((yyvsp[-2].declptr)->type)){
                 (yyval.declptr) = structaccess((yyvsp[-2].declptr), (yyvsp[0].idptr));
             }
             else {
-                printf("ERROR : this is a POINTER to structure type!\n");
+                printf("ERROR : this is a POINTER to structure type or NULL\n");
             }
         }
 #line 2069 "subc.tab.c" /* yacc.c:1646  */
@@ -2072,11 +2072,11 @@ yyreduce:
 #line 636 "subc.y" /* yacc.c:1646  */
     {
             // [TODO] this is only for pointer to structure type on $1
-            if (check_is_pointer_type((yyvsp[-2].declptr)->type)){
+            if ((yyvsp[-2].declptr) && check_is_pointer_type((yyvsp[-2].declptr)->type)){
                 (yyval.declptr) = structaccess((yyvsp[-2].declptr), (yyvsp[0].idptr));
             }
             else {
-                printf("ERROR : this is not a pointer to structure type!\n");
+                printf("ERROR : this is not a pointer to structure type or NULL\n");
             }
         }
 #line 2083 "subc.tab.c" /* yacc.c:1646  */

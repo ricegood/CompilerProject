@@ -611,7 +611,7 @@ unary
         }
         | '*' unary %prec '!'
         {
-            if (check_is_pointer_type($2->type)) {
+            if ($2 && check_is_pointer_type($2->type)) {
                 $$ = makevardecl($2->ptrto);
             }
             else {
@@ -625,21 +625,21 @@ unary
         | unary '.' ID
         {
             /* This is only for structure type on $1 */
-            if (!check_is_pointer_type($1->type)){
+            if ($1 && !check_is_pointer_type($1->type)){
                 $$ = structaccess($1, $3);
             }
             else {
-                printf("ERROR : this is a POINTER to structure type!\n");
+                printf("ERROR : this is a POINTER to structure type or NULL\n");
             }
         }
         | unary STRUCTOP ID
         {
             // [TODO] this is only for pointer to structure type on $1
-            if (check_is_pointer_type($1->type)){
+            if ($1 && check_is_pointer_type($1->type)){
                 $$ = structaccess($1, $3);
             }
             else {
-                printf("ERROR : this is not a pointer to structure type!\n");
+                printf("ERROR : this is not a pointer to structure type or NULL\n");
             }
         }
         | unary '(' args ')'
