@@ -99,6 +99,13 @@ struct decl *makestructdecl(struct ste* fields) {
 	new_decl->declclass = TYPE_;
 	new_decl->typeclass = STRUCT_;
 	new_decl->fieldlist = fields;
+	new_decl->formalswithreturnid = current_parsing_function_ste; // which function make this struct
+
+	// check point message //
+	if (new_decl->formalswithreturnid)
+		printf("*** THIS STRUCT's PARENT FUNCTION = %s ***\n", new_decl->formalswithreturnid->name->name);
+	else
+		printf("*** THIS STRUCT's PARENT FUNCTION is GLOBAL\n");
 
 	return new_decl;
 }
@@ -175,9 +182,34 @@ struct decl *makeprocdecl() {
 	return new_decl;
 }
 
+void rollback_struct_of(struct decl* procdecl) {
+	/*
+		scan inttype ste to bottom,
+		if there is struct made by procdecl (can check by using formalswithreturnid->decl)
+		remove the struct.
+	*/
+	struct ste *ste_it = inttype_ste;
+	while (ste_it) {
+		// struct exists
+		struct decl *struct_decl;
+		if (ste_it->prev)
+			struct_decl = ste_it->prev->decl; // can be null
+		else
+			struct_decl = NULL;
 
-
-
+		if (check_is_struct_type(struct_decl) && struct_decl->formalswithreturnid && struct_decl->formalswithreturnid->decl == procdecl) {
+			// remove this struct from stack.
+			// [TODO] memory leak
+			// save ste_it->prev pointer and free it.
+			ste_it->prev = ste_it->prev->prev;
+		}
+		else {
+			if (!ste_it->prev)
+				bottom_ste = ste_it;
+			ste_it = ste_it->prev;
+		}
+	}
+}
 
 
 
@@ -460,6 +492,7 @@ void init_type()
 	printf("==init_type() START==\n");
 
 	top = NULL;
+	current_parsing_function_ste = NULL;
 
 	inttype = maketypedecl(INT_);
 	chartype = maketypedecl(CHAR_);
@@ -470,6 +503,7 @@ void init_type()
 	pushscope();
 
 	bottom_ste = insert(enter(KEYWORD, "int", 3), inttype); // set bottom ste
+	inttype_ste = bottom_ste; // fixed inttype ste pointer
 	insert(enter(KEYWORD, "char", 4), chartype);
 	insert(enter(KEYWORD, "void", 4), voidtype);
 	insert(enter(KEYWORD, "string", 6), stringtype);

@@ -28,6 +28,9 @@ struct decl *stringtype;
 struct decl *nulltype;
 struct id *returnid;
 
+struct ste *inttype_ste; // fixed ste pointer
+struct ste *current_parsing_function_ste; // for check which function make struct
+
 /* structure for IDs */
 typedef struct id {
 	int lexType;
@@ -49,16 +52,19 @@ typedef struct decl {
 	int value;
 	float real_value;
 	struct ste *formals;
-	struct ste *formalswithreturnid; /* add this for procdecl (FUNC decl) return type check */
 	struct decl *returntype;
 	int typeclass;
 	struct decl *elementvar;
 	int num_index;
 	struct ste *fieldlist;
-	struct decl *ptrto;
+	struct decl *ptrto;	
 	int size;
 	struct ste **scope;
 	struct decl *next;
+
+	/* (FUNC) add this for procdecl (FUNC decl) return type check */
+	/* (STRUCT) use this field for which function made the struct. */
+	struct ste *formalswithreturnid;
 } decl;
 
 /* For hash table */
@@ -98,14 +104,19 @@ struct decl *makefloatconstdecl(struct decl* typedecl, float value);
 struct decl *makeptrdecl(struct decl* typedecl);
 struct decl *makeprocdecl();
 struct decl *makestructdecl();
+
+void rollback_struct_of(struct decl* procdecl);
+
 struct decl *findcurrentdecl(struct id* id_ptr); // return last pushed decl (global scope)
 struct ste *findcurrentdecls(struct id* id_ptr); // return linked list of ste (global scope)
 struct ste *findcurrentdecls_local(struct id* id_ptr); // return linked list of ste (local scope)
+
 struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr);
 struct decl *structaccess(struct decl* struct_ptr, struct id* field_id);
 struct decl *plustype(struct decl* typedecl1, struct decl* typedecl2);
 
 void add_type_to_var(struct decl* typedecl, struct decl* var_list);
+
 int check_redeclaration(struct id* id_ptr, struct decl* decl_ptr);
 int check_is_type(struct decl* decl_ptr);
 int check_is_struct_type(struct decl* decl_ptr);

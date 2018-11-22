@@ -104,6 +104,7 @@ ext_def
             //pushstelist($1->formalswithreturnid);
             printscopestack();
             error_found_in_func_decl = 0;
+            current_parsing_function_ste = NULL;
         }
         | type_specifier ';'
         {
@@ -129,18 +130,20 @@ ext_def
                 // [TODO] delete pop using loop (for prevent from memory leak)
                 // delete hash table id also!?
             }
-            error_found_in_func_decl = 0;
 
             /* if return type is wrong, rollback here (remove top ste) */
             if (return_type_error) {
                 // [TODO] memory leak (free wrong_func_decl)
                 struct ste* wrong_func_decl = popste();
+                rollback_struct_of($1);
                 printf("rollback: remove wrong func decl (%s)\n", wrong_func_decl->name->name);
                 printscopestack();
             }
 
             // reset value
+            error_found_in_func_decl = 0;
             return_type_error = 0;
+            current_parsing_function_ste = NULL;
         }
 
 type_specifier
@@ -197,7 +200,9 @@ func_decl
                 struct decl *procdecl = makeprocdecl();
                 error_found_in_func_decl = declare($3, procdecl);
                 if (!error_found_in_func_decl) {
+                    current_parsing_function_ste = top->data; // get last inserted ste (= procdecl ste)
                     pushscope(); /* for collecting formals */
+                    // [TODO] pointer handling (just like def!)
                     declare(returnid, $1);
 
                     // no formals
@@ -236,6 +241,7 @@ func_decl
                 error_found_in_func_decl = declare($3, procdecl);
                 if (!error_found_in_func_decl) {
                     pushscope(); /* for collecting formals */
+                    // [TODO] pointer handling
                     declare(returnid, $1);
                     $<declptr>$ = procdecl;
                 }
@@ -349,6 +355,7 @@ def
             //pushstelist($1->formalswithreturnid);
             printscopestack();
             error_found_in_func_decl = 0;
+            current_parsing_function_ste = NULL;
         }
 
 compound_stmt
