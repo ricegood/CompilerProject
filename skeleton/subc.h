@@ -24,6 +24,8 @@ struct decl *nulltype;
 struct id *returnid;
 int is_func_decl;
 int block_number;
+int error_found_in_func_decl;
+int error_found_in_struct_specifier; /* for def_list & error_found flag */
 
 /* structure for IDs */
 typedef struct id {
@@ -83,7 +85,7 @@ struct ste *popste();
 
 
 // For symbol table declaration
-void declare(struct id* id_ptr, struct decl* decl_ptr);
+int declare(struct id* id_ptr, struct decl* decl_ptr); /* return error_found */
 
 struct decl *maketypedecl(int typeclass);
 struct decl *makevardecl(struct decl* typedecl);

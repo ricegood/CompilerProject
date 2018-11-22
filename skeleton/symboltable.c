@@ -8,20 +8,25 @@
 #include "subc.h"
 
 /* Make ste and add to symbol table (ste stack linked list) */
-void declare(struct id* id_ptr, struct decl* decl_ptr) {
+int declare(struct id* id_ptr, struct decl* decl_ptr) {
+	/* return error_found */
 	printf("declare()\n");
 	if (!id_ptr || !decl_ptr) {
 		printf("ERROR : declare failed! id_ptr or decl_ptr is null!\n");
+		return 1;
 	}
 
 	else if (check_redeclaration(id_ptr, decl_ptr)) {
 		printf("ERROR : redeclaration of same variables at same scope!\n");
+		return 1;
 		// [TODO] memory leak (free ptr)
 	}
 
-	else
+	else{
 		// add to ste stack linked list
 		insert(id_ptr, decl_ptr);
+		return 0;
+	}
 }
 
 
@@ -461,6 +466,11 @@ void init_type()
 	// actually this declaration does't need for every int,char..w
 
 	returnid = enter(KEYWORD, "*return", 7);
+
+	is_func_decl = 0;
+	block_number = 0;
+	error_found_in_func_decl = 0;
+	error_found_in_struct_specifier = 0;
 
 	printf("==init_type() END==\n");
 }

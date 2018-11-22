@@ -131,19 +131,31 @@ type_specifier
 struct_specifier
         : STRUCT ID '{'
         {
-            pushscope();
-            printscopestack();
+            decl *structdecl = makestructdecl(NULL);
+            error_found_in_struct_specifier = declare($2, structdecl);
+            if (!error_found_in_struct_specifier) {
+                pushscope();
+                printscopestack();
+            }
+            $<declptr>$ = structdecl;
         }
         def_list
-        {
-            printscopestack();
-            struct ste *fields = popscope();
-            printscopestack();
-            declare($2, ($<declptr>$ = makestructdecl(fields)));
-            printscopestack();
+        {   
+            if (!error_found_in_struct_specifier) {
+                struct decl *structdecl = $<declptr>4;
+                printscopestack();
+                struct ste *fields = popscope();
+                printscopestack();
+                structdecl->fieldlist = fields;
+                $<declptr>$ = structdecl;
+                printscopestack();
+            }
+            else
+                $<declptr>6 = NULL;
         }
         '}'
         {
+            error_found_in_struct_specifier = 0;
             $$ = $<declptr>6;
         }
         | STRUCT ID
@@ -161,30 +173,38 @@ struct_specifier
 func_decl
         : type_specifier pointers ID '(' ')'
         {
-            if ($1) {
+            if ($1 && !error_found_in_struct_specifier) {
                 struct decl *procdecl = makeprocdecl();
-                declare($3, procdecl);
-                pushscope(); /* for collecting formals */
-                declare(returnid, $1);
+                error_found_in_func_decl = declare($3, procdecl);
+                if (!error_found_in_func_decl) {
+                    pushscope(); /* for collecting formals */
+                    declare(returnid, $1);
 
-                // no formals
+                    // no formals
 
-                struct ste *formals;
-                formals = popscope();
+                    struct ste *formals;
+                    formals = popscope();
 
-                /* formals->decl is always returnid decl with return type*/
-                procdecl->formalswithreturnid = formals;
-                procdecl->returntype = formals->decl;
-                procdecl->formals = formals->prev; // null in this production
-                
-                /* error ; struct_specifier returns NULL, because this is not a struct*/
-                if (procdecl->returntype == NULL)
-                    printf("ERROR : this is not a struct\n");
+                    /* formals->decl is always returnid decl with return type*/
+                    procdecl->formalswithreturnid = formals;
+                    procdecl->returntype = formals->decl;
+                    procdecl->formals = formals->prev; // null in this production
+                    
+                    /* error ; struct_specifier returns NULL, because this is not a struct*/
+                    if (procdecl->returntype == NULL)
+                        printf("ERROR : this is not a struct\n");
 
-                $$ = procdecl;
+                    $$ = procdecl;
+                }
+                else {
+                    // ERROR : redeclaration of same variables at same scope!
+                    $$ = NULL;
+                }
             }
             else
                 $$ = NULL;
+
+            error_found_in_func_decl = 0;
         }
         | type_specifier pointers ID '(' VOID ')'
         {
@@ -192,17 +212,20 @@ func_decl
         }
         | type_specifier pointers ID '(' 
         {
-            if ($1) {
+            error_found_in_func_decl = 1;
+            if ($1 && !error_found_in_struct_specifier) {
                 struct decl *procdecl = makeprocdecl();
-                declare($3, procdecl);
-                pushscope(); /* for collecting formals */
-                declare(returnid, $1);
-                $<declptr>$ = procdecl;
+                error_found_in_func_decl = declare($3, procdecl);
+                if (!error_found_in_func_decl) {
+                    pushscope(); /* for collecting formals */
+                    declare(returnid, $1);
+                    $<declptr>$ = procdecl;
+                }
             }
         }
         param_list ')'
         {
-            if ($1) {
+            if ($1 && !error_found_in_func_decl) {
                 struct ste *formals;
                 struct decl *procdecl = $<declptr>5;
                 formals = popscope();
@@ -226,6 +249,8 @@ func_decl
             }
             else
                 $$ = NULL;
+
+            error_found_in_func_decl = 0;
         }
 
 pointers
@@ -239,7 +264,7 @@ param_list  /* list of formal parameter declaration */
 param_decl  /* formal parameter declaration */
         : type_specifier pointers ID
         {   
-            if ($1) {
+            if ($1 && !error_found_in_func_decl) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makevardecl($1));
                 else // pointer
@@ -251,7 +276,7 @@ param_decl  /* formal parameter declaration */
         }
         | type_specifier pointers ID '[' const_expr ']'
         {
-            if ($1) {
+            if ($1 && !error_found_in_func_decl) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
                 else // pointer
@@ -272,7 +297,7 @@ def_list    /* list of definitions, definition can be type(struct), variable, fu
 def
         : type_specifier pointers ID ';'
         {
-            if ($1) {
+            if ($1 && !error_found_in_struct_specifier) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makevardecl($1));
                 else // pointer 
@@ -284,7 +309,7 @@ def
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
-            if ($1) {
+            if ($1 && !error_found_in_struct_specifier) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
                 else // pointer
@@ -296,7 +321,9 @@ def
         }
         | type_specifier ';'
         {
-            // [TODO] what here?
+            if ($1 && !error_found_in_struct_specifier) {
+                // [TODO] what here?
+            }
         }
         | func_decl ';'
         {
