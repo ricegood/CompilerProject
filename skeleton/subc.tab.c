@@ -76,8 +76,14 @@ int    yylex ();
 int    yyerror (char* s);
 void   REDUCE(char* s);
 
+/* flag for subc.y */
+int is_func_decl = 0;
+int block_number = 0;
+int error_found_in_func_decl = 0;
+int error_found_in_struct_specifier = 0; /* for def_list & error_found flag */
 
-#line 81 "subc.tab.c" /* yacc.c:339  */
+
+#line 87 "subc.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -142,7 +148,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 17 "subc.y" /* yacc.c:355  */
+#line 23 "subc.y" /* yacc.c:355  */
 
     int intVal;
     char *stringVal;
@@ -150,7 +156,7 @@ union YYSTYPE
     struct decl *declptr;
     struct ste *steptr;
 
-#line 154 "subc.tab.c" /* yacc.c:355  */
+#line 160 "subc.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -167,7 +173,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 171 "subc.tab.c" /* yacc.c:358  */
+#line 177 "subc.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -466,15 +472,15 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    61,    61,    65,    66,    70,    82,    94,   101,   106,
-     105,   129,   130,   131,   135,   145,   134,   163,   176,   209,
-     214,   213,   257,   258,   261,   262,   265,   277,   291,   295,
-     298,   310,   322,   328,   338,   337,   358,   361,   362,   365,
-     366,   367,   371,   382,   383,   384,   385,   386,   387,   388,
-     393,   394,   397,   400,   409,   410,   417,   420,   428,   431,
-     434,   442,   445,   461,   481,   491,   501,   511,   517,   521,
-     525,   530,   536,   542,   550,   558,   566,   574,   582,   590,
-     606,   615,   619,   629,   639,   646,   655,   661
+       0,    67,    67,    71,    72,    76,    88,   100,   107,   112,
+     111,   135,   136,   137,   141,   151,   140,   169,   182,   215,
+     220,   219,   263,   264,   267,   268,   271,   283,   297,   301,
+     304,   316,   328,   334,   344,   343,   364,   367,   368,   371,
+     372,   373,   377,   388,   389,   390,   391,   392,   393,   394,
+     399,   400,   403,   406,   415,   416,   423,   426,   434,   437,
+     440,   448,   451,   467,   487,   497,   507,   517,   523,   527,
+     531,   536,   542,   548,   556,   564,   572,   580,   588,   596,
+     612,   621,   625,   635,   645,   652,   661,   667
 };
 #endif
 
@@ -1363,7 +1369,7 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 71 "subc.y" /* yacc.c:1646  */
+#line 77 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[-3].declptr)) {
                 if ((yyvsp[-2].intVal) == 0) // no pointer
@@ -1375,11 +1381,11 @@ yyreduce:
                 (yyval.declptr) = NULL;
             printscopestack();
         }
-#line 1379 "subc.tab.c" /* yacc.c:1646  */
+#line 1385 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 83 "subc.y" /* yacc.c:1646  */
+#line 89 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[-6].declptr)) {
                 if ((yyvsp[-5].intVal) == 0) // no pointer
@@ -1391,30 +1397,30 @@ yyreduce:
                 (yyval.declptr) = NULL;
             printscopestack();
         }
-#line 1395 "subc.tab.c" /* yacc.c:1646  */
+#line 1401 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 95 "subc.y" /* yacc.c:1646  */
+#line 101 "subc.y" /* yacc.c:1646  */
     { 
             //pushscope();
             //pushstelist($1->formalswithreturnid);
             printscopestack();
             error_found_in_func_decl = 0;
         }
-#line 1406 "subc.tab.c" /* yacc.c:1646  */
+#line 1412 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 102 "subc.y" /* yacc.c:1646  */
+#line 108 "subc.y" /* yacc.c:1646  */
     {
             // [TODO] what here?
         }
-#line 1414 "subc.tab.c" /* yacc.c:1646  */
+#line 1420 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 106 "subc.y" /* yacc.c:1646  */
+#line 112 "subc.y" /* yacc.c:1646  */
     {   
             if ((yyvsp[0].declptr)) {
                 pushscope();
@@ -1424,11 +1430,11 @@ yyreduce:
                 block_number = 0;
             }
         }
-#line 1428 "subc.tab.c" /* yacc.c:1646  */
+#line 1434 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 116 "subc.y" /* yacc.c:1646  */
+#line 122 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[-2].declptr)) {
                 is_func_decl = 0;
@@ -1440,11 +1446,11 @@ yyreduce:
             }
             error_found_in_func_decl = 0;
         }
-#line 1444 "subc.tab.c" /* yacc.c:1646  */
+#line 1450 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 135 "subc.y" /* yacc.c:1646  */
+#line 141 "subc.y" /* yacc.c:1646  */
     {
             decl *structdecl = makestructdecl(NULL);
             error_found_in_struct_specifier = declare((yyvsp[-1].idptr), structdecl);
@@ -1454,11 +1460,11 @@ yyreduce:
             }
             (yyval.declptr) = structdecl;
         }
-#line 1458 "subc.tab.c" /* yacc.c:1646  */
+#line 1464 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 145 "subc.y" /* yacc.c:1646  */
+#line 151 "subc.y" /* yacc.c:1646  */
     {   
             if (!error_found_in_struct_specifier) {
                 struct decl *structdecl = (yyvsp[-1].declptr);
@@ -1472,20 +1478,20 @@ yyreduce:
             else
                 (yyval.declptr) = NULL;
         }
-#line 1476 "subc.tab.c" /* yacc.c:1646  */
+#line 1482 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 159 "subc.y" /* yacc.c:1646  */
+#line 165 "subc.y" /* yacc.c:1646  */
     {
             error_found_in_struct_specifier = 0;
             (yyval.declptr) = (yyvsp[-1].declptr);
         }
-#line 1485 "subc.tab.c" /* yacc.c:1646  */
+#line 1491 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 164 "subc.y" /* yacc.c:1646  */
+#line 170 "subc.y" /* yacc.c:1646  */
     {
             struct decl *decl_ptr = findcurrentdecl((yyvsp[0].idptr));
             if(decl_ptr != NULL && (check_is_struct_type(decl_ptr) == 1)){
@@ -1496,11 +1502,11 @@ yyreduce:
                 printf("ERROR : incomplete type error (this is not struct type)\n");
             }
         }
-#line 1500 "subc.tab.c" /* yacc.c:1646  */
+#line 1506 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 177 "subc.y" /* yacc.c:1646  */
+#line 183 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[-4].declptr) && !error_found_in_struct_specifier) {
                 struct decl *procdecl = makeprocdecl();
@@ -1533,19 +1539,19 @@ yyreduce:
             else
                 (yyval.declptr) = NULL;
         }
-#line 1537 "subc.tab.c" /* yacc.c:1646  */
+#line 1543 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 210 "subc.y" /* yacc.c:1646  */
+#line 216 "subc.y" /* yacc.c:1646  */
     {
             // [TODO] what is VOID???????
         }
-#line 1545 "subc.tab.c" /* yacc.c:1646  */
+#line 1551 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 214 "subc.y" /* yacc.c:1646  */
+#line 220 "subc.y" /* yacc.c:1646  */
     {
             error_found_in_func_decl = 1;
             if ((yyvsp[-3].declptr) && !error_found_in_struct_specifier) {
@@ -1558,11 +1564,11 @@ yyreduce:
                 }
             }
         }
-#line 1562 "subc.tab.c" /* yacc.c:1646  */
+#line 1568 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 227 "subc.y" /* yacc.c:1646  */
+#line 233 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[-6].declptr) && !error_found_in_func_decl) {
                 struct ste *formals;
@@ -1591,23 +1597,23 @@ yyreduce:
 
             error_found_in_func_decl = 0;
         }
-#line 1595 "subc.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 22:
-#line 257 "subc.y" /* yacc.c:1646  */
-    { (yyval.intVal) = 1; }
 #line 1601 "subc.tab.c" /* yacc.c:1646  */
     break;
 
-  case 23:
-#line 258 "subc.y" /* yacc.c:1646  */
-    { (yyval.intVal) = 0; }
+  case 22:
+#line 263 "subc.y" /* yacc.c:1646  */
+    { (yyval.intVal) = 1; }
 #line 1607 "subc.tab.c" /* yacc.c:1646  */
     break;
 
+  case 23:
+#line 264 "subc.y" /* yacc.c:1646  */
+    { (yyval.intVal) = 0; }
+#line 1613 "subc.tab.c" /* yacc.c:1646  */
+    break;
+
   case 26:
-#line 266 "subc.y" /* yacc.c:1646  */
+#line 272 "subc.y" /* yacc.c:1646  */
     {   
             if ((yyvsp[-2].declptr) && !error_found_in_func_decl) {
                 if ((yyvsp[-1].intVal) == 0) // no pointer
@@ -1619,11 +1625,11 @@ yyreduce:
                 (yyval.declptr) = NULL;
             printscopestack();
         }
-#line 1623 "subc.tab.c" /* yacc.c:1646  */
+#line 1629 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 278 "subc.y" /* yacc.c:1646  */
+#line 284 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[-5].declptr) && !error_found_in_func_decl) {
                 if ((yyvsp[-4].intVal) == 0) // no pointer
@@ -1635,19 +1641,19 @@ yyreduce:
                 (yyval.declptr) = NULL;
             printscopestack();
         }
-#line 1639 "subc.tab.c" /* yacc.c:1646  */
+#line 1645 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 292 "subc.y" /* yacc.c:1646  */
+#line 298 "subc.y" /* yacc.c:1646  */
     {
             printf("def list!\n");
         }
-#line 1647 "subc.tab.c" /* yacc.c:1646  */
+#line 1653 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 299 "subc.y" /* yacc.c:1646  */
+#line 305 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[-3].declptr) && !error_found_in_struct_specifier && !error_found_in_func_decl) {
                 if ((yyvsp[-2].intVal) == 0) // no pointer
@@ -1659,11 +1665,11 @@ yyreduce:
                 (yyval.declptr) = NULL;
             printscopestack();
         }
-#line 1663 "subc.tab.c" /* yacc.c:1646  */
+#line 1669 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 311 "subc.y" /* yacc.c:1646  */
+#line 317 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[-6].declptr) && !error_found_in_struct_specifier && !error_found_in_func_decl) {
                 if ((yyvsp[-5].intVal) == 0) // no pointer
@@ -1675,32 +1681,32 @@ yyreduce:
                 (yyval.declptr) = NULL;
             printscopestack();
         }
-#line 1679 "subc.tab.c" /* yacc.c:1646  */
+#line 1685 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 323 "subc.y" /* yacc.c:1646  */
+#line 329 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[-1].declptr) && !error_found_in_struct_specifier && !error_found_in_func_decl) {
                 // [TODO] what here?
             }
         }
-#line 1689 "subc.tab.c" /* yacc.c:1646  */
+#line 1695 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 329 "subc.y" /* yacc.c:1646  */
+#line 335 "subc.y" /* yacc.c:1646  */
     {
             //pushscope();
             //pushstelist($1->formalswithreturnid);
             printscopestack();
             error_found_in_func_decl = 0;
         }
-#line 1700 "subc.tab.c" /* yacc.c:1646  */
+#line 1706 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 338 "subc.y" /* yacc.c:1646  */
+#line 344 "subc.y" /* yacc.c:1646  */
     {
             // **[TODO] add error_found_in_func_decl flag in this option!!
             if (!error_found_in_func_decl) {
@@ -1710,11 +1716,11 @@ yyreduce:
                 printscopestack();
             }
         }
-#line 1714 "subc.tab.c" /* yacc.c:1646  */
+#line 1720 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 348 "subc.y" /* yacc.c:1646  */
+#line 354 "subc.y" /* yacc.c:1646  */
     {
             if (!error_found_in_func_decl) {
                 block_number--;
@@ -1723,19 +1729,19 @@ yyreduce:
                 printscopestack();
             }
         }
-#line 1727 "subc.tab.c" /* yacc.c:1646  */
+#line 1733 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 368 "subc.y" /* yacc.c:1646  */
+#line 374 "subc.y" /* yacc.c:1646  */
     {
 
         }
-#line 1735 "subc.tab.c" /* yacc.c:1646  */
+#line 1741 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 372 "subc.y" /* yacc.c:1646  */
+#line 378 "subc.y" /* yacc.c:1646  */
     {   
             if (!error_found_in_func_decl) {
                 /* return type check */
@@ -1746,11 +1752,11 @@ yyreduce:
                 }
             }
         }
-#line 1750 "subc.tab.c" /* yacc.c:1646  */
+#line 1756 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 401 "subc.y" /* yacc.c:1646  */
+#line 407 "subc.y" /* yacc.c:1646  */
     {
             /* assignment */
             // should have same type (ppt 23p) & not const! (=>check_is_var)
@@ -1759,20 +1765,20 @@ yyreduce:
             else
                 printf("ERROR : assignment value is not same, or LHS value type is not variable!\n");
         }
-#line 1763 "subc.tab.c" /* yacc.c:1646  */
+#line 1769 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 411 "subc.y" /* yacc.c:1646  */
+#line 417 "subc.y" /* yacc.c:1646  */
     {
             // [TODO]
             (yyval.declptr) = nulltype;
         }
-#line 1772 "subc.tab.c" /* yacc.c:1646  */
+#line 1778 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 421 "subc.y" /* yacc.c:1646  */
+#line 427 "subc.y" /* yacc.c:1646  */
     {
             /* only for int type */
             if (check_same_type((yyvsp[-2].declptr), inttype) && check_same_type((yyvsp[0].declptr), inttype))
@@ -1780,11 +1786,11 @@ yyreduce:
             else
                 printf("ERROR : '||' operator is only for int type!\n");
         }
-#line 1784 "subc.tab.c" /* yacc.c:1646  */
+#line 1790 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 435 "subc.y" /* yacc.c:1646  */
+#line 441 "subc.y" /* yacc.c:1646  */
     {
             /* only for int type */
             if (check_same_type((yyvsp[-2].declptr), inttype) && check_same_type((yyvsp[0].declptr), inttype))
@@ -1792,11 +1798,11 @@ yyreduce:
             else
                 printf("ERROR : '&&' operator is only for int type!\n");
         }
-#line 1796 "subc.tab.c" /* yacc.c:1646  */
+#line 1802 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 446 "subc.y" /* yacc.c:1646  */
+#line 452 "subc.y" /* yacc.c:1646  */
     {
             /* char RELOP char */
             if (check_same_type((yyvsp[-2].declptr), chartype) && check_same_type((yyvsp[0].declptr), chartype))
@@ -1812,11 +1818,11 @@ yyreduce:
                 (yyval.declptr) = NULL;
             }
         }
-#line 1816 "subc.tab.c" /* yacc.c:1646  */
+#line 1822 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 462 "subc.y" /* yacc.c:1646  */
+#line 468 "subc.y" /* yacc.c:1646  */
     {
             /* char EQUOP char */
             if (check_same_type((yyvsp[-2].declptr), chartype) && check_same_type((yyvsp[0].declptr), chartype))
@@ -1836,11 +1842,11 @@ yyreduce:
                 (yyval.declptr) = NULL;
             }
         }
-#line 1840 "subc.tab.c" /* yacc.c:1646  */
+#line 1846 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 482 "subc.y" /* yacc.c:1646  */
+#line 488 "subc.y" /* yacc.c:1646  */
     {
             // [TODO] is it only okay for int+int ?
             // then, plustype is always inttype ?
@@ -1850,11 +1856,11 @@ yyreduce:
             else
                 printf("ERROR : binary '+' operands are only for integer!\n");
         }
-#line 1854 "subc.tab.c" /* yacc.c:1646  */
+#line 1860 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 492 "subc.y" /* yacc.c:1646  */
+#line 498 "subc.y" /* yacc.c:1646  */
     {
             // [TODO] is it only okay for int-int ?
             // then, plustype is always inttype ?
@@ -1864,11 +1870,11 @@ yyreduce:
             else
                 printf("ERROR : binary '-' operands are only for integer!\n");
         }
-#line 1868 "subc.tab.c" /* yacc.c:1646  */
+#line 1874 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 502 "subc.y" /* yacc.c:1646  */
+#line 508 "subc.y" /* yacc.c:1646  */
     {   
             if ((yyvsp[0].declptr) && (yyvsp[0].declptr)->type)
                 (yyval.declptr) = (yyvsp[0].declptr)->type;
@@ -1876,67 +1882,67 @@ yyreduce:
                 printf("ERROR : unary is NULL or unary semantic value->type is null!\n");
             }
         }
-#line 1880 "subc.tab.c" /* yacc.c:1646  */
+#line 1886 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 512 "subc.y" /* yacc.c:1646  */
+#line 518 "subc.y" /* yacc.c:1646  */
     {
             // [TODO] problem : expr is type decl....
             // unary is just decl...
             (yyval.declptr) = makeconstdecl((yyvsp[-1].declptr));
         }
-#line 1890 "subc.tab.c" /* yacc.c:1646  */
+#line 1896 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 518 "subc.y" /* yacc.c:1646  */
+#line 524 "subc.y" /* yacc.c:1646  */
     {
             (yyval.declptr) = (yyvsp[-1].declptr);
         }
-#line 1898 "subc.tab.c" /* yacc.c:1646  */
+#line 1904 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 522 "subc.y" /* yacc.c:1646  */
+#line 528 "subc.y" /* yacc.c:1646  */
     {
             (yyval.declptr) = makeintconstdecl(inttype, (yyvsp[0].intVal));
         }
-#line 1906 "subc.tab.c" /* yacc.c:1646  */
+#line 1912 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 526 "subc.y" /* yacc.c:1646  */
+#line 532 "subc.y" /* yacc.c:1646  */
     {   
             // [TODO] how about value ?
             (yyval.declptr) = makeconstdecl(chartype);
         }
-#line 1915 "subc.tab.c" /* yacc.c:1646  */
+#line 1921 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 531 "subc.y" /* yacc.c:1646  */
+#line 537 "subc.y" /* yacc.c:1646  */
     {
             // [TODO] how about value ?
             // [Q] is this const ???
             (yyval.declptr) = makeconstdecl(stringtype);
         }
-#line 1925 "subc.tab.c" /* yacc.c:1646  */
+#line 1931 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 536 "subc.y" /* yacc.c:1646  */
+#line 542 "subc.y" /* yacc.c:1646  */
     {
             // find ID
             (yyval.declptr) = findcurrentdecl((yyvsp[0].idptr));
             if (!(yyval.declptr))
                 printf("ERROR : There is no such ID.\n");
         }
-#line 1936 "subc.tab.c" /* yacc.c:1646  */
+#line 1942 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 543 "subc.y" /* yacc.c:1646  */
+#line 549 "subc.y" /* yacc.c:1646  */
     {   
             /* only integer */
             if (check_same_type_for_unary((yyvsp[0].declptr), inttype))
@@ -1944,11 +1950,11 @@ yyreduce:
             else
                 printf("ERROR : '-' operator is only for integer.\n");
         }
-#line 1948 "subc.tab.c" /* yacc.c:1646  */
+#line 1954 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 551 "subc.y" /* yacc.c:1646  */
+#line 557 "subc.y" /* yacc.c:1646  */
     {
             /* only for int type */
             if (check_same_type_for_unary((yyvsp[0].declptr), inttype))
@@ -1956,11 +1962,11 @@ yyreduce:
             else
                 printf("ERROR : '!' operator is only for int type!\n");
         }
-#line 1960 "subc.tab.c" /* yacc.c:1646  */
+#line 1966 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 559 "subc.y" /* yacc.c:1646  */
+#line 565 "subc.y" /* yacc.c:1646  */
     {
             /* only char, integer */
             if (check_same_type_for_unary((yyvsp[-1].declptr), inttype) || check_same_type_for_unary((yyvsp[-1].declptr), chartype))
@@ -1968,11 +1974,11 @@ yyreduce:
             else
                 printf("ERROR : unary INCOP operator is only for char or integer.\n");
         }
-#line 1972 "subc.tab.c" /* yacc.c:1646  */
+#line 1978 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 567 "subc.y" /* yacc.c:1646  */
+#line 573 "subc.y" /* yacc.c:1646  */
     {
             /* only char, integer */
             if (check_same_type_for_unary((yyvsp[-1].declptr), inttype) || check_same_type_for_unary((yyvsp[-1].declptr), chartype))
@@ -1980,11 +1986,11 @@ yyreduce:
             else
                 printf("ERROR : unary DECOP operator is only for char or integer.\n");
         }
-#line 1984 "subc.tab.c" /* yacc.c:1646  */
+#line 1990 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 575 "subc.y" /* yacc.c:1646  */
+#line 581 "subc.y" /* yacc.c:1646  */
     {
             /* only char, integer */
             if (check_same_type_for_unary((yyvsp[0].declptr), inttype) || check_same_type_for_unary((yyvsp[0].declptr), chartype))
@@ -1992,11 +1998,11 @@ yyreduce:
             else
                 printf("ERROR : unary INCOP operator is only for char or integer.\n");
         }
-#line 1996 "subc.tab.c" /* yacc.c:1646  */
+#line 2002 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 583 "subc.y" /* yacc.c:1646  */
+#line 589 "subc.y" /* yacc.c:1646  */
     {
             /* only char, integer */
             if (check_same_type_for_unary((yyvsp[0].declptr), inttype) || check_same_type_for_unary((yyvsp[0].declptr), chartype))
@@ -2004,11 +2010,11 @@ yyreduce:
             else
                 printf("ERROR : unary DECOP operator is only for char or integer.\n");
         }
-#line 2008 "subc.tab.c" /* yacc.c:1646  */
+#line 2014 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 591 "subc.y" /* yacc.c:1646  */
+#line 597 "subc.y" /* yacc.c:1646  */
     {
             // [TODO]
             /*
@@ -2024,11 +2030,11 @@ yyreduce:
             }
             
         }
-#line 2028 "subc.tab.c" /* yacc.c:1646  */
+#line 2034 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 607 "subc.y" /* yacc.c:1646  */
+#line 613 "subc.y" /* yacc.c:1646  */
     {
             if (check_is_pointer_type((yyvsp[0].declptr)->type)) {
                 (yyval.declptr) = makevardecl((yyvsp[0].declptr)->ptrto);
@@ -2037,19 +2043,19 @@ yyreduce:
                 printf("ERROR : Can't use point operator '*' for non-pointer value.\n");
             }
         }
-#line 2041 "subc.tab.c" /* yacc.c:1646  */
+#line 2047 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 616 "subc.y" /* yacc.c:1646  */
+#line 622 "subc.y" /* yacc.c:1646  */
     {
             (yyval.declptr) = arrayaccess((yyvsp[-3].declptr), (yyvsp[-1].declptr));
         }
-#line 2049 "subc.tab.c" /* yacc.c:1646  */
+#line 2055 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 620 "subc.y" /* yacc.c:1646  */
+#line 626 "subc.y" /* yacc.c:1646  */
     {
             /* This is only for structure type on $1 */
             if (!check_is_pointer_type((yyvsp[-2].declptr)->type)){
@@ -2059,11 +2065,11 @@ yyreduce:
                 printf("ERROR : this is a POINTER to structure type!\n");
             }
         }
-#line 2063 "subc.tab.c" /* yacc.c:1646  */
+#line 2069 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 630 "subc.y" /* yacc.c:1646  */
+#line 636 "subc.y" /* yacc.c:1646  */
     {
             // [TODO] this is only for pointer to structure type on $1
             if (check_is_pointer_type((yyvsp[-2].declptr)->type)){
@@ -2073,53 +2079,53 @@ yyreduce:
                 printf("ERROR : this is not a pointer to structure type!\n");
             }
         }
-#line 2077 "subc.tab.c" /* yacc.c:1646  */
+#line 2083 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 640 "subc.y" /* yacc.c:1646  */
+#line 646 "subc.y" /* yacc.c:1646  */
     {
             if (check_is_proc((yyvsp[-3].declptr)))
                 (yyval.declptr) = check_function_call((yyvsp[-3].declptr), (yyvsp[-1].declptr));
             else
                 printf ("ERROR : this is not a function!\n");
         }
-#line 2088 "subc.tab.c" /* yacc.c:1646  */
+#line 2094 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 647 "subc.y" /* yacc.c:1646  */
+#line 653 "subc.y" /* yacc.c:1646  */
     {
             if (check_is_proc((yyvsp[-2].declptr)))
                 (yyval.declptr) = check_function_call((yyvsp[-2].declptr), NULL);
             else
                 printf ("ERROR : this is not a function!\n");
         }
-#line 2099 "subc.tab.c" /* yacc.c:1646  */
+#line 2105 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 656 "subc.y" /* yacc.c:1646  */
+#line 662 "subc.y" /* yacc.c:1646  */
     {
             // expr semantic value type is TYPEDECL.
             //$$ = $1;
             (yyval.declptr) = makeconstdecl((yyvsp[0].declptr));
         }
-#line 2109 "subc.tab.c" /* yacc.c:1646  */
+#line 2115 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 662 "subc.y" /* yacc.c:1646  */
+#line 668 "subc.y" /* yacc.c:1646  */
     {
             // [TODO] args,expr 에서 올라오는건 TYPE 이라 next 연결 못함..
             (yyvsp[-2].declptr)->next = makeconstdecl((yyvsp[0].declptr));
             (yyval.declptr) = (yyvsp[-2].declptr);
         }
-#line 2119 "subc.tab.c" /* yacc.c:1646  */
+#line 2125 "subc.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2123 "subc.tab.c" /* yacc.c:1646  */
+#line 2129 "subc.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2347,7 +2353,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 668 "subc.y" /* yacc.c:1906  */
+#line 674 "subc.y" /* yacc.c:1906  */
 
 
 /*  Additional C Codes  */

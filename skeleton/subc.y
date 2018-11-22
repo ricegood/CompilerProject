@@ -11,6 +11,12 @@ int    yylex ();
 int    yyerror (char* s);
 void   REDUCE(char* s);
 
+/* flag for subc.y */
+int is_func_decl = 0;
+int block_number = 0;
+int error_found_in_func_decl = 0;
+int error_found_in_struct_specifier = 0; /* for def_list & error_found flag */
+
 %}
 
 /* yylval types */

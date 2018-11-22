@@ -24,7 +24,14 @@ int declare(struct id* id_ptr, struct decl* decl_ptr) {
 
 	else{
 		// add to ste stack linked list
-		insert(id_ptr, decl_ptr);
+		if (check_is_struct_type(decl_ptr)) {
+			// add to bottom for local scope struct
+			insert_bottom(id_ptr, decl_ptr);
+		}
+		else {
+			// add to top
+			insert(id_ptr, decl_ptr);
+		}
 		return 0;
 	}
 }
@@ -450,6 +457,8 @@ void init_type()
 {
 	printf("==init_type() START==\n");
 
+	top = NULL;
+
 	inttype = maketypedecl(INT_);
 	chartype = maketypedecl(CHAR_);
 	voidtype = maketypedecl(VOID_);
@@ -457,20 +466,13 @@ void init_type()
 	nulltype = maketypedecl(NULL_);
 
 	pushscope();
-	declare(enter(KEYWORD, "int", 3), inttype);
-	declare(enter(KEYWORD, "char", 4), chartype);
-	declare(enter(KEYWORD, "void", 4), voidtype);
-	declare(enter(KEYWORD, "string", 6), stringtype);
-	// declare nulltype? no.
-	// can't find on ID..,,?
-	// actually this declaration does't need for every int,char..w
+
+	bottom_ste = insert(enter(KEYWORD, "int", 3), inttype); // set bottom ste
+	insert(enter(KEYWORD, "char", 4), chartype);
+	insert(enter(KEYWORD, "void", 4), voidtype);
+	insert(enter(KEYWORD, "string", 6), stringtype);
 
 	returnid = enter(KEYWORD, "*return", 7);
-
-	is_func_decl = 0;
-	block_number = 0;
-	error_found_in_func_decl = 0;
-	error_found_in_struct_specifier = 0;
 
 	printf("==init_type() END==\n");
 }

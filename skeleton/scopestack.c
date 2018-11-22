@@ -7,7 +7,8 @@
 
 #include "subc.h"
 
-static struct node *top = NULL;
+//static struct node *top = NULL;
+//static struct node *bottom = NULL;
 
 void printscopestack(){
   printf("=============PRINT SCOPE STACK=============\n");
@@ -44,7 +45,7 @@ void printscopestack(){
   printf("===========================================\n");
 }
 
-void insert(struct id* id_ptr, struct decl* decl_ptr) {
+struct ste *insert(struct id* id_ptr, struct decl* decl_ptr) {
   printf("insert ste to scope stack!\n");
   if (top != NULL) {
     // Declare new ste & initialization
@@ -55,6 +56,27 @@ void insert(struct id* id_ptr, struct decl* decl_ptr) {
 
     // Set the top->data of the scope stack
     top->data = ste_ptr;
+
+    return ste_ptr;
+  } else {
+    printf("Scope stack top is NULL!\n");
+    return NULL;
+  }
+}
+
+void insert_bottom(struct id* id_ptr, struct decl* decl_ptr) {
+  /* for insert struct to global scope */
+  printf("insert struct ste to scope stack bottom!\n");
+  if (top != NULL) {
+    // Declare new ste & initialization
+    struct ste *ste_ptr = malloc(sizeof(struct ste));
+    ste_ptr->name = id_ptr;
+    ste_ptr->decl = decl_ptr;
+    ste_ptr->prev = NULL; // The first ste of the first scope's prev is NULL
+    bottom_ste->prev = ste_ptr;
+
+    // Set the bottom of the scope stack
+    bottom_ste = ste_ptr;
   } else {
     printf("Scope stack top is NULL!\n");
   }

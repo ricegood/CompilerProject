@@ -16,16 +16,17 @@ enum declclass_ {VAR_, CONST_, FUNC_, TYPE_};
 #include <stdlib.h>
 #include <string.h>
 
+/* for scope stack */
+struct node *top;
+struct ste *bottom_ste;
+
+/* for default type decl */
 struct decl *inttype;
 struct decl *chartype;
 struct decl *voidtype;
 struct decl *stringtype;
 struct decl *nulltype;
 struct id *returnid;
-int is_func_decl;
-int block_number;
-int error_found_in_func_decl;
-int error_found_in_struct_specifier; /* for def_list & error_found flag */
 
 /* structure for IDs */
 typedef struct id {
@@ -75,7 +76,8 @@ typedef struct node
 } node;
 
 void printscopestack();
-void insert(struct id* id_ptr, struct decl* decl_ptr);
+struct ste *insert(struct id* id_ptr, struct decl* decl_ptr);
+void insert_bottom(struct id* id_ptr, struct decl* decl_ptr); /* for insert struct to global scope */
 struct ste *lookup(struct id* id_ptr);
 struct ste *lookup_local_scope(struct id* id_ptr);
 void pushscope();
