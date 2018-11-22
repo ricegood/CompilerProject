@@ -202,8 +202,11 @@ func_decl
                 if (!error_found_in_func_decl) {
                     current_parsing_function_ste = top->data; // get last inserted ste (= procdecl ste)
                     pushscope(); /* for collecting formals */
-                    // [TODO] pointer handling (just like def!)
-                    declare(returnid, $1);
+
+                    if ($2 == 0) // no pointer
+                        declare(returnid, $1);
+                    else // pointer
+                        declare(returnid, makeptrdecl($1));
 
                     // no formals
 
@@ -241,8 +244,12 @@ func_decl
                 error_found_in_func_decl = declare($3, procdecl);
                 if (!error_found_in_func_decl) {
                     pushscope(); /* for collecting formals */
-                    // [TODO] pointer handling
-                    declare(returnid, $1);
+                    
+                    if ($2 == 0) // no pointer
+                        declare(returnid, $1);
+                    else // pointer
+                        declare(returnid, makeptrdecl($1));
+
                     $<declptr>$ = procdecl;
                 }
             }
