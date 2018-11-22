@@ -23,11 +23,11 @@ Grammar
    11               | VOID
    12               | struct_specifier
 
-   13 $@2: %empty
+   13 @2: %empty
 
    14 @3: %empty
 
-   15 struct_specifier: STRUCT ID '{' $@2 def_list @3 '}'
+   15 struct_specifier: STRUCT ID '{' @2 def_list @3 '}'
    16                 | STRUCT ID
 
    17 func_decl: type_specifier pointers ID '(' ')'
@@ -183,7 +183,7 @@ type_specifier (45)
     on left: 10 11 12, on right: 4 5 7 17 18 20 25 26 29 30 31
 struct_specifier (46)
     on left: 15 16, on right: 12
-$@2 (47)
+@2 (47)
     on left: 13, on right: 15
 @3 (48)
     on left: 14, on right: 15
@@ -278,7 +278,7 @@ State 3
 
 State 4
 
-   15 struct_specifier: STRUCT . ID '{' $@2 def_list @3 '}'
+   15 struct_specifier: STRUCT . ID '{' @2 def_list @3 '}'
    16                 | STRUCT . ID
 
     ID  shift, and go to state 11
@@ -343,7 +343,7 @@ State 10
 
 State 11
 
-   15 struct_specifier: STRUCT ID . '{' $@2 def_list @3 '}'
+   15 struct_specifier: STRUCT ID . '{' @2 def_list @3 '}'
    16                 | STRUCT ID .
 
     '{'  shift, and go to state 17
@@ -394,11 +394,11 @@ State 16
 
 State 17
 
-   15 struct_specifier: STRUCT ID '{' . $@2 def_list @3 '}'
+   15 struct_specifier: STRUCT ID '{' . @2 def_list @3 '}'
 
-    $default  reduce using rule 13 ($@2)
+    $default  reduce using rule 13 (@2)
 
-    $@2  go to state 21
+    @2  go to state 21
 
 
 State 18
@@ -432,7 +432,7 @@ State 20
 
 State 21
 
-   15 struct_specifier: STRUCT ID '{' $@2 . def_list @3 '}'
+   15 struct_specifier: STRUCT ID '{' @2 . def_list @3 '}'
 
     $default  reduce using rule 28 (def_list)
 
@@ -500,7 +500,7 @@ State 25
 
 State 26
 
-   15 struct_specifier: STRUCT ID '{' $@2 def_list . @3 '}'
+   15 struct_specifier: STRUCT ID '{' @2 def_list . @3 '}'
    27 def_list: def_list . def
 
     STRUCT  shift, and go to state 4
@@ -852,7 +852,7 @@ State 52
 
 State 53
 
-   15 struct_specifier: STRUCT ID '{' $@2 def_list @3 . '}'
+   15 struct_specifier: STRUCT ID '{' @2 def_list @3 . '}'
 
     '}'  shift, and go to state 85
 
@@ -1360,7 +1360,7 @@ State 84
 
 State 85
 
-   15 struct_specifier: STRUCT ID '{' $@2 def_list @3 '}' .
+   15 struct_specifier: STRUCT ID '{' @2 def_list @3 '}' .
 
     $default  reduce using rule 15 (struct_specifier)
 

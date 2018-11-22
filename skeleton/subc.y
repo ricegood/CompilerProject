@@ -151,7 +151,7 @@ struct_specifier
                 printscopestack();
             }
             else
-                $<declptr>6 = NULL;
+                $<declptr>$ = NULL;
         }
         '}'
         {
@@ -335,6 +335,8 @@ def
 compound_stmt
         : '{'
         {
+            // **[TODO] add error_found_in_func_decl flag in this option!!
+
             if (!is_func_decl || block_number > 0)
                 pushscope();
             block_number++;
