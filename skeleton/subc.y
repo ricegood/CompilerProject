@@ -669,6 +669,7 @@ unary
                 ex2) int a -> &a -> int*
             */
             if (check_is_var($2)) {
+                // it can't be RHS
                 $$ = makeconstdecl(makeptrdecl($2->type));
             }
             else {
@@ -718,7 +719,6 @@ unary
                 args->elementvar field pointer first pushed args.
             */
 
-            printArgs($3->elementvar);
             if (check_is_proc($1))
                 $$ = check_function_call($1, $3->elementvar);
             else
@@ -736,7 +736,6 @@ args    /* actual parameters(function arguments) transferred to function */
         : expr
         {
             // expr semantic value type is TYPEDECL.
-            //$$ = $1;
             $$ = makeconstdecl($1);
             $$->elementvar = $$; /* to save first args pointer. */
         }

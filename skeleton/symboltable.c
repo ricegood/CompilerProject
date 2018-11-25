@@ -272,7 +272,7 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 	*/
 
 	while (formals != NULL && formals->decl != NULL && actuals != NULL && actuals->type != NULL) {
-		if (check_is_var(formals->decl) && check_compatible_type(formals->decl->type, actuals->type)) {
+		if (check_is_var(formals->decl) && check_same_type(formals->decl->type, actuals->type)) {
 			formals = formals->prev;
 			// [TODO] save this actual pointer.. to delete??
 			actuals = actuals->next;

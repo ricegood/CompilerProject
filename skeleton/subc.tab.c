@@ -481,7 +481,7 @@ static const yytype_uint16 yyrline[] =
      461,   462,   465,   468,   481,   482,   489,   492,   500,   503,
      506,   514,   517,   533,   553,   563,   573,   584,   590,   594,
      598,   603,   609,   615,   623,   631,   639,   647,   655,   663,
-     680,   690,   694,   704,   714,   727,   736,   744
+     681,   691,   695,   705,   715,   727,   736,   742
 };
 #endif
 
@@ -2090,6 +2090,7 @@ yyreduce:
                 ex2) int a -> &a -> int*
             */
             if (check_is_var((yyvsp[0].declptr))) {
+                // it can't be RHS
                 (yyval.declptr) = makeconstdecl(makeptrdecl((yyvsp[0].declptr)->type));
             }
             else {
@@ -2098,11 +2099,11 @@ yyreduce:
             }
             
         }
-#line 2102 "subc.tab.c" /* yacc.c:1646  */
+#line 2103 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 681 "subc.y" /* yacc.c:1646  */
+#line 682 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[0].declptr) && check_is_pointer_type((yyvsp[0].declptr)->type)) {
                 (yyval.declptr) = makevardecl((yyvsp[0].declptr)->ptrto);
@@ -2112,19 +2113,19 @@ yyreduce:
                 (yyval.declptr) = NULL;
             }
         }
-#line 2116 "subc.tab.c" /* yacc.c:1646  */
+#line 2117 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 691 "subc.y" /* yacc.c:1646  */
+#line 692 "subc.y" /* yacc.c:1646  */
     {
             (yyval.declptr) = arrayaccess((yyvsp[-3].declptr), (yyvsp[-1].declptr));
         }
-#line 2124 "subc.tab.c" /* yacc.c:1646  */
+#line 2125 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 695 "subc.y" /* yacc.c:1646  */
+#line 696 "subc.y" /* yacc.c:1646  */
     {
             /* This is only for structure type on $1 */
             if ((yyvsp[-2].declptr) && !check_is_pointer_type((yyvsp[-2].declptr)->type)){
@@ -2134,11 +2135,11 @@ yyreduce:
                 ERROR("variable is not struct");
             }
         }
-#line 2138 "subc.tab.c" /* yacc.c:1646  */
+#line 2139 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 705 "subc.y" /* yacc.c:1646  */
+#line 706 "subc.y" /* yacc.c:1646  */
     {
             // this is only for pointer to structure type on $1
             if ((yyvsp[-2].declptr) && check_is_pointer_type((yyvsp[-2].declptr)->type)){
@@ -2148,18 +2149,17 @@ yyreduce:
                 ERROR("not a pointer");
             }
         }
-#line 2152 "subc.tab.c" /* yacc.c:1646  */
+#line 2153 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 715 "subc.y" /* yacc.c:1646  */
+#line 716 "subc.y" /* yacc.c:1646  */
     {
             /*
                 args pointer last pushed args.
                 args->elementvar field pointer first pushed args.
             */
 
-            printArgs((yyvsp[-1].declptr)->elementvar);
             if (check_is_proc((yyvsp[-3].declptr)))
                 (yyval.declptr) = check_function_call((yyvsp[-3].declptr), (yyvsp[-1].declptr)->elementvar);
             else
@@ -2183,27 +2183,24 @@ yyreduce:
 #line 737 "subc.y" /* yacc.c:1646  */
     {
             // expr semantic value type is TYPEDECL.
-            //$$ = $1;
             (yyval.declptr) = makeconstdecl((yyvsp[0].declptr));
             (yyval.declptr)->elementvar = (yyval.declptr); /* to save first args pointer. */
-            printf("args typeclass : %d\n", (yyval.declptr)->type->typeclass);
         }
-#line 2192 "subc.tab.c" /* yacc.c:1646  */
+#line 2190 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 745 "subc.y" /* yacc.c:1646  */
+#line 743 "subc.y" /* yacc.c:1646  */
     {
             (yyvsp[-2].declptr)->next = makeconstdecl((yyvsp[0].declptr));
             (yyvsp[-2].declptr)->next->elementvar = (yyval.declptr)->elementvar;
             (yyval.declptr) = (yyvsp[-2].declptr)->next;
-            printf("args typeclass : %d\n", (yyval.declptr)->type->typeclass);
         }
-#line 2203 "subc.tab.c" /* yacc.c:1646  */
+#line 2200 "subc.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2207 "subc.tab.c" /* yacc.c:1646  */
+#line 2204 "subc.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2431,7 +2428,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 752 "subc.y" /* yacc.c:1906  */
+#line 749 "subc.y" /* yacc.c:1906  */
 
 
 /*  Additional C Codes  */
