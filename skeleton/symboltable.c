@@ -10,7 +10,7 @@
 /* Make ste and add to symbol table (ste stack linked list) */
 int declare(struct id* id_ptr, struct decl* decl_ptr) {
 	/* return error_found */
-	printf("declare()\n");
+	//printf("declare()\n");
 	if (!id_ptr || !decl_ptr) {
 		// ERROR("ERROR : declare failed! id_ptr or decl_ptr is null!\n");
 		return 1;
@@ -48,7 +48,7 @@ struct decl *maketypedecl(int typeclass) {
 		+ NULL decl ???
 	*/
 
-	printf("maketypedecl()\n");
+	//printf("maketypedecl()\n");
 
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
@@ -61,7 +61,7 @@ struct decl *maketypedecl(int typeclass) {
 }
 
 struct decl *makeptrdecl(struct decl* typedecl) {
-	printf("makeptrdecl()\n");
+	//printf("makeptrdecl()\n");
 
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
@@ -75,7 +75,7 @@ struct decl *makeptrdecl(struct decl* typedecl) {
 }
 
 struct decl *makearraydecl(int size, struct decl* vardecl) {
-	printf("makearraydecl()\n");
+	//printf("makearraydecl()\n");
 
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
@@ -90,7 +90,7 @@ struct decl *makearraydecl(int size, struct decl* vardecl) {
 }
 
 struct decl *makestructdecl(struct ste* fields) {
-	printf("makestructdecl()\n");
+	//printf("makestructdecl()\n");
 
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
@@ -102,16 +102,18 @@ struct decl *makestructdecl(struct ste* fields) {
 	new_decl->formalswithreturnid = current_parsing_function_ste; // which function make this struct
 
 	// check point message //
+	/*
 	if (new_decl->formalswithreturnid)
 		printf("*** THIS STRUCT's PARENT FUNCTION = %s ***\n", new_decl->formalswithreturnid->name->name);
 	else
 		printf("*** THIS STRUCT's PARENT FUNCTION is GLOBAL\n");
+	*/
 
 	return new_decl;
 }
 
 struct decl *makevardecl(struct decl* typedecl) {
-	printf("makevardecl()\n");
+	//printf("makevardecl()\n");
 
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
@@ -124,7 +126,7 @@ struct decl *makevardecl(struct decl* typedecl) {
 }
 
 struct decl *makeconstdecl(struct decl* typedecl) {
-	printf("makeconstdecl()\n");
+	//printf("makeconstdecl()\n");
 
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
@@ -142,7 +144,7 @@ struct decl *makeintconstdecl(struct decl* typedecl, int value) {
 	// use typedecl = inttype default... how can I do this ????
 	// firstly... How can I access to inttype ??
 	// oh... maybe findcurrentdecl(lookup("int")) !
-	printf("makeintconstdecl()\n");
+	//printf("makeintconstdecl()\n");
 
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
@@ -157,7 +159,7 @@ struct decl *makeintconstdecl(struct decl* typedecl, int value) {
 
 struct decl *makefloatconstdecl(struct decl* typedecl, float value) {
 	// float version
-	printf("makefloatconstdecl()\n");
+	//printf("makefloatconstdecl()\n");
 
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
@@ -171,7 +173,7 @@ struct decl *makefloatconstdecl(struct decl* typedecl, float value) {
 }
 
 struct decl *makeprocdecl() {
-	printf("makeprocdecl()\n");
+	//printf("makeprocdecl()\n");
 
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
@@ -296,8 +298,9 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 }
 
 int check_same_type_for_unary(decl* decl_ptr, decl* typedecl_ptr) {
-	if (!decl_ptr)
+	if (!decl_ptr) {
 		// printf("decl_ptr is NULL, so can't check the type.\n");
+	}
 	else
 		return check_same_type(decl_ptr->type, typedecl_ptr);
 }
@@ -384,7 +387,7 @@ struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr) {
 	/* 38p definition!! */
 	struct decl *arraytype = array_ptr->type;
 	if (check_is_array(arraytype)) {
-		printf("this is array!\n");
+		//printf("this is array!\n");
 		if (check_same_type(inttype, index_ptr))
 			return (arraytype->elementvar);
 		else {
@@ -497,7 +500,7 @@ struct decl *plustype(struct decl* typedecl1, struct decl* typedecl2) {
 
 void init_type()
 {
-	printf("==init_type() START==\n");
+	//printf("==init_type() START==\n");
 
 	top = NULL;
 	bottom = NULL;
@@ -519,7 +522,7 @@ void init_type()
 
 	returnid = enter(KEYWORD, "*return", 7);
 
-	printf("==init_type() END==\n");
+	//printf("==init_type() END==\n");
 	
 	pushscope();
 }

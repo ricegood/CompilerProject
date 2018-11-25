@@ -46,7 +46,7 @@ void printscopestack(){
 }
 
 struct ste *insert(struct id* id_ptr, struct decl* decl_ptr) {
-  printf("insert ste to scope stack!\n");
+  //printf("insert ste to scope stack!\n");
   if (top != NULL) {
     // Declare new ste & initialization
     struct ste *ste_ptr = malloc(sizeof(struct ste));
@@ -59,14 +59,14 @@ struct ste *insert(struct id* id_ptr, struct decl* decl_ptr) {
 
     return ste_ptr;
   } else {
-    printf("Scope stack top is NULL!\n");
+    //printf("Scope stack top is NULL!\n");
     return NULL;
   }
 }
 
 void insert_bottom(struct id* id_ptr, struct decl* decl_ptr) {
   /* for insert struct to global scope */
-  printf("insert struct ste to scope stack bottom!\n");
+  //printf("insert struct ste to scope stack bottom!\n");
   if (top != NULL) {
     // Declare new ste & initialization
     struct ste *ste_ptr = malloc(sizeof(struct ste));
@@ -78,7 +78,7 @@ void insert_bottom(struct id* id_ptr, struct decl* decl_ptr) {
     // Set the bottom of the scope stack
     bottom_ste = ste_ptr;
   } else {
-    printf("Scope stack top is NULL!\n");
+    //printf("Scope stack top is NULL!\n");
   }
 }
 
@@ -109,7 +109,7 @@ struct ste *lookup(struct id* id_ptr) {
     ste_list = NULL;
     return ste_list_result;
   } else {
-    printf("Scope stack top is NULL!\n");
+    //printf("Scope stack top is NULL!\n");
     return NULL;
   }
 }
@@ -146,13 +146,13 @@ struct ste *lookup_local_scope(struct id* id_ptr, struct node* scope) {
     ste_list = NULL;
     return ste_list_result;
   } else {
-    printf("Local scope stack is NULL!\n");
+    //printf("Local scope stack is NULL!\n");
     return NULL;
   }
 }
 
 struct node *pushscope() {
-  printf("push scope\n");
+  //printf("push scope\n");
   // Declare new scope node & initialization
   struct node *node_ptr = malloc(sizeof(struct node));
   if (top != NULL)
@@ -177,7 +177,7 @@ void pushstelist(ste *ste_list) {
 }
 
 struct ste *popscope() {
-  printf("pop scope\n");
+  //printf("pop scope\n");
   /*
     return a ste linked list of stack top scope.
     *REVERSE ORDER*
@@ -186,7 +186,7 @@ struct ste *popscope() {
   // [TODO] memory leak..
   
   if (top == NULL) {
-    printf("Scope stack is NULL!\n");
+    //printf("Scope stack is NULL!\n");
     return NULL;
   } else {
     // get a pointer of next scope top ste.
@@ -212,9 +212,9 @@ struct ste *popscope() {
 }
 
 struct ste *popste() {
-  printf("pop ste\n");
+  //printf("pop ste\n");
   if (top == NULL || top->data == NULL) {
-    printf("Scope stack top node or ste is NULL!\n");
+    //printf("Scope stack top node or ste is NULL!\n");
     return NULL;
   } else {
     struct ste *top_ste = top->data;

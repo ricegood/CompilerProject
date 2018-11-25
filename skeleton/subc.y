@@ -84,7 +84,7 @@ ext_def
             }
             else
                 $$ = NULL;
-            printscopestack();
+            //printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
@@ -96,13 +96,13 @@ ext_def
             }
             else
                 $$ = NULL;
-            printscopestack();
+            //printscopestack();
         }
         | func_decl ';'
         { 
             //pushscope();
             //pushstelist($1->formalswithreturnid);
-            printscopestack();
+            //printscopestack();
             error_found_in_func_decl = 0;
             current_parsing_function_ste = NULL;
         }
@@ -115,7 +115,7 @@ ext_def
             if ($1) {
                 pushscope();
                 pushstelist($1->formalswithreturnid);
-                printscopestack();
+                //printscopestack();
                 is_func_decl = 1;
                 block_number = 0;
             }
@@ -126,7 +126,7 @@ ext_def
                 is_func_decl = 0;
                 block_number = 0;
                 struct ste *pop = popscope();
-                printscopestack();
+                //printscopestack();
                 // [TODO] delete pop using loop (for prevent from memory leak)
                 // delete hash table id also!?
             }
@@ -136,8 +136,8 @@ ext_def
                 // [TODO] memory leak (free wrong_func_decl)
                 struct ste* wrong_func_decl = popste();
                 rollback_struct_of($1);
-                printf("rollback: remove wrong func decl (%s)\n", wrong_func_decl->name->name);
-                printscopestack();
+                //printf("rollback: remove wrong func decl (%s)\n", wrong_func_decl->name->name);
+                //printscopestack();
             }
 
             // reset value
@@ -158,7 +158,7 @@ struct_specifier
             error_found_in_struct_specifier = declare($2, structdecl);
             if (!error_found_in_struct_specifier) {
                 pushscope();
-                printscopestack();
+                //printscopestack();
             }
             $<declptr>$ = structdecl;
         }
@@ -166,12 +166,12 @@ struct_specifier
         {   
             if (!error_found_in_struct_specifier) {
                 struct decl *structdecl = $<declptr>4;
-                printscopestack();
+                //printscopestack();
                 struct ste *fields = popscope();
-                printscopestack();
+                //printscopestack();
                 structdecl->fieldlist = fields;
                 $<declptr>$ = structdecl;
-                printscopestack();
+                //printscopestack();
             }
             else
                 $<declptr>$ = NULL;
@@ -303,7 +303,7 @@ param_decl  /* formal parameter declaration */
             }
             else
                 $$ = NULL;
-            printscopestack();
+            //printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']'
         {
@@ -315,13 +315,13 @@ param_decl  /* formal parameter declaration */
             }
             else
                 $$ = NULL;
-            printscopestack();
+            //printscopestack();
         }
 
 def_list    /* list of definitions, definition can be type(struct), variable, function */
         : def_list def
         {
-            printf("def list!\n");
+            //printf("def list!\n");
         }
         | /* empty */
 
@@ -336,7 +336,7 @@ def
             }
             else
                 $$ = NULL;
-            printscopestack();
+            //printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
@@ -348,7 +348,7 @@ def
             }
             else
                 $$ = NULL;
-            printscopestack();
+            //printscopestack();
         }
         | type_specifier ';'
         {
@@ -360,7 +360,7 @@ def
         {
             //pushscope();
             //pushstelist($1->formalswithreturnid);
-            printscopestack();
+            //printscopestack();
             error_found_in_func_decl = 0;
             current_parsing_function_ste = NULL;
         }
@@ -373,7 +373,7 @@ compound_stmt
                 if (!is_func_decl || block_number > 0)
                     pushscope();
                 block_number++;
-                printscopestack();
+                //printscopestack();
             }
         }
         local_defs stmt_list '}'
@@ -382,7 +382,7 @@ compound_stmt
                 block_number--;
                 if (!is_func_decl || block_number > 0)
                     popscope();
-                printscopestack();
+                //printscopestack();
             }
         }
 
@@ -435,7 +435,7 @@ expr
             /* assignment */
             // should have same type (ppt 23p) & not const! (=>check_is_var)
             if ($1 && check_is_var($1)) {
-                if (check_same_type_for_unary($1, $3)
+                if (check_same_type_for_unary($1, $3))
                     $$ = $1->type;
                 else
                     ERROR("LHS and RHS are not same type\n");
