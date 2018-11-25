@@ -10,7 +10,6 @@
 int    yylex ();
 int    yyerror (char* s);
 void   REDUCE(char* s);
-void   ERROR(char* s);
 
 /* flag for subc.y */
 int is_func_decl = 0;
@@ -190,7 +189,7 @@ struct_specifier
             }
             else {
                 $$ = NULL;
-                ERROR("ERROR : incomplete type error (this is not struct type)\n");
+                ERROR("incomplete type error\n");
             }
         }
 
@@ -221,7 +220,7 @@ func_decl
                     
                     /* error ; struct_specifier returns NULL, because this is not a struct*/
                     if (procdecl->returntype == NULL)
-                        ERROR("ERROR : this is not a struct\n");
+                        ERROR("incomplete type error\n");
 
                     $$ = procdecl;
                 }
@@ -275,7 +274,7 @@ func_decl
 
                 /* error ; struct_specifier returns NULL, because this is not a struct*/
                 if (procdecl->returntype == NULL)
-                    ERROR("ERROR : incomplete type error (this is not struct)\n");
+                    ERROR("incomplete type error\n");
                 
                 $$ = procdecl; 
             }
@@ -406,10 +405,9 @@ stmt
             if (!error_found_in_func_decl) {
                 /* return type check */
                 if (check_same_type(findcurrentdecl(returnid), $2)) {
-                    printf("return type is same type!\n");
                     return_type_error = 0;
                 } else {
-                    ERROR("ERROR : return type error\n");
+                    ERROR("return value is not return type\n");
                     return_type_error = 1;
                 }
             }
@@ -436,10 +434,14 @@ expr
         {
             /* assignment */
             // should have same type (ppt 23p) & not const! (=>check_is_var)
-            if ($1 && check_is_var($1) && check_same_type_for_unary($1, $3))
-                $$ = $1->type;
+            if ($1 && check_is_var($1)) {
+                if (check_same_type_for_unary($1, $3)
+                    $$ = $1->type;
+                else
+                    ERROR("LHS and RHS are not same type\n");
+            }
             else
-                ERROR("ERROR : assignment value is not same, or LHS value type is not variable!\n");
+                ERROR("LHS is not a variable\n");
         }
         | or_expr
         | NULL_TOKEN
@@ -458,7 +460,7 @@ or_list
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = inttype;
             else
-                ERROR("ERROR : '||' operator is only for int type!\n");
+                ERROR("not comparable\n");
         }
         | and_expr
 
@@ -472,7 +474,7 @@ and_list
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = inttype;
             else
-                ERROR("ERROR : '&&' operator is only for int type!\n");
+                ERROR("not comparable\n");
         }
         | binary
 
@@ -489,7 +491,7 @@ binary
 
             /* ERROR */
             else {
-                ERROR("ERROR : binary RELOP binary is only for int, char type!\n");
+                ERROR("not int or char type\n");
                 $$ = NULL;
             }
         }
@@ -509,7 +511,7 @@ binary
 
             /* ERROR */
             else {
-                ERROR("ERROR : binary EQUOP binary is only for int, char, pointer type!\n");
+                ERROR("not int or char or pointer type\n");
                 $$ = NULL;
             }
         }
@@ -521,7 +523,7 @@ binary
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = plustype($1, $3);
             else
-                ERROR("ERROR : binary '+' operands are only for integer!\n");
+                ERROR("not computable\n");
         }
         | binary '-' binary
         {
@@ -531,14 +533,15 @@ binary
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = plustype($1, $3);
             else
-                ERROR("ERROR : binary '-' operands are only for integer!\n");
+                ERROR("not computable\n");
         }
         | unary %prec '='
         {   
             if ($1 && $1->type)
                 $$ = $1->type;
             else {
-                ERROR("ERROR : unary is NULL or unary semantic value->type is null!\n");
+                $$ = NULL;
+                // ERROR("ERROR : unary is NULL or unary semantic value->type is null!\n");
             }
         }
 
@@ -572,7 +575,7 @@ unary
             // find ID
             $$ = findcurrentdecl($1);
             if (!$$)
-                ERROR("ERROR : There is no such ID.\n");
+                ERROR("not declared\n");
         }
         | '-' unary %prec '!'
         {   
@@ -580,7 +583,7 @@ unary
             if (check_same_type_for_unary($2, inttype))
                 $$ = $2;
             else
-                ERROR("ERROR : '-' operator is only for integer.\n");
+                ERROR("not computable\n");
         }
         | '!' unary
         {
@@ -588,7 +591,7 @@ unary
             if (check_same_type_for_unary($2, inttype))
                 $$ = inttype;
             else
-                ERROR("ERROR : '!' operator is only for int type!\n");
+                ERROR("not computable\n");
         }
         | unary INCOP
         {
@@ -596,7 +599,7 @@ unary
             if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
                 $$ = $1;
             else
-                ERROR("ERROR : unary INCOP operator is only for char or integer.\n");
+                ERROR("not computable\n");
         }
         | unary DECOP
         {
@@ -604,7 +607,7 @@ unary
             if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
                 $$ = $1;
             else
-                ERROR("ERROR : unary DECOP operator is only for char or integer.\n");
+                ERROR("not computable\n");
         }
         | INCOP unary
         {
@@ -612,7 +615,7 @@ unary
             if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
                 $$ = $2;
             else
-                ERROR("ERROR : unary INCOP operator is only for char or integer.\n");
+                ERROR("not computable\n");
         }
         | DECOP unary
         {
@@ -620,7 +623,7 @@ unary
             if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
                 $$ = $2;
             else
-                ERROR("ERROR : unary DECOP operator is only for char or integer.\n");
+                ERROR("not computable\n");
         }
         | '&' unary %prec '!'
         {
@@ -634,7 +637,7 @@ unary
                 $$ = makeconstdecl(makeptrdecl($2->type));
             }
             else {
-                ERROR("ERROR : Can't use operator '&' for non-variable type value.\n");
+                ERROR("not variable\n");
                 $$ = NULL;
             }
             
@@ -645,7 +648,7 @@ unary
                 $$ = makevardecl($2->ptrto);
             }
             else {
-                ERROR("ERROR : Can't use point operator '*' for non-pointer value.\n");
+                ERROR("not a pointer\n");
                 $$ = NULL;
             }
         }
@@ -660,17 +663,17 @@ unary
                 $$ = structaccess($1, $3);
             }
             else {
-                ERROR("ERROR : this is a POINTER to structure type or NULL\n");
+                ERROR("variable is not struct\n");
             }
         }
         | unary STRUCTOP ID
         {
-            // [TODO] this is only for pointer to structure type on $1
+            // this is only for pointer to structure type on $1
             if ($1 && check_is_pointer_type($1->type)){
                 $$ = structaccess($1, $3);
             }
             else {
-                ERROR("ERROR : this is not a pointer to structure type or NULL\n");
+                ERROR("not a pointer\n");
             }
         }
         | unary '(' args ')'
@@ -678,14 +681,14 @@ unary
             if (check_is_proc($1))
                 $$ = check_function_call($1, $3);
             else
-                ERROR ("ERROR : this is not a function!\n");
+                ERROR ("not a function\n");
         }
         | unary '(' ')'
         {
             if (check_is_proc($1))
                 $$ = check_function_call($1, NULL);
             else
-                ERROR ("ERROR : this is not a function!\n");
+                ERROR ("not a function\n");
         }
 
 args    /* actual parameters(function arguments) transferred to function */

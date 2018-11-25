@@ -12,12 +12,12 @@ int declare(struct id* id_ptr, struct decl* decl_ptr) {
 	/* return error_found */
 	printf("declare()\n");
 	if (!id_ptr || !decl_ptr) {
-		printf("ERROR : declare failed! id_ptr or decl_ptr is null!\n");
+		// ERROR("ERROR : declare failed! id_ptr or decl_ptr is null!\n");
 		return 1;
 	}
 
 	else if (check_redeclaration(id_ptr, decl_ptr)) {
-		printf("ERROR : redeclaration of same variables at same scope!\n");
+		ERROR("redeclaration\n");
 		return 1;
 		// [TODO] memory leak (free ptr)
 	}
@@ -277,7 +277,7 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 			// [TODO] memory leak? delete prev actuals?
 		}
 		else {
-			printf("ERROR : formals, actuals type is not compatible.\n");
+			ERROR("actual args are not equal to formal args\n");
 			return NULL;
 		}
 	}
@@ -290,14 +290,14 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 	}
 	else {
   	// different number of formals, actuals
-  	printf ("ERROR : different number of formals, actuals\n");
+  	ERROR("actual args are not equal to formal args\n");
   	return NULL;
 	}
 }
 
 int check_same_type_for_unary(decl* decl_ptr, decl* typedecl_ptr) {
 	if (!decl_ptr)
-		printf("decl_ptr is NULL, so can't check the type.\n");
+		// printf("decl_ptr is NULL, so can't check the type.\n");
 	else
 		return check_same_type(decl_ptr->type, typedecl_ptr);
 }
@@ -335,7 +335,7 @@ struct decl *check_compatible_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
 	else {
 		// [TODO] maybe , int and float is compatible and plustype is int..??
 		// int+float = int ?
-		printf("ERROR : this is not compatible(same) type!\n");
+		// ERROR("ERROR : this is not compatible(same) type!\n");
 		return NULL;
 	}
 }
@@ -376,7 +376,7 @@ struct decl *find_decl_in_struct_fields(struct id* field_id, struct ste* fieldli
 			fieldlist = fieldlist->prev;
 	}
 
-	printf ("ERROR : there is no such field name in this struct!\n");
+	ERROR("struct not have same name field\n");
 	return NULL;
 }
 
@@ -388,11 +388,12 @@ struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr) {
 		if (check_same_type(inttype, index_ptr))
 			return (arraytype->elementvar);
 		else {
-			printf("ERROR : array index is not int type.\n");
+			// array index is not int type
+			ERROR("not int type\n");
 		}
 	}
 	else {
-		printf("ERROR : this is not array type.\n");
+		ERROR("not array type\n");
 	}
 	return NULL;
 }
@@ -411,7 +412,7 @@ struct decl *structaccess(struct decl* struct_ptr, struct id* field_id) {
 	if (check_is_struct_type(type_ptr))
 		return (find_decl_in_struct_fields(field_id, type_ptr->fieldlist));
 	else
-		printf("ERROR : incomplete type error (This is not struct type!)\n");
+		ERROR("variable is not struct\n");
 	return NULL;
 }
 
