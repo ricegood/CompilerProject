@@ -137,6 +137,7 @@ struct decl *check_compatible_type(decl* typedecl_ptr1, decl* typedecl_ptr2);
 
 void init_type();
 void printTypeDecl(struct decl* decl_ptr);
+void printArgs(struct decl* const_decl_for_args);
 void ERROR(char* s);
 
 #endif

@@ -976,10 +976,10 @@ YY_RULE_SETUP
 
 								/* Print the result */
 								if (data->lexType == KEYWORD) {
-									printf("KEY\t%s\t%d\n",data->name,data->count);
+									//printf("KEY\t%s\t%d\n",data->name,data->count);
 								}
 								else if(data->lexType == ID_) {
-									printf("ID\t%s\t%d\n",data->name,data->count);
+									//printf("ID\t%s\t%d\n",data->name,data->count);
 									yylval.idptr = data;
 									/* [TODO] why is here [return entered->lextype] in the skeleton? */
 									return ID;

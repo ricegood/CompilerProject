@@ -17,7 +17,7 @@ int declare(struct id* id_ptr, struct decl* decl_ptr) {
 	}
 
 	else if (check_redeclaration(id_ptr, decl_ptr)) {
-		ERROR("redeclaration\n");
+		ERROR("redeclaration");
 		return 1;
 		// [TODO] memory leak (free ptr)
 	}
@@ -279,7 +279,7 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 			// [TODO] memory leak? delete prev actuals?
 		}
 		else {
-			ERROR("actual args are not equal to formal args\n");
+			ERROR("actual args are not equal to formal args");
 			return NULL;
 		}
 	}
@@ -292,7 +292,7 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 	}
 	else {
   	// different number of formals, actuals
-  	ERROR("actual args are not equal to formal args\n");
+  	ERROR("actual args are not equal to formal args");
   	return NULL;
 	}
 }
@@ -379,7 +379,7 @@ struct decl *find_decl_in_struct_fields(struct id* field_id, struct ste* fieldli
 			fieldlist = fieldlist->prev;
 	}
 
-	ERROR("struct not have same name field\n");
+	ERROR("struct not have same name field");
 	return NULL;
 }
 
@@ -392,11 +392,11 @@ struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr) {
 			return (arraytype->elementvar);
 		else {
 			// array index is not int type
-			ERROR("not int type\n");
+			ERROR("not int type");
 		}
 	}
 	else {
-		ERROR("not array type\n");
+		ERROR("not array type");
 	}
 	return NULL;
 }
@@ -415,7 +415,7 @@ struct decl *structaccess(struct decl* struct_ptr, struct id* field_id) {
 	if (check_is_struct_type(type_ptr))
 		return (find_decl_in_struct_fields(field_id, type_ptr->fieldlist));
 	else
-		ERROR("variable is not struct\n");
+		ERROR("variable is not struct");
 	return NULL;
 }
 
@@ -531,5 +531,15 @@ void printTypeDecl(struct decl* decl_ptr) {
     printf("--Print Type Decl--\n");
     printf("* declclass = %d\n", decl_ptr->declclass);
     printf("* typeclass = %d\n", decl_ptr->typeclass);
+    printf("-------------------\n");
+}
+
+void printArgs(struct decl* const_decl_for_args) {
+	printf("--Print Args--\n");
+	int i = 1;
+    while (const_decl_for_args) {
+    	printf("args [%d] type : %d\n", i++, const_decl_for_args->type->typeclass);
+    	const_decl_for_args = const_decl_for_args->next;
+    }
     printf("-------------------\n");
 }

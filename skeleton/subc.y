@@ -84,7 +84,7 @@ ext_def
             }
             else
                 $$ = NULL;
-            //printscopestack();
+            printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
@@ -96,13 +96,13 @@ ext_def
             }
             else
                 $$ = NULL;
-            //printscopestack();
+            printscopestack();
         }
         | func_decl ';'
         { 
             //pushscope();
             //pushstelist($1->formalswithreturnid);
-            //printscopestack();
+            printscopestack();
             error_found_in_func_decl = 0;
             current_parsing_function_ste = NULL;
         }
@@ -115,7 +115,7 @@ ext_def
             if ($1) {
                 pushscope();
                 pushstelist($1->formalswithreturnid);
-                //printscopestack();
+                printscopestack();
                 is_func_decl = 1;
                 block_number = 0;
             }
@@ -126,7 +126,7 @@ ext_def
                 is_func_decl = 0;
                 block_number = 0;
                 struct ste *pop = popscope();
-                //printscopestack();
+                printscopestack();
                 // [TODO] delete pop using loop (for prevent from memory leak)
                 // delete hash table id also!?
             }
@@ -137,7 +137,7 @@ ext_def
                 struct ste* wrong_func_decl = popste();
                 rollback_struct_of($1);
                 //printf("rollback: remove wrong func decl (%s)\n", wrong_func_decl->name->name);
-                //printscopestack();
+                printscopestack();
             }
 
             // reset value
@@ -158,7 +158,7 @@ struct_specifier
             error_found_in_struct_specifier = declare($2, structdecl);
             if (!error_found_in_struct_specifier) {
                 pushscope();
-                //printscopestack();
+                printscopestack();
             }
             $<declptr>$ = structdecl;
         }
@@ -166,12 +166,12 @@ struct_specifier
         {   
             if (!error_found_in_struct_specifier) {
                 struct decl *structdecl = $<declptr>4;
-                //printscopestack();
+                printscopestack();
                 struct ste *fields = popscope();
-                //printscopestack();
+                printscopestack();
                 structdecl->fieldlist = fields;
                 $<declptr>$ = structdecl;
-                //printscopestack();
+                printscopestack();
             }
             else
                 $<declptr>$ = NULL;
@@ -189,7 +189,7 @@ struct_specifier
             }
             else {
                 $$ = NULL;
-                ERROR("incomplete type error\n");
+                ERROR("incomplete type error");
             }
         }
 
@@ -220,7 +220,7 @@ func_decl
                     
                     /* error ; struct_specifier returns NULL, because this is not a struct*/
                     if (procdecl->returntype == NULL)
-                        ERROR("incomplete type error\n");
+                        ERROR("incomplete type error");
 
                     $$ = procdecl;
                 }
@@ -235,6 +235,41 @@ func_decl
         | type_specifier pointers ID '(' VOID ')'
         {
             // [TODO] what is VOID???????
+            if ($1 && !error_found_in_struct_specifier) {
+                struct decl *procdecl = makeprocdecl();
+                error_found_in_func_decl = declare($3, procdecl);
+                if (!error_found_in_func_decl) {
+                    current_parsing_function_ste = top->data; // get last inserted ste (= procdecl ste)
+                    pushscope(); /* for collecting formals */
+
+                    if ($2 == 0) // no pointer
+                        declare(returnid, $1);
+                    else // pointer
+                        declare(returnid, makeptrdecl($1));
+
+                    // no formals
+
+                    struct ste *formals;
+                    formals = popscope();
+
+                    /* formals->decl is always returnid decl with return type*/
+                    procdecl->formalswithreturnid = formals;
+                    procdecl->returntype = formals->decl;
+                    procdecl->formals = formals->prev; // null in this production
+                    
+                    /* error ; struct_specifier returns NULL, because this is not a struct*/
+                    if (procdecl->returntype == NULL)
+                        ERROR("incomplete type error");
+
+                    $$ = procdecl;
+                }
+                else {
+                    // ERROR : redeclaration of same variables at same scope!
+                    $$ = NULL;
+                }
+            }
+            else
+                $$ = NULL;
         }
         | type_specifier pointers ID '(' 
         {
@@ -274,7 +309,7 @@ func_decl
 
                 /* error ; struct_specifier returns NULL, because this is not a struct*/
                 if (procdecl->returntype == NULL)
-                    ERROR("incomplete type error\n");
+                    ERROR("incomplete type error");
                 
                 $$ = procdecl; 
             }
@@ -303,7 +338,7 @@ param_decl  /* formal parameter declaration */
             }
             else
                 $$ = NULL;
-            //printscopestack();
+            printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']'
         {
@@ -315,7 +350,7 @@ param_decl  /* formal parameter declaration */
             }
             else
                 $$ = NULL;
-            //printscopestack();
+            printscopestack();
         }
 
 def_list    /* list of definitions, definition can be type(struct), variable, function */
@@ -336,7 +371,7 @@ def
             }
             else
                 $$ = NULL;
-            //printscopestack();
+            printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
@@ -348,7 +383,7 @@ def
             }
             else
                 $$ = NULL;
-            //printscopestack();
+            printscopestack();
         }
         | type_specifier ';'
         {
@@ -360,7 +395,7 @@ def
         {
             //pushscope();
             //pushstelist($1->formalswithreturnid);
-            //printscopestack();
+            printscopestack();
             error_found_in_func_decl = 0;
             current_parsing_function_ste = NULL;
         }
@@ -373,7 +408,7 @@ compound_stmt
                 if (!is_func_decl || block_number > 0)
                     pushscope();
                 block_number++;
-                //printscopestack();
+                printscopestack();
             }
         }
         local_defs stmt_list '}'
@@ -382,7 +417,7 @@ compound_stmt
                 block_number--;
                 if (!is_func_decl || block_number > 0)
                     popscope();
-                //printscopestack();
+                printscopestack();
             }
         }
 
@@ -407,7 +442,7 @@ stmt
                 if (check_same_type(findcurrentdecl(returnid), $2)) {
                     return_type_error = 0;
                 } else {
-                    ERROR("return value is not return type\n");
+                    ERROR("return value is not return type");
                     return_type_error = 1;
                 }
             }
@@ -438,10 +473,10 @@ expr
                 if (check_same_type_for_unary($1, $3))
                     $$ = $1->type;
                 else
-                    ERROR("LHS and RHS are not same type\n");
+                    ERROR("LHS and RHS are not same type");
             }
             else
-                ERROR("LHS is not a variable\n");
+                ERROR("LHS is not a variable");
         }
         | or_expr
         | NULL_TOKEN
@@ -460,7 +495,7 @@ or_list
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = inttype;
             else
-                ERROR("not comparable\n");
+                ERROR("not comparable");
         }
         | and_expr
 
@@ -474,7 +509,7 @@ and_list
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = inttype;
             else
-                ERROR("not comparable\n");
+                ERROR("not comparable");
         }
         | binary
 
@@ -491,7 +526,7 @@ binary
 
             /* ERROR */
             else {
-                ERROR("not int or char type\n");
+                ERROR("not int or char type");
                 $$ = NULL;
             }
         }
@@ -511,7 +546,7 @@ binary
 
             /* ERROR */
             else {
-                ERROR("not int or char or pointer type\n");
+                ERROR("not int or char or pointer type");
                 $$ = NULL;
             }
         }
@@ -523,7 +558,7 @@ binary
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = plustype($1, $3);
             else
-                ERROR("not computable\n");
+                ERROR("not computable");
         }
         | binary '-' binary
         {
@@ -533,7 +568,7 @@ binary
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = plustype($1, $3);
             else
-                ERROR("not computable\n");
+                ERROR("not computable");
         }
         | unary %prec '='
         {   
@@ -541,7 +576,7 @@ binary
                 $$ = $1->type;
             else {
                 $$ = NULL;
-                // ERROR("ERROR : unary is NULL or unary semantic value->type is null!\n");
+                // ERROR("ERROR : unary is NULL or unary semantic value->type is null!");
             }
         }
 
@@ -575,7 +610,7 @@ unary
             // find ID
             $$ = findcurrentdecl($1);
             if (!$$)
-                ERROR("not declared\n");
+                ERROR("not declared");
         }
         | '-' unary %prec '!'
         {   
@@ -583,7 +618,7 @@ unary
             if (check_same_type_for_unary($2, inttype))
                 $$ = $2;
             else
-                ERROR("not computable\n");
+                ERROR("not computable");
         }
         | '!' unary
         {
@@ -591,7 +626,7 @@ unary
             if (check_same_type_for_unary($2, inttype))
                 $$ = inttype;
             else
-                ERROR("not computable\n");
+                ERROR("not computable");
         }
         | unary INCOP
         {
@@ -599,7 +634,7 @@ unary
             if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
                 $$ = $1;
             else
-                ERROR("not computable\n");
+                ERROR("not computable");
         }
         | unary DECOP
         {
@@ -607,7 +642,7 @@ unary
             if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
                 $$ = $1;
             else
-                ERROR("not computable\n");
+                ERROR("not computable");
         }
         | INCOP unary
         {
@@ -615,7 +650,7 @@ unary
             if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
                 $$ = $2;
             else
-                ERROR("not computable\n");
+                ERROR("not computable");
         }
         | DECOP unary
         {
@@ -623,7 +658,7 @@ unary
             if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
                 $$ = $2;
             else
-                ERROR("not computable\n");
+                ERROR("not computable");
         }
         | '&' unary %prec '!'
         {
@@ -637,7 +672,7 @@ unary
                 $$ = makeconstdecl(makeptrdecl($2->type));
             }
             else {
-                ERROR("not variable\n");
+                ERROR("not variable");
                 $$ = NULL;
             }
             
@@ -648,7 +683,7 @@ unary
                 $$ = makevardecl($2->ptrto);
             }
             else {
-                ERROR("not a pointer\n");
+                ERROR("not a pointer");
                 $$ = NULL;
             }
         }
@@ -663,7 +698,7 @@ unary
                 $$ = structaccess($1, $3);
             }
             else {
-                ERROR("variable is not struct\n");
+                ERROR("variable is not struct");
             }
         }
         | unary STRUCTOP ID
@@ -673,22 +708,23 @@ unary
                 $$ = structaccess($1, $3);
             }
             else {
-                ERROR("not a pointer\n");
+                ERROR("not a pointer");
             }
         }
         | unary '(' args ')'
         {
+            printArgs($3);
             if (check_is_proc($1))
                 $$ = check_function_call($1, $3);
             else
-                ERROR ("not a function\n");
+                ERROR ("not a function");
         }
         | unary '(' ')'
         {
             if (check_is_proc($1))
                 $$ = check_function_call($1, NULL);
             else
-                ERROR ("not a function\n");
+                ERROR ("not a function");
         }
 
 args    /* actual parameters(function arguments) transferred to function */
@@ -700,7 +736,7 @@ args    /* actual parameters(function arguments) transferred to function */
         }
         | args ',' expr
         {
-            // [TODO] args,expr 에서 올라오는건 TYPE 이라 next 연결 못함..
+            // [BUG]
             $1->next = makeconstdecl($3);
             $$ = $1;
         }
