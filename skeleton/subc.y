@@ -713,9 +713,14 @@ unary
         }
         | unary '(' args ')'
         {
-            printArgs($3);
+            /*
+                args pointer last pushed args.
+                args->elementvar field pointer first pushed args.
+            */
+
+            printArgs($3->elementvar);
             if (check_is_proc($1))
-                $$ = check_function_call($1, $3);
+                $$ = check_function_call($1, $3->elementvar);
             else
                 ERROR ("not a function");
         }
@@ -733,12 +738,13 @@ args    /* actual parameters(function arguments) transferred to function */
             // expr semantic value type is TYPEDECL.
             //$$ = $1;
             $$ = makeconstdecl($1);
+            $$->elementvar = $$; /* to save first args pointer. */
         }
         | args ',' expr
         {
-            // [BUG]
             $1->next = makeconstdecl($3);
-            $$ = $1;
+            $1->next->elementvar = $$->elementvar;
+            $$ = $1->next;
         }
 
 %%

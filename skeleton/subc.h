@@ -57,7 +57,7 @@ typedef struct decl {
 	struct ste *formals;
 	struct decl *returntype;
 	int typeclass;
-	struct decl *elementvar;
+	struct decl *elementvar; /*use this for args Linked List to save first args decl*/
 	int num_index;
 	struct ste *fieldlist;
 	struct decl *ptrto;	
