@@ -1,0 +1,437 @@
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+=====stack #1 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : i, decl class : 0
+=====stack #1 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : c, decl class : 0
+node name : i, decl class : 0
+=====stack #1 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : c, decl class : 0
+node name : i, decl class : 0
+=====stack #1 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+=====stack #1 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : i, decl class : 0
+=====stack #1 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : c, decl class : 0
+node name : i, decl class : 0
+=====stack #1 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+=====stack #1 from the top=====
+node name : c, decl class : 0
+node name : i, decl class : 0
+=====stack #2 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : i, decl class : 0
+=====stack #1 from the top=====
+node name : c, decl class : 0
+node name : i, decl class : 0
+=====stack #2 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : c, decl class : 0
+node name : i, decl class : 0
+=====stack #1 from the top=====
+node name : c, decl class : 0
+node name : i, decl class : 0
+=====stack #2 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : c, decl class : 0
+node name : i, decl class : 0
+=====stack #1 from the top=====
+node name : c, decl class : 0
+node name : i, decl class : 0
+=====stack #2 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : c, decl class : 0
+node name : i, decl class : 0
+=====stack #1 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : c, decl class : 0
+node name : i, decl class : 0
+=====stack #1 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : st, decl class : 0
+node name : c, decl class : 0
+node name : i, decl class : 0
+=====stack #1 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : st, decl class : 0
+node name : c, decl class : 0
+node name : i, decl class : 0
+=====stack #1 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+../open_test/str_op.c:17: error:redeclaration
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : *return, decl class : 3
+=====stack #1 from the top=====
+node name : main, decl class : 2
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : *return, decl class : 3
+=====stack #1 from the top=====
+node name : main, decl class : 2
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : i1, decl class : 0
+node name : *return, decl class : 3
+=====stack #1 from the top=====
+node name : main, decl class : 2
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : c1, decl class : 0
+node name : i1, decl class : 0
+node name : *return, decl class : 3
+=====stack #1 from the top=====
+node name : main, decl class : 2
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : st1, decl class : 0
+node name : c1, decl class : 0
+node name : i1, decl class : 0
+node name : *return, decl class : 3
+=====stack #1 from the top=====
+node name : main, decl class : 2
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : st2, decl class : 0
+node name : st1, decl class : 0
+node name : c1, decl class : 0
+node name : i1, decl class : 0
+node name : *return, decl class : 3
+=====stack #1 from the top=====
+node name : main, decl class : 2
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : pst1, decl class : 0
+node name : st2, decl class : 0
+node name : st1, decl class : 0
+node name : c1, decl class : 0
+node name : i1, decl class : 0
+node name : *return, decl class : 3
+=====stack #1 from the top=====
+node name : main, decl class : 2
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : pst2, decl class : 0
+node name : pst1, decl class : 0
+node name : st2, decl class : 0
+node name : st1, decl class : 0
+node name : c1, decl class : 0
+node name : i1, decl class : 0
+node name : *return, decl class : 3
+=====stack #1 from the top=====
+node name : main, decl class : 2
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+../open_test/str_op.c:35: error:LHS and RHS are not same type
+../open_test/str_op.c:39: error:LHS and RHS are not same type
+../open_test/str_op.c:41: error:LHS and RHS are not same type
+../open_test/str_op.c:43: error:LHS and RHS are not same type
+../open_test/str_op.c:44: error:LHS and RHS are not same type
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : pst2, decl class : 0
+node name : pst1, decl class : 0
+node name : st2, decl class : 0
+node name : st1, decl class : 0
+node name : c1, decl class : 0
+node name : i1, decl class : 0
+node name : *return, decl class : 3
+=====stack #1 from the top=====
+node name : main, decl class : 2
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
+=============PRINT SCOPE STACK=============
+=====stack #0 from the top=====
+node name : main, decl class : 2
+=====Final Stack from the top=====
+node name : string, decl class : 3
+node name : void, decl class : 3
+node name : char, decl class : 3
+node name : int, decl class : 3
+node name : str1, decl class : 3
+node name : str2, decl class : 3
+node name : str3, decl class : 3
+===========================================
