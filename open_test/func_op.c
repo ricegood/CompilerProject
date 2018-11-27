@@ -11,7 +11,7 @@ char func2(void) {
 void func3(int *a, int b) {
 	int *c;
 
-	c = a + b; /* [recognize it error.] => what??? is it possible??? */
+	c = a + b; /* [recognize it error.] => what??? is it possible??? NO . pointer ± int is ERROR.*/
 }
 
 int main(void) {
