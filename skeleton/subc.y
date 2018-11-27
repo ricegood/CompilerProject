@@ -681,7 +681,7 @@ unary
         | '*' unary %prec '!'
         {
             if ($2 && check_is_pointer_type($2->type)) {
-                $$ = makevardecl($2->ptrto);
+                $$ = makevardecl($2->type->ptrto);
             }
             else {
                 ERROR("not a pointer");

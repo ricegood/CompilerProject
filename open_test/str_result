@@ -401,7 +401,6 @@ node name : str3, decl class : 3
 ../open_test/str_op.c:35: error:LHS and RHS are not same type
 ../open_test/str_op.c:39: error:LHS and RHS are not same type
 ../open_test/str_op.c:41: error:LHS and RHS are not same type
-../open_test/str_op.c:43: error:LHS and RHS are not same type
 ../open_test/str_op.c:44: error:LHS and RHS are not same type
 =============PRINT SCOPE STACK=============
 =====stack #0 from the top=====

@@ -2106,7 +2106,7 @@ yyreduce:
 #line 682 "subc.y" /* yacc.c:1646  */
     {
             if ((yyvsp[0].declptr) && check_is_pointer_type((yyvsp[0].declptr)->type)) {
-                (yyval.declptr) = makevardecl((yyvsp[0].declptr)->ptrto);
+                (yyval.declptr) = makevardecl((yyvsp[0].declptr)->type->ptrto);
             }
             else {
                 ERROR("not a pointer");

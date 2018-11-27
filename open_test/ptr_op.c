@@ -18,7 +18,7 @@ int main(void) {
 	b = &*(b++); /* error [original comment is wrong] */
 
 	d = b;		/* error */
-	d = c;		/* [BUG] recognized it error => ERROR is right. ppt 23page. (int*) != (int array)  */
+	d = c;		/* recognized it error => ERROR is right. ppt 23page. (int*) != (int array)  */
 
 	c[1] = a[2]; /* error */
 	d = &(++d); /* error */

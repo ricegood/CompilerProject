@@ -40,7 +40,7 @@ int main(void) {
 
 	i1 = *st2.c; /* error */
 
-	i1 = *(pst2->st.i); /* [BUG] error:LHS and RHS are not same type */
+	i1 = *(pst2->st.i);
 	i1 = *(pst2->st.c); /* error */
 
 	return 0;
