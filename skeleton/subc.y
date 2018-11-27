@@ -89,7 +89,7 @@ ext_def
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
-            if ($1) {
+            if ($1 && $5) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
                 else // pointer
@@ -135,8 +135,6 @@ ext_def
                 // [TODO] memory leak (free wrong_func_decl)
                 struct ste* wrong_func_decl = popste();
                 rollback_struct_of($1);
-                //printf("rollback: remove wrong func decl (%s)\n", wrong_func_decl->name->name);
-                //printscopestack();
             }
 
             // reset value
@@ -341,7 +339,7 @@ param_decl  /* formal parameter declaration */
         }
         | type_specifier pointers ID '[' const_expr ']'
         {
-            if ($1 && !error_found_in_func_decl) {
+            if ($1 && $5 && !error_found_in_func_decl) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
                 else // pointer
@@ -374,7 +372,7 @@ def
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
-            if ($1 && !error_found_in_struct_specifier && !error_found_in_func_decl) {
+            if ($1 && $5 && !error_found_in_struct_specifier && !error_found_in_func_decl) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
                 else // pointer
@@ -392,8 +390,6 @@ def
         }
         | func_decl ';'
         {
-            //pushscope();
-            //pushstelist($1->formalswithreturnid);
             //printscopestack();
             error_found_in_func_decl = 0;
             current_parsing_function_ste = NULL;
@@ -697,14 +693,18 @@ unary
                 ex) int* a -> &a -> int**
                 ex2) int a -> &a -> int*
             */
-            if (check_is_var($2)) {
-                // it can't be RHS
-                $$ = makeconstdecl(makeptrdecl($2->type));
+            if ($2) {
+                if (check_is_var($2)) {
+                    // it can't be RHS
+                    $$ = makeconstdecl(makeptrdecl($2->type));
+                }
+                else {
+                    ERROR("not variable");
+                    $$ = NULL;
+                }
             }
-            else {
-                ERROR("not variable");
+            else
                 $$ = NULL;
-            }
             
         }
         | '*' unary %prec '!'
@@ -754,8 +754,10 @@ unary
                 args->elementvar field pointer first pushed args.
             */
 
-            if (check_is_proc($1))
-                $$ = check_function_call($1, $3->elementvar);
+            if (check_is_proc($1)) {
+                if ($3)
+                    $$ = check_function_call($1, $3->elementvar);
+            }
             else
                 ERROR ("not a function");
         }
@@ -776,9 +778,13 @@ args    /* actual parameters(function arguments) transferred to function */
         }
         | args ',' expr
         {
-            $1->next = makeconstdecl($3);
-            $1->next->elementvar = $$->elementvar;
-            $$ = $1->next;
+            if ($$ && $1) {
+                $1->next = makeconstdecl($3);
+                $1->next->elementvar = $$->elementvar;
+                $$ = $1->next;
+            }
+            else
+                $$ = NULL;
         }
 
 %%
