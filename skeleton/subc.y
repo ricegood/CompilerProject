@@ -514,11 +514,15 @@ and_expr
 and_list
         : and_list LOGICAL_AND binary
         {
-            /* only for int type */
-            if (check_same_type($1, inttype) && check_same_type($3, inttype))
-                $$ = inttype;
+            if ($1 && $3) {
+                /* only for int type */
+                if (check_same_type($1, inttype) && check_same_type($3, inttype))
+                    $$ = inttype;
+                else
+                    ERROR("not comparable");
+            }
             else
-                ERROR("not comparable");
+                $$ = NULL;
         }
         | binary
 
@@ -566,8 +570,10 @@ binary
 
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = plustype($1, $3);
-            else
+            else {
                 ERROR("not computable");
+                $$ = NULL;
+            }
         }
         | binary '-' binary
         {
@@ -576,8 +582,10 @@ binary
 
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = plustype($1, $3);
-            else
+            else {
                 ERROR("not computable");
+                $$ = NULL;
+            }
         }
         | unary %prec '='
         {   
@@ -626,48 +634,60 @@ unary
             /* only integer */
             if (check_same_type_for_unary($2, inttype))
                 $$ = $2;
-            else
+            else {
                 ERROR("not computable");
+                $$ = NULL;
+            }
         }
         | '!' unary
         {
             /* only for int type */
             if (check_same_type_for_unary($2, inttype))
                 $$ = inttype;
-            else
+            else {
                 ERROR("not computable");
+                $$ = NULL;
+            }
         }
         | unary INCOP
         {
             /* only char, integer */
             if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
                 $$ = $1;
-            else
+            else {
                 ERROR("not computable");
+                $$ = NULL;
+            }
         }
         | unary DECOP
         {
             /* only char, integer */
             if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
                 $$ = $1;
-            else
+            else {
                 ERROR("not computable");
+                $$ = NULL;
+            }
         }
         | INCOP unary
         {
             /* only char, integer */
             if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
                 $$ = $2;
-            else
+            else {
                 ERROR("not computable");
+                $$ = NULL;
+            }
         }
         | DECOP unary
         {
             /* only char, integer */
             if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
                 $$ = $2;
-            else
+            else {
                 ERROR("not computable");
+                $$ = NULL;
+            }
         }
         | '&' unary %prec '!'
         {
@@ -713,6 +733,7 @@ unary
             }
             else {
                 ERROR("variable is not struct");
+                $$ = NULL;
             }
         }
         | unary STRUCTOP ID
@@ -723,6 +744,7 @@ unary
             }
             else {
                 ERROR("not a pointer");
+                $$ = NULL;
             }
         }
         | unary '(' args ')'
