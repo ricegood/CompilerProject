@@ -32,7 +32,9 @@ int main(void) {
 	func3(&a, c);
 	func3(&b, a); /* error */
 
+	c = func1(a, b);
 	d = func1(a, b); /* error */
+	c = func3(&c, c); /* error */
 	c = func3(&c, d); /* error => message return twice */
 
 	return 0;

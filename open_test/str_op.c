@@ -38,6 +38,7 @@ int main(void) {
 	i1 = st1.i;
 	c1 = st1.i; /* error */
 
+	c1 = *st2.c;
 	i1 = *st2.c; /* error */
 
 	i1 = *(pst2->st.i);

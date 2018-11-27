@@ -242,7 +242,9 @@ int check_is_var(decl* decl_ptr) {
 	// return 0 or 1. (true or false)
 	if (decl_ptr != NULL && decl_ptr->declclass == VAR_)
 		return 1;
-	else return 0;
+	else {
+		return 0;
+	}
 }
 
 int check_is_array(decl* decl_ptr) {
