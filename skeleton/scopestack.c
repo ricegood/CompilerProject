@@ -144,6 +144,11 @@ struct ste *lookup_local_scope(struct id* id_ptr, struct node* scope) {
       ste_it = ste_it->prev;
     }
     ste_list = NULL;
+
+    if (!ste_list_result->name) {
+      // [TODO] memory leak
+      ste_list_result = NULL;
+    }
     return ste_list_result;
   } else {
     //printf("Local scope stack is NULL!\n");

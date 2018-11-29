@@ -463,6 +463,7 @@ int check_redeclaration(struct id* id_ptr, struct decl* decl_ptr) {
 	// else case = find in local scope
 	else {
 		struct ste *same_id_ste_list = findcurrentdecls_local(id_ptr);
+		/*
 		while (same_id_ste_list) {
 			if (check_same_decl(same_id_ste_list->decl, decl_ptr)) {
 				return 1;
@@ -470,7 +471,12 @@ int check_redeclaration(struct id* id_ptr, struct decl* decl_ptr) {
 			else
 				same_id_ste_list = same_id_ste_list->prev;
 		}
-		return 0;
+		*/
+		if (same_id_ste_list) {
+			return 1;
+		}
+		else
+			return 0;
 	}
 	return 0;
 }
