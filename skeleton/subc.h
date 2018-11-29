@@ -108,7 +108,7 @@ struct decl *makeptrdecl(struct decl* typedecl);
 struct decl *makeprocdecl();
 struct decl *makestructdecl();
 
-void rollback_struct_of(struct decl* procdecl);
+//void rollback_struct_of(struct decl* procdecl);
 
 struct decl *findcurrentdecl(struct id* id_ptr); // return last pushed decl (global scope)
 struct ste *findcurrentdecls(struct id* id_ptr); // return linked list of ste (global scope)

@@ -184,12 +184,13 @@ struct decl *makeprocdecl() {
 	return new_decl;
 }
 
+/*
 void rollback_struct_of(struct decl* procdecl) {
-	/*
-		scan inttype ste to bottom,
-		if there is struct made by procdecl (can check by using formalswithreturnid->decl)
-		remove the struct.
-	*/
+	
+		//scan inttype ste to bottom,
+		//if there is struct made by procdecl (can check by using formalswithreturnid->decl)
+		//remove the struct.
+	
 	struct ste *ste_it = inttype_ste;
 	while (ste_it) {
 		// struct exists
@@ -212,6 +213,7 @@ void rollback_struct_of(struct decl* procdecl) {
 		}
 	}
 }
+*/
 
 
 
