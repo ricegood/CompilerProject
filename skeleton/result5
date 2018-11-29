@@ -7,9 +7,17 @@ test5.c:15: error:not comparable
 test5.c:19: error:not int or char or pointer type
 test5.c:20: error:not int or char or pointer type
 test5.c:21: error:not int or char or pointer type
-test5.c:24: error:not int or char type
 test5.c:25: error:not int or char type
 test5.c:26: error:not int or char type
 test5.c:27: error:not int or char type
 test5.c:28: error:not int or char type
 test5.c:29: error:not int or char type
+test5.c:30: error:not int or char type
+test5.c:31: error:not int or char type
+test5.c:34: error:LHS and RHS are not same type
+test5.c:35: error:LHS and RHS are not same type
+test5.c:36: error:LHS and RHS are not same type
+test5.c:39: error:not a pointer
+test5.c:40: error:not a pointer
+test5.c:43: error:variable is not struct
+test5.c:58: error:return type was not matched

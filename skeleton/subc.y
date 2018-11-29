@@ -468,8 +468,13 @@ expr
                 if (check_is_var($1)) {
                     if (check_same_type_for_unary($1, $3))
                         $$ = $1->type;
-                    else
-                        ERROR("LHS and RHS are not same type");
+                    else {
+                        if ($3 == nulltype) 
+                            ERROR("RHS is not a const or variable");
+                        else
+                            ERROR("LHS and RHS are not same type");
+                        $$ = NULL;
+                    }
                 }
                 else {
                     ERROR("LHS is not a variable");

@@ -3,7 +3,7 @@ int main(){
 	int b; 
 	char *c;
 	char d;
-	struct a{} e;
+	struct a{int x;} e;
 	struct a *f;
 
 	/* not comparable */
@@ -20,6 +20,7 @@ int main(){
 	e == *f;
 	e == f;
 
+
 	/* not int or char type */
 	a >= b;
 	a >= c;
@@ -27,8 +28,32 @@ int main(){
 	a >= e;
 	a >= f;
 	e < *f;
+	f > &e;
+
+	/* RHS LHS error */
+	f = e;
+	f = c;
+	f = &d;
+
+	/* not a pointer */
+	e->x = b;
+	b = e->x;
+
+	/* variable is not a struct */
+	a->x = b;
 
 	/* OK */
 	b == *a;
 	d >= *c;
+	f == &e;
+
+	f = &e;
+	e = *f;
+
+	e.x = b;
+	b = e.x;
+	a = &(e.x);
+	e.x = *a;
+
+	return a;
 }
