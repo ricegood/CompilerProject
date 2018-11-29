@@ -485,11 +485,6 @@ expr
                 $$ = NULL;
         }
         | or_expr
-        | NULL_TOKEN
-        {
-            // [TODO]
-            $$ = nulltype;
-        }
 
 or_expr
         : or_list
@@ -586,6 +581,9 @@ binary
         {   
             if ($1 && $1->type)
                 $$ = $1->type;
+            else if ($1 == nulltype) {
+                $$ = nulltype;
+            }
             else {
                 $$ = NULL;
                 // ERROR("ERROR : unary is NULL or unary semantic value->type is null!");
@@ -766,6 +764,11 @@ unary
                 $$ = check_function_call($1, NULL);
             else
                 ERROR ("not a function");
+        }
+        | NULL_TOKEN
+        {
+            // [TODO]
+            $$ = nulltype;
         }
 
 args    /* actual parameters(function arguments) transferred to function */
