@@ -18,7 +18,7 @@ int is_func_decl = 0;
 int block_number = 0;
 int error_found_in_func_decl = 0;
 int error_found_in_struct_specifier = 0; /* for def_list & error_found flag */
-int return_type_error = 0; /* It can work because func inside func is impossible. no synchronization problem. */
+//int return_type_error = 0; /* It can work because func inside func is impossible. no synchronization problem. */
 %}
 
 /* yylval types */
@@ -85,7 +85,7 @@ ext_def
             }
             else
                 $$ = NULL;
-            //printscopestack();
+            printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
@@ -97,11 +97,11 @@ ext_def
             }
             else
                 $$ = NULL;
-            //printscopestack();
+            printscopestack();
         }
         | func_decl ';'
         {
-            //printscopestack();
+            printscopestack();
             error_found_in_func_decl = 0;
             current_parsing_function_ste = NULL;
         }
@@ -114,7 +114,7 @@ ext_def
             if ($1) {
                 pushscope();
                 pushstelist($1->formalswithreturnid);
-                //printscopestack();
+                printscopestack();
                 is_func_decl = 1;
                 block_number = 0;
             }
@@ -125,21 +125,24 @@ ext_def
                 is_func_decl = 0;
                 block_number = 0;
                 struct ste *pop = popscope();
-                //printscopestack();
+                printscopestack();
                 // [TODO] delete pop using loop (for prevent from memory leak)
                 // delete hash table id also!?
             }
 
-            /* if return type is wrong, rollback here (remove top ste) */
+            /*
+
+            // if return type is wrong, rollback here (remove top ste)
             if (return_type_error) {
                 // [TODO] memory leak (free wrong_func_decl)
                 struct ste* wrong_func_decl = popste();
                 rollback_struct_of($1);
             }
 
+            */
             // reset value
             error_found_in_func_decl = 0;
-            return_type_error = 0;
+            //return_type_error = 0;
             current_parsing_function_ste = NULL;
         }
 
@@ -155,7 +158,7 @@ struct_specifier
             error_found_in_struct_specifier = declare($2, structdecl);
             if (!error_found_in_struct_specifier) {
                 pushscope();
-                //printscopestack();
+                printscopestack();
             }
             $<declptr>$ = structdecl;
         }
@@ -163,12 +166,12 @@ struct_specifier
         {   
             if (!error_found_in_struct_specifier) {
                 struct decl *structdecl = $<declptr>4;
-                //printscopestack();
+                printscopestack();
                 struct ste *fields = popscope();
-                //printscopestack();
+                printscopestack();
                 structdecl->fieldlist = fields;
                 $<declptr>$ = structdecl;
-                //printscopestack();
+                printscopestack();
             }
             else
                 $<declptr>$ = NULL;
@@ -335,7 +338,7 @@ param_decl  /* formal parameter declaration */
             }
             else
                 $$ = NULL;
-            //printscopestack();
+            printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']'
         {
@@ -347,7 +350,7 @@ param_decl  /* formal parameter declaration */
             }
             else
                 $$ = NULL;
-            //printscopestack();
+            printscopestack();
         }
 
 def_list    /* list of definitions, definition can be type(struct), variable, function */
@@ -368,7 +371,7 @@ def
             }
             else
                 $$ = NULL;
-            //printscopestack();
+            printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
@@ -380,7 +383,7 @@ def
             }
             else
                 $$ = NULL;
-            //printscopestack();
+            printscopestack();
         }
         | type_specifier ';'
         {
@@ -390,7 +393,7 @@ def
         }
         | func_decl ';'
         {
-            //printscopestack();
+            printscopestack();
             error_found_in_func_decl = 0;
             current_parsing_function_ste = NULL;
         }
@@ -403,7 +406,7 @@ compound_stmt
                 if (!is_func_decl || block_number > 0)
                     pushscope();
                 block_number++;
-                //printscopestack();
+                printscopestack();
             }
         }
         local_defs stmt_list '}'
@@ -412,7 +415,7 @@ compound_stmt
                 block_number--;
                 if (!is_func_decl || block_number > 0)
                     popscope();
-                //printscopestack();
+                printscopestack();
             }
         }
 
@@ -435,10 +438,10 @@ stmt
             if ($2 && !error_found_in_func_decl) {
                 /* return type check */
                 if (check_same_type(findcurrentdecl(returnid), $2)) {
-                    return_type_error = 0;
+                    //return_type_error = 0;
                 } else {
                     ERROR("return type was not matched");
-                    return_type_error = 1;
+                    //return_type_error = 1;
                 }
             }
         }
