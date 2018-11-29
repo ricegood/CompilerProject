@@ -56,10 +56,10 @@ int error_found_in_struct_specifier = 0; /* for def_list & error_found flag */
 %token<declptr>     TYPE VOID NULL_TOKEN
 
 /* decl */
-%type<declptr>      ext_def struct_specifier func_decl param_list param_decl def_list def compound_stmt local_defs stmt_list stmt unary
+%type<declptr>      ext_def struct_specifier func_decl param_list param_decl def compound_stmt unary
 
 /* type decl */
-%type<declptr>      type_specifier expr_e const_expr expr or_expr or_list and_expr and_list binary args
+%type<declptr>      type_specifier const_expr expr or_expr or_list and_expr and_list binary args
 
 %type<intVal>       pointers;
 
