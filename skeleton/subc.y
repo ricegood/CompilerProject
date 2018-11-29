@@ -524,47 +524,33 @@ and_list
 
 binary
         : binary RELOP binary
-        {
-            /* char RELOP char */
-            if (check_same_type($1, chartype) && check_same_type($3, chartype))
-                $$ = inttype;
+        {   
+            if (!(check_same_type($1, chartype) || check_same_type($1, inttype)) || !(check_same_type($3, chartype) || check_same_type($3, inttype))) {
+                ERROR("not int or char type");
+            }
 
-            /* int RELOP int */
-            else if (check_same_type($1, inttype) && check_same_type($3, inttype))
+            /* char RELOP char or int RELOP int */
+            else if (check_same_type($1, $3))
                 $$ = inttype;
 
             /* ERROR */
             else {
-                // [Q] Q&A #2 implementation
-                if (check_is_struct_type($1) || check_is_struct_type($3))
-                    ERROR("not comparable");
-                else
-                    RROR("not int or char type");
-                $$ = NULL;
+                ERROR("not comparable");
             }
         }
         | binary EQUOP binary
         {
-            /* char EQUOP char */
-            if (check_same_type($1, chartype) && check_same_type($3, chartype))
-                $$ = inttype;
+            if (!(check_same_type($1, chartype) || check_same_type($1, inttype) || check_is_pointer_type($1)) || !(check_same_type($3, chartype) || check_same_type($3, inttype) || check_is_pointer_type($3))) {
+                ERROR("not int or char or pointer type");
+            }
 
-            /* int EQUOP int */
-            else if (check_same_type($1, inttype) && check_same_type($3, inttype))
-                $$ = inttype;
-
-            /* pointer EQUOP pointer */
-            else if (check_is_pointer_type($1) && check_is_pointer_type($3))
+            /* char EQUOP char or int EQUOP int or pointer(same type) EQUOP pointer(same type) */
+            else if (check_same_type($1, $3))
                 $$ = inttype;
 
             /* ERROR */
             else {
-                // [Q] Q&A #2 implementation
-                if (check_is_struct_type($1) || check_is_struct_type($3))
-                    ERROR("not comparable");
-                else
-                    RROR("not int or char or pointer type");
-                $$ = NULL;
+                ERROR("not comparable");
             }
         }
         | binary '+' binary
