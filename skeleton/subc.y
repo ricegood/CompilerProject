@@ -482,9 +482,14 @@ binary
             }
         }
         | binary EQUOP binary
-        {
-            if (!(check_same_type($1, chartype) || check_same_type($1, inttype) || check_is_pointer_type($1)) || !(check_same_type($3, chartype) || check_same_type($3, inttype) || check_is_pointer_type($3))) {
-                ERROR("not int or char or pointer type");
+        {   
+            if (check_is_array($1) && check_is_array($3) && check_same_type($1->elementvar->type, $3->elementvar->type)) {
+                // for array EQUOP array
+                $$ = inttype;
+            }
+
+            else if (!(check_same_type($1, chartype) || check_same_type($1, inttype) || check_is_pointer_type($1) || check_is_array($1)) || !(check_same_type($3, chartype) || check_same_type($3, inttype) || check_is_pointer_type($3) || check_is_array($3))) {
+                ERROR("not int, char or pointer type");
             }
 
             /* char EQUOP char or int EQUOP int or pointer(same type) EQUOP pointer(same type) */
