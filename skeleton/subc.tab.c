@@ -1379,7 +1379,7 @@ yyreduce:
             }
             else
                 (yyval.declptr) = NULL;
-            printscopestack();
+            //printscopestack();
         }
 #line 1385 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1395,7 +1395,7 @@ yyreduce:
             }
             else
                 (yyval.declptr) = NULL;
-            printscopestack();
+            //printscopestack();
         }
 #line 1401 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1403,7 +1403,7 @@ yyreduce:
   case 7:
 #line 103 "subc.y" /* yacc.c:1646  */
     {
-            printscopestack();
+            //printscopestack();
             error_found_in_func_decl = 0;
             current_parsing_function_ste = NULL;
         }
@@ -1424,7 +1424,7 @@ yyreduce:
             if ((yyvsp[0].declptr)) {
                 pushscope();
                 pushstelist((yyvsp[0].declptr)->formalswithreturnid);
-                printscopestack();
+                //printscopestack();
                 is_func_decl = 1;
                 block_number = 0;
             }
@@ -1439,7 +1439,7 @@ yyreduce:
                 is_func_decl = 0;
                 block_number = 0;
                 struct ste *pop = popscope();
-                printscopestack();
+                //printscopestack();
                 // [TODO] delete pop using loop (for prevent from memory leak)
                 // delete hash table id also!?
             }
@@ -1469,7 +1469,7 @@ yyreduce:
             error_found_in_struct_specifier = declare((yyvsp[-1].idptr), structdecl);
             if (!error_found_in_struct_specifier) {
                 pushscope();
-                printscopestack();
+                //printscopestack();
             }
             (yyval.declptr) = structdecl;
         }
@@ -1481,12 +1481,12 @@ yyreduce:
     {   
             if (!error_found_in_struct_specifier) {
                 struct decl *structdecl = (yyvsp[-1].declptr);
-                printscopestack();
+                //printscopestack();
                 struct ste *fields = popscope();
-                printscopestack();
+                //printscopestack();
                 structdecl->fieldlist = fields;
                 (yyval.declptr) = structdecl;
-                printscopestack();
+                //printscopestack();
             }
             else
                 (yyval.declptr) = NULL;
@@ -1681,7 +1681,7 @@ yyreduce:
             }
             else
                 (yyval.declptr) = NULL;
-            printscopestack();
+            //printscopestack();
         }
 #line 1687 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1697,7 +1697,7 @@ yyreduce:
             }
             else
                 (yyval.declptr) = NULL;
-            printscopestack();
+            //printscopestack();
         }
 #line 1703 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1721,7 +1721,7 @@ yyreduce:
             }
             else
                 (yyval.declptr) = NULL;
-            printscopestack();
+            //printscopestack();
         }
 #line 1727 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1737,7 +1737,7 @@ yyreduce:
             }
             else
                 (yyval.declptr) = NULL;
-            printscopestack();
+            //printscopestack();
         }
 #line 1743 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1755,7 +1755,7 @@ yyreduce:
   case 33:
 #line 395 "subc.y" /* yacc.c:1646  */
     {
-            printscopestack();
+            //printscopestack();
             error_found_in_func_decl = 0;
             current_parsing_function_ste = NULL;
         }
@@ -1770,7 +1770,7 @@ yyreduce:
                 if (!is_func_decl || block_number > 0)
                     pushscope();
                 block_number++;
-                printscopestack();
+                //printscopestack();
             }
         }
 #line 1777 "subc.tab.c" /* yacc.c:1646  */
@@ -1783,7 +1783,7 @@ yyreduce:
                 block_number--;
                 if (!is_func_decl || block_number > 0)
                     popscope();
-                printscopestack();
+                //printscopestack();
             }
         }
 #line 1790 "subc.tab.c" /* yacc.c:1646  */
