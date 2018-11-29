@@ -437,7 +437,7 @@ stmt
                 if (check_same_type(findcurrentdecl(returnid), $2)) {
                     return_type_error = 0;
                 } else {
-                    ERROR("return value is not return type");
+                    ERROR("return type was not matched");
                     return_type_error = 1;
                 }
             }
@@ -535,7 +535,11 @@ binary
 
             /* ERROR */
             else {
-                ERROR("not int or char type");
+                // [Q] Q&A #2 implementation
+                if (check_is_struct_type($1) || check_is_struct_type($3))
+                    ERROR("not comparable");
+                else
+                    RROR("not int or char type");
                 $$ = NULL;
             }
         }
@@ -555,7 +559,11 @@ binary
 
             /* ERROR */
             else {
-                ERROR("not int or char or pointer type");
+                // [Q] Q&A #2 implementation
+                if (check_is_struct_type($1) || check_is_struct_type($3))
+                    ERROR("not comparable");
+                else
+                    RROR("not int or char type");
                 $$ = NULL;
             }
         }
@@ -567,7 +575,7 @@ binary
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = plustype($1, $3);
             else {
-                ERROR("not computable");
+                ERROR("not int type");
                 $$ = NULL;
             }
         }
@@ -579,7 +587,7 @@ binary
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = plustype($1, $3);
             else {
-                ERROR("not computable");
+                ERROR("not int type");
                 $$ = NULL;
             }
         }
