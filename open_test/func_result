@@ -1,4 +1,4 @@
-../open_test/func_op.c:14: error:not computable
+../open_test/func_op.c:14: error:not int type
 ../open_test/func_op.c:28: error:actual args are not equal to formal args
 ../open_test/func_op.c:29: error:actual args are not equal to formal args
 ../open_test/func_op.c:33: error:actual args are not equal to formal args

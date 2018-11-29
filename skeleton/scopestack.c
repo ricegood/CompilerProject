@@ -107,6 +107,8 @@ struct ste *lookup(struct id* id_ptr) {
       ste_it = ste_it->prev;
     }
     ste_list = NULL;
+    if (!ste_list_result->name)
+      return NULL; // can not find
     return ste_list_result;
   } else {
     //printf("Scope stack top is NULL!\n");

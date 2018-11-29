@@ -11,7 +11,7 @@
 int declare(struct id* id_ptr, struct decl* decl_ptr) {
 	/* return error_found */
 	//printf("declare()\n");
-	if (!id_ptr || !decl_ptr) {
+	if (!id_ptr) {
 		// ERROR("ERROR : declare failed! id_ptr or decl_ptr is null!\n");
 		return 1;
 	}
@@ -24,7 +24,7 @@ int declare(struct id* id_ptr, struct decl* decl_ptr) {
 
 	else{
 		// add to ste stack linked list
-		if (check_is_struct_type(decl_ptr)) {
+		if (!(id_ptr == returnid) && check_is_struct_type(decl_ptr)) {
 			// add to bottom for local scope struct
 			insert_bottom(id_ptr, decl_ptr);
 		}
@@ -99,15 +99,6 @@ struct decl *makestructdecl(struct ste* fields) {
 	new_decl->declclass = TYPE_;
 	new_decl->typeclass = STRUCT_;
 	new_decl->fieldlist = fields;
-	new_decl->formalswithreturnid = current_parsing_function_ste; // which function make this struct
-
-	// check point message //
-	/*
-	if (new_decl->formalswithreturnid)
-		printf("*** THIS STRUCT's PARENT FUNCTION = %s ***\n", new_decl->formalswithreturnid->name->name);
-	else
-		printf("*** THIS STRUCT's PARENT FUNCTION is GLOBAL\n");
-	*/
 
 	return new_decl;
 }
@@ -516,7 +507,6 @@ void init_type()
 
 	top = NULL;
 	bottom = NULL;
-	current_parsing_function_ste = NULL;
 
 	inttype = maketypedecl(INT_);
 	chartype = maketypedecl(CHAR_);

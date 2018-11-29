@@ -14,11 +14,9 @@ void   REDUCE(char* s);
 int num_of_err_message = 0; // print only 1 error for 1 line
 
 /* flag for subc.y */
-int is_func_decl = 0;
-int block_number = 0;
-int error_found_in_func_decl = 0;
-int error_found_in_struct_specifier = 0; /* for def_list & error_found flag */
-//int return_type_error = 0; /* It can work because func inside func is impossible. no synchronization problem. */
+int is_func_decl = 0; /* for scope stack management about block inside of function */
+int block_number = 0; /* for scope stack management about block inside of function */
+int start_param_parsing = 1; /* for prevent from conflicts. */
 %}
 
 /* yylval types */
@@ -100,10 +98,8 @@ ext_def
             //printscopestack();
         }
         | func_decl ';'
-        {
+        {   
             //printscopestack();
-            error_found_in_func_decl = 0;
-            current_parsing_function_ste = NULL;
         }
         | type_specifier ';'
         {
@@ -111,39 +107,20 @@ ext_def
         }
         | func_decl
         {   
-            if ($1) {
-                pushscope();
-                pushstelist($1->formalswithreturnid);
-                //printscopestack();
-                is_func_decl = 1;
-                block_number = 0;
-            }
+            pushscope();
+            pushstelist($1->formalswithreturnid);
+            //printscopestack();
+            is_func_decl = 1;
+            block_number = 0;
         }
         compound_stmt
         {
-            if ($1) {
-                is_func_decl = 0;
-                block_number = 0;
-                struct ste *pop = popscope();
-                //printscopestack();
-                // [TODO] delete pop using loop (for prevent from memory leak)
-                // delete hash table id also!?
-            }
-
-            /*
-
-            // if return type is wrong, rollback here (remove top ste)
-            if (return_type_error) {
-                // [TODO] memory leak (free wrong_func_decl)
-                struct ste* wrong_func_decl = popste();
-                rollback_struct_of($1);
-            }
-
-            */
-            // reset value
-            error_found_in_func_decl = 0;
-            //return_type_error = 0;
-            current_parsing_function_ste = NULL;
+            is_func_decl = 0;
+            block_number = 0;
+            struct ste *pop = popscope();
+            //printscopestack();
+            // [TODO] delete pop using loop (for prevent from memory leak)
+            // delete hash table id also!?
         }
 
 type_specifier
@@ -155,16 +132,15 @@ struct_specifier
         : STRUCT ID '{'
         {
             decl *structdecl = makestructdecl(NULL);
-            error_found_in_struct_specifier = declare($2, structdecl);
-            if (!error_found_in_struct_specifier) {
-                pushscope();
-                //printscopestack();
-            }
+            declare($2, structdecl);
+            
+            pushscope();
+            //printscopestack();
+            
             $<declptr>$ = structdecl;
         }
         def_list
-        {   
-            if (!error_found_in_struct_specifier) {
+        {
                 struct decl *structdecl = $<declptr>4;
                 //printscopestack();
                 struct ste *fields = popscope();
@@ -172,17 +148,14 @@ struct_specifier
                 structdecl->fieldlist = fields;
                 $<declptr>$ = structdecl;
                 //printscopestack();
-            }
-            else
-                $<declptr>$ = NULL;
         }
         '}'
         {
-            error_found_in_struct_specifier = 0;
+            // initial set
             $$ = $<declptr>6;
         }
         | STRUCT ID
-        {
+        {   
             struct decl *decl_ptr = findstructdecl($2);
             if (check_is_struct_type(decl_ptr)) {
                 $$ = decl_ptr;
@@ -196,127 +169,96 @@ struct_specifier
 func_decl
         : type_specifier pointers ID '(' ')'
         {
-            if ($1 && !error_found_in_struct_specifier) {
-                struct decl *procdecl = makeprocdecl();
-                error_found_in_func_decl = declare($3, procdecl);
-                if (!error_found_in_func_decl) {
-                    current_parsing_function_ste = top->data; // get last inserted ste (= procdecl ste)
-                    pushscope(); /* for collecting formals */
-
-                    if ($2 == 0) // no pointer
-                        declare(returnid, $1);
-                    else // pointer
-                        declare(returnid, makeptrdecl($1));
-
-                    // no formals
-
-                    struct ste *formals;
-                    formals = popscope();
-
-                    /* formals->decl is always returnid decl with return type*/
-                    procdecl->formalswithreturnid = formals;
-                    procdecl->returntype = formals->decl;
-                    procdecl->formals = formals->prev; // null in this production
-                    
-                    /* error ; struct_specifier returns NULL, because this is not a struct*/
-                    if (procdecl->returntype == NULL)
-                        ERROR("incomplete type error");
-
-                    $$ = procdecl;
-                }
-                else {
-                    // ERROR : redeclaration of same variables at same scope!
-                    $$ = NULL;
-                }
+            struct decl *procdecl = makeprocdecl();
+            if ($1) {
+                declare($3, procdecl);
             }
-            else
-                $$ = NULL;
+            pushscope(); /* for collecting formals */
+
+            if ($2 == 0) // no pointer
+                declare(returnid, $1);
+            else // pointer
+                declare(returnid, makeptrdecl($1));
+
+            // no formals
+
+            struct ste *formals;
+            formals = popscope();
+
+            /* formals->decl is always returnid decl with return type*/
+            procdecl->formalswithreturnid = formals;
+            procdecl->returntype = formals->decl;
+            procdecl->formals = formals->prev; // null in this production
+            
+            /* error ; struct_specifier returns NULL, because this is not a struct*/
+            if (procdecl->returntype == NULL)
+                ERROR("incomplete type error");
+
+            $$ = procdecl;
         }
         | type_specifier pointers ID '(' VOID ')'
         {
-            // [TODO] what is VOID???????
-            if ($1 && !error_found_in_struct_specifier) {
-                struct decl *procdecl = makeprocdecl();
-                error_found_in_func_decl = declare($3, procdecl);
-                if (!error_found_in_func_decl) {
-                    current_parsing_function_ste = top->data; // get last inserted ste (= procdecl ste)
-                    pushscope(); /* for collecting formals */
-
-                    if ($2 == 0) // no pointer
-                        declare(returnid, $1);
-                    else // pointer
-                        declare(returnid, makeptrdecl($1));
-
-                    // no formals
-
-                    struct ste *formals;
-                    formals = popscope();
-
-                    /* formals->decl is always returnid decl with return type*/
-                    procdecl->formalswithreturnid = formals;
-                    procdecl->returntype = formals->decl;
-                    procdecl->formals = formals->prev; // null in this production
-                    
-                    /* error ; struct_specifier returns NULL, because this is not a struct*/
-                    if (procdecl->returntype == NULL)
-                        ERROR("incomplete type error");
-
-                    $$ = procdecl;
-                }
-                else {
-                    // ERROR : redeclaration of same variables at same scope!
-                    $$ = NULL;
-                }
+            struct decl *procdecl = makeprocdecl();
+            if ($1) {
+                declare($3, procdecl);
             }
-            else
-                $$ = NULL;
+            pushscope(); /* for collecting formals */
+
+            if ($2 == 0) // no pointer
+                declare(returnid, $1);
+            else // pointer
+                declare(returnid, makeptrdecl($1));
+
+            // no formals
+
+            struct ste *formals;
+            formals = popscope();
+
+            /* formals->decl is always returnid decl with return type*/
+            procdecl->formalswithreturnid = formals;
+            procdecl->returntype = formals->decl;
+            procdecl->formals = formals->prev; // null in this production
+            
+            /* error ; struct_specifier returns NULL, because this is not a struct*/
+            if (procdecl->returntype == NULL)
+                ERROR("incomplete type error");
+
+            $$ = procdecl;
         }
-        | type_specifier pointers ID '(' 
-        {
-            error_found_in_func_decl = 1;
-            if ($1 && !error_found_in_struct_specifier) {
-                struct decl *procdecl = makeprocdecl();
-                error_found_in_func_decl = declare($3, procdecl);
-                if (!error_found_in_func_decl) {
-                    pushscope(); /* for collecting formals */
+        | type_specifier pointers ID '(' param_list ')'
+        {   
+            struct ste *formals;
+            struct ste *returntype;
+            struct decl *procdecl;
+            //printscopestack();
+            formals = popscope();
+            procdecl = makeprocdecl();
 
-                    if ($2 == 0) // no pointer
-                        declare(returnid, $1);
-                    else // pointer
-                        declare(returnid, makeptrdecl($1));
-
-                    $<declptr>$ = procdecl;
-                }
+            if ($1) {
+                declare($3, procdecl);
             }
-        }
-        param_list ')'
-        {
-            if ($1 && !error_found_in_func_decl) {
-                struct ste *formals;
-                struct decl *procdecl = $<declptr>5;
-                formals = popscope();
 
-                /* formals->decl is always returnid decl with return type*/
-                procdecl->formalswithreturnid = formals;
-                procdecl->returntype = formals->decl;
-                procdecl->formals = formals->prev;
+            pushscope(); /* for collecting returnid */
+            if ($2 == 0) // no pointer
+                declare(returnid, $1);
+            else // pointer
+                declare(returnid, makeptrdecl($1));
+            //printscopestack();
+            returntype = popscope();
+            returntype->prev = formals;
+            formals = returntype;
 
-                /*
-                    // check point (formal list-first)
-                    printf("formal list first param = %s\n", procdecl->formals->name->name);
-                    printf("formal list second param = %s\n", procdecl->formals->prev->name->name);
-                */
+            /* formals->decl is always returnid decl with return type*/
+            procdecl->formalswithreturnid = formals;
+            procdecl->returntype = formals->decl;
+            procdecl->formals = formals->prev;
 
-                /* error ; struct_specifier returns NULL, because this is not a struct*/
-                if (procdecl->returntype == NULL)
-                    ERROR("incomplete type error");
-                
-                $$ = procdecl; 
-            }
-            else
-                $$ = NULL;
+            /* error ; struct_specifier returns NULL, because this is not a struct*/
+            if (procdecl->returntype == NULL)
+                ERROR("incomplete type error");
 
-            error_found_in_func_decl = 0;
+            $$ = procdecl; 
+            start_param_parsing = 1;
         }
 
 pointers
@@ -329,8 +271,13 @@ param_list  /* list of formal parameter declaration */
 
 param_decl  /* formal parameter declaration */
         : type_specifier pointers ID
-        {   
-            if ($1 && !error_found_in_func_decl) {
+        {      
+            if (start_param_parsing) {
+                pushscope();
+                start_param_parsing = 0;
+            }
+
+            if ($1) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makevardecl($1));
                 else // pointer
@@ -342,7 +289,12 @@ param_decl  /* formal parameter declaration */
         }
         | type_specifier pointers ID '[' const_expr ']'
         {
-            if ($1 && $5 && !error_found_in_func_decl) {
+            if (start_param_parsing) {
+                pushscope();
+                start_param_parsing = 0;
+            }
+
+            if ($1 && $5) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
                 else // pointer
@@ -363,7 +315,7 @@ def_list    /* list of definitions, definition can be type(struct), variable, fu
 def
         : type_specifier pointers ID ';'
         {
-            if ($1 && !error_found_in_struct_specifier && !error_found_in_func_decl) {
+            if ($1) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makevardecl($1));
                 else // pointer 
@@ -375,7 +327,7 @@ def
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
-            if ($1 && $5 && !error_found_in_struct_specifier && !error_found_in_func_decl) {
+            if ($1 && $5) {
                 if ($2 == 0) // no pointer
                     declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
                 else // pointer
@@ -387,36 +339,29 @@ def
         }
         | type_specifier ';'
         {
-            if ($1 && !error_found_in_struct_specifier && !error_found_in_func_decl) {
+            if ($1) {
                 // [TODO] what here?
             }
         }
         | func_decl ';'
         {
             //printscopestack();
-            error_found_in_func_decl = 0;
-            current_parsing_function_ste = NULL;
         }
 
 compound_stmt
         : '{'
         {
-            // **[TODO] add error_found_in_func_decl flag in this option!!
-            if (!error_found_in_func_decl) {
-                if (!is_func_decl || block_number > 0)
-                    pushscope();
-                block_number++;
-                //printscopestack();
-            }
+            if (!is_func_decl || block_number > 0)
+                pushscope();
+            block_number++;
+            //printscopestack();
         }
         local_defs stmt_list '}'
         {
-            if (!error_found_in_func_decl) {
-                block_number--;
-                if (!is_func_decl || block_number > 0)
-                    popscope();
-                //printscopestack();
-            }
+            block_number--;
+            if (!is_func_decl || block_number > 0)
+                popscope();
+            //printscopestack();
         }
 
 local_defs  /* local definitions, of which scope is only inside of compound statement */
@@ -435,14 +380,9 @@ stmt
         }
         | RETURN expr ';'
         {   
-            if ($2 && !error_found_in_func_decl) {
+            if ($2 && !check_same_type(findcurrentdecl(returnid), $2)) {
                 /* return type check */
-                if (check_same_type(findcurrentdecl(returnid), $2)) {
-                    //return_type_error = 0;
-                } else {
-                    ERROR("return type was not matched");
-                    //return_type_error = 1;
-                }
+                ERROR("return type was not matched");
             }
         }
         | ';'
@@ -723,7 +663,8 @@ unary
         }
         | unary '[' expr ']'
         {
-            $$ = arrayaccess($1, $3);
+            if ($1)
+                $$ = arrayaccess($1, $3);
         }
         | unary '.' ID
         {

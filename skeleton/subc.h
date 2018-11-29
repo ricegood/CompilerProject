@@ -32,7 +32,6 @@ struct decl *nulltype;
 struct id *returnid;
 
 struct ste *inttype_ste; // fixed ste pointer
-struct ste *current_parsing_function_ste; // for check which function make struct
 
 /* structure for IDs */
 typedef struct id {
