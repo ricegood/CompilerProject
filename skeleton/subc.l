@@ -100,8 +100,6 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 									yylval.stringVal = yytext;
 									return CHAR_CONST;
 								}
-","								{ return ','; }
-";"								{ return yytext[0]; }
 <*>\n		   					{ ++lineno; }
 {white-space}					{}
 <INITIAL,COMMENT>"/*"			{
