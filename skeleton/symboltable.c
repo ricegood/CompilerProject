@@ -514,7 +514,7 @@ void init_type()
 	chartype = maketypedecl(CHAR_);
 	voidtype = maketypedecl(VOID_);
 	stringtype = maketypedecl(STRING_);
-	nulltype = maketypedecl(NULL_);
+	nulltype = maketypedecl(POINTER_);
 
 	bottom = pushscope();
 
