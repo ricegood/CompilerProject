@@ -631,7 +631,7 @@ unary
             if (check_same_type_for_unary($2, inttype))
                 $$ = $2;
             else {
-                ERROR("not computable");
+                ERROR("not int type");
                 $$ = NULL;
             }
         }
@@ -641,7 +641,7 @@ unary
             if (check_same_type_for_unary($2, inttype))
                 $$ = inttype;
             else {
-                ERROR("not computable");
+                ERROR("not int type");
                 $$ = NULL;
             }
         }
@@ -651,7 +651,7 @@ unary
             if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
                 $$ = $1;
             else {
-                ERROR("not computable");
+                ERROR("not int or char type");
                 $$ = NULL;
             }
         }
@@ -661,7 +661,7 @@ unary
             if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
                 $$ = $1;
             else {
-                ERROR("not computable");
+                ERROR("not int or char type");
                 $$ = NULL;
             }
         }
@@ -671,7 +671,7 @@ unary
             if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
                 $$ = $2;
             else {
-                ERROR("not computable");
+                ERROR("not int or char type");
                 $$ = NULL;
             }
         }
@@ -681,7 +681,7 @@ unary
             if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
                 $$ = $2;
             else {
-                ERROR("not computable");
+                ERROR("not int or char type");
                 $$ = NULL;
             }
         }
