@@ -563,7 +563,7 @@ binary
                 if (check_is_struct_type($1) || check_is_struct_type($3))
                     ERROR("not comparable");
                 else
-                    RROR("not int or char type");
+                    RROR("not int or char or pointer type");
                 $$ = NULL;
             }
         }
