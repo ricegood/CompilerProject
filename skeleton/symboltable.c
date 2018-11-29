@@ -321,6 +321,8 @@ int check_same_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
 			return 1;
 		else if (typedecl_ptr2 == nulltype)
 			return 1;
+		else if (typedecl_ptr1->ptrto == chartype && typedecl_ptr2 == stringtype)
+			return 1;
 	}
 
 	// not the same type
