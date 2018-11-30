@@ -440,7 +440,7 @@ or_list
                 if (check_same_type($1, inttype) && check_same_type($3, inttype))
                     $$ = inttype;
                 else
-                    ERROR("not comparable");
+                    ERROR("not int type");
             }
             else
                 $$ = NULL;
@@ -458,7 +458,7 @@ and_list
                 if (check_same_type($1, inttype) && check_same_type($3, inttype))
                     $$ = inttype;
                 else
-                    ERROR("not comparable");
+                    ERROR("not int type");
             }
             else
                 $$ = NULL;
@@ -489,7 +489,7 @@ binary
             }
 
             else if (!(check_same_type($1, chartype) || check_same_type($1, inttype) || check_is_pointer_type($1) || check_is_array($1)) || !(check_same_type($3, chartype) || check_same_type($3, inttype) || check_is_pointer_type($3) || check_is_array($3))) {
-                ERROR("not int, char or pointer type");
+                ERROR("not int or char type");
             }
 
             /* char EQUOP char or int EQUOP int or pointer(same type) EQUOP pointer(same type) */
