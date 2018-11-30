@@ -7,9 +7,6 @@
 
 #include "subc.h"
 
-//static struct node *top = NULL;
-//static struct node *bottom = NULL;
-
 void printscopestack(){
   printf("=============PRINT SCOPE STACK=============\n");
   struct node *node_it = top;
@@ -46,7 +43,6 @@ void printscopestack(){
 }
 
 struct ste *insert(struct id* id_ptr, struct decl* decl_ptr) {
-  //printf("insert ste to scope stack!\n");
   if (top != NULL) {
     // Declare new ste & initialization
     struct ste *ste_ptr = malloc(sizeof(struct ste));
@@ -59,14 +55,12 @@ struct ste *insert(struct id* id_ptr, struct decl* decl_ptr) {
 
     return ste_ptr;
   } else {
-    //printf("Scope stack top is NULL!\n");
     return NULL;
   }
 }
 
 void insert_bottom(struct id* id_ptr, struct decl* decl_ptr) {
   /* for insert struct to global scope */
-  //printf("insert struct ste to scope stack bottom!\n");
   if (top != NULL) {
     // Declare new ste & initialization
     struct ste *ste_ptr = malloc(sizeof(struct ste));
@@ -102,7 +96,6 @@ struct ste *lookup(struct id* id_ptr) {
         struct ste *new_ste_list = malloc(sizeof(struct ste));
         ste_list->prev = new_ste_list;
         ste_list = ste_list->prev;
-        //return ste_it;
       }
       ste_it = ste_it->prev;
     }
@@ -111,7 +104,7 @@ struct ste *lookup(struct id* id_ptr) {
       return NULL; // can not find
     return ste_list_result;
   } else {
-    //printf("Scope stack top is NULL!\n");
+    // Scope stack top is NULL
     return NULL;
   }
 }
@@ -141,7 +134,6 @@ struct ste *lookup_local_scope(struct id* id_ptr, struct node* scope) {
         struct ste *new_ste_list = malloc(sizeof(struct ste));
         ste_list->prev = new_ste_list;
         ste_list = ste_list->prev;
-        //return ste_it;
       }
       ste_it = ste_it->prev;
     }
@@ -153,13 +145,12 @@ struct ste *lookup_local_scope(struct id* id_ptr, struct node* scope) {
     }
     return ste_list_result;
   } else {
-    //printf("Local scope stack is NULL!\n");
+    // Local scope stack is NULL!
     return NULL;
   }
 }
 
 struct node *pushscope() {
-  //printf("push scope\n");
   // Declare new scope node & initialization
   struct node *node_ptr = malloc(sizeof(struct node));
   if (top != NULL)
@@ -175,25 +166,22 @@ struct node *pushscope() {
 }
 
 void pushstelist(ste *ste_list) {
-  /* Should I do malloc? or it's jusk OK to link the pointer??.. */
   struct ste *ste_it = ste_list;
   while (ste_it != NULL) {
-    insert(ste_it->name, ste_it->decl); //malloc
+    insert(ste_it->name, ste_it->decl); // malloc
     ste_it = ste_it->prev;
   }
 }
 
 struct ste *popscope() {
-  //printf("pop scope\n");
   /*
     return a ste linked list of stack top scope.
     *REVERSE ORDER*
   */
 
   // [TODO] memory leak..
-  
   if (top == NULL) {
-    //printf("Scope stack is NULL!\n");
+    // Scope stack is NULL
     return NULL;
   } else {
     // get a pointer of next scope top ste.
@@ -219,9 +207,8 @@ struct ste *popscope() {
 }
 
 struct ste *popste() {
-  //printf("pop ste\n");
   if (top == NULL || top->data == NULL) {
-    //printf("Scope stack top node or ste is NULL!\n");
+    // Scope stack top node or ste is NULL
     return NULL;
   } else {
     struct ste *top_ste = top->data;

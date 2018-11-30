@@ -27,7 +27,6 @@ static int lineno = 1;
 %}
 
 /* regular definitions */
-/* [TODO] operator .. remove or not ? */
 letter			[A-Za-z_]
 digit			[0-9]
 id				{letter}({letter}|{digit})*
@@ -70,7 +69,6 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 								return INTEGER_CONST;
 							}
 {operator}		{
-								/* [TODO] remove here ??.... If remove, must add '.' , ';' operator. */
 								//printf("OP\t%s\n",yytext);
 								return yytext[0];
 							}
@@ -85,7 +83,6 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 								else if(data->lexType == ID_) {
 									//printf("ID\t%s\t%d\n",data->name,data->count);
 									yylval.idptr = data;
-									/* [TODO] why is here [return entered->lextype] in the skeleton? */
 									return ID;
 								}
 							}

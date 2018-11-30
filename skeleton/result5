@@ -4,9 +4,9 @@ test5.c:12: error:not comparable
 test5.c:13: error:not comparable
 test5.c:14: error:not comparable
 test5.c:15: error:not comparable
-test5.c:19: error:not int or char or pointer type
-test5.c:20: error:not int or char or pointer type
-test5.c:21: error:not int or char or pointer type
+test5.c:19: error:not int or char type
+test5.c:20: error:not int or char type
+test5.c:21: error:not int or char type
 test5.c:25: error:not int or char type
 test5.c:26: error:not int or char type
 test5.c:27: error:not int or char type

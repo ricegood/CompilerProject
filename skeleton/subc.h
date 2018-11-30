@@ -7,8 +7,8 @@
 #ifndef __SUBC_H__
 #define __SUBC_H__
 
-enum lextype_ {KEYWORD, UNDEFINED, ID_}; // 0, 1, 2
-enum typeclass_ {INT_, CHAR_, VOID_, STRUCT_, STRING_, ARRAY_, POINTER_}; // 0, 1, 2, 3, 4
+enum lextype_ {KEYWORD, UNDEFINED, ID_};
+enum typeclass_ {INT_, CHAR_, VOID_, STRUCT_, STRING_, ARRAY_, POINTER_};
 enum declclass_ {VAR_, CONST_, FUNC_, TYPE_};
 
 #include <stdio.h>
@@ -128,7 +128,6 @@ int check_is_var(struct decl* decl_ptr);
 int check_is_array(struct decl* decl_ptr);
 int check_is_proc(struct decl* decl_ptr);
 struct decl *check_function_call(struct decl* proc_ptr, struct decl* actuals);
-//int check_compatible(struct decl* decl_ptr, struct decl* typedecl_ptr);
 int check_same_type_for_unary(decl* decl_ptr, decl* typedecl_ptr);
 int check_same_type(struct decl* decl_ptr, struct decl* indexptr);
 int check_same_decl(decl* decl_ptr1, decl* decl_ptr2);

@@ -10,16 +10,15 @@
 /* Make ste and add to symbol table (ste stack linked list) */
 int declare(struct id* id_ptr, struct decl* decl_ptr) {
 	/* return error_found */
-	//printf("declare()\n");
 	if (!id_ptr) {
-		// ERROR("ERROR : declare failed! id_ptr or decl_ptr is null!\n");
+		// declare failed. id_ptr or decl_ptr is null
 		return 1;
 	}
 
 	else if (check_redeclaration(id_ptr, decl_ptr)) {
 		ERROR("redeclaration");
 		return 1;
-		// [TODO] memory leak (free ptr)
+		// [TODO] memory leak
 	}
 
 	else{
@@ -45,10 +44,8 @@ struct decl *maketypedecl(int typeclass) {
 	/*
 		This function is only for init_type();
 		int, char, void, string
-		+ NULL decl ???
+		+ NULL decl
 	*/
-
-	//printf("maketypedecl()\n");
 
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
@@ -61,8 +58,6 @@ struct decl *maketypedecl(int typeclass) {
 }
 
 struct decl *makeptrdecl(struct decl* typedecl) {
-	//printf("makeptrdecl()\n");
-
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
 
@@ -75,8 +70,6 @@ struct decl *makeptrdecl(struct decl* typedecl) {
 }
 
 struct decl *makearraydecl(int size, struct decl* vardecl) {
-	//printf("makearraydecl()\n");
-
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
 
@@ -90,8 +83,6 @@ struct decl *makearraydecl(int size, struct decl* vardecl) {
 }
 
 struct decl *makestructdecl(struct ste* fields) {
-	//printf("makestructdecl()\n");
-
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
 
@@ -104,8 +95,6 @@ struct decl *makestructdecl(struct ste* fields) {
 }
 
 struct decl *makevardecl(struct decl* typedecl) {
-	//printf("makevardecl()\n");
-
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
 
@@ -117,26 +106,17 @@ struct decl *makevardecl(struct decl* typedecl) {
 }
 
 struct decl *makeconstdecl(struct decl* typedecl) {
-	//printf("makeconstdecl()\n");
-
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
 
 	/* initialization */
 	new_decl->declclass = CONST_;
 	new_decl->type = typedecl;
-	// how about value??
 
 	return new_decl;
 }
 
 struct decl *makeintconstdecl(struct decl* typedecl, int value) {
-	// 37p
-	// use typedecl = inttype default... how can I do this ????
-	// firstly... How can I access to inttype ??
-	// oh... maybe findcurrentdecl(lookup("int")) !
-	//printf("makeintconstdecl()\n");
-
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
 
@@ -149,9 +129,6 @@ struct decl *makeintconstdecl(struct decl* typedecl, int value) {
 }
 
 struct decl *makefloatconstdecl(struct decl* typedecl, float value) {
-	// float version
-	//printf("makefloatconstdecl()\n");
-
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
 
@@ -164,8 +141,6 @@ struct decl *makefloatconstdecl(struct decl* typedecl, float value) {
 }
 
 struct decl *makeprocdecl() {
-	//printf("makeprocdecl()\n");
-
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
 
@@ -175,47 +150,10 @@ struct decl *makeprocdecl() {
 	return new_decl;
 }
 
-/*
-void rollback_struct_of(struct decl* procdecl) {
-	
-		//scan inttype ste to bottom,
-		//if there is struct made by procdecl (can check by using formalswithreturnid->decl)
-		//remove the struct.
-	
-	struct ste *ste_it = inttype_ste;
-	while (ste_it) {
-		// struct exists
-		struct decl *struct_decl;
-		if (ste_it->prev)
-			struct_decl = ste_it->prev->decl; // can be null
-		else
-			struct_decl = NULL;
-
-		if (check_is_struct_type(struct_decl) && struct_decl->formalswithreturnid && struct_decl->formalswithreturnid->decl == procdecl) {
-			// remove this struct from stack.
-			// [TODO] memory leak
-			// save ste_it->prev pointer and free it.
-			ste_it->prev = ste_it->prev->prev;
-		}
-		else {
-			if (!ste_it->prev)
-				bottom_ste = ste_it;
-			ste_it = ste_it->prev;
-		}
-	}
-}
-*/
-
-
-
 
 ///////////////////////////////////////
 ////// check compatible function //////
 ///////////////////////////////////////
-
-int check_is_type(decl* decl_ptr) {
-	// return 0 or 1. (true or false)
-}
 
 int check_is_struct_type(decl* decl_ptr) {
 	// return 0 or 1. (true or false)
@@ -231,7 +169,6 @@ int check_is_pointer_type(decl* decl_ptr) {
 }
 
 int check_is_var(decl* decl_ptr) {
-	// 37p
 	// return 0 or 1. (true or false)
 	if (decl_ptr != NULL && decl_ptr->declclass == VAR_)
 		return 1;
@@ -241,7 +178,6 @@ int check_is_var(decl* decl_ptr) {
 }
 
 int check_is_array(decl* decl_ptr) {
-	// 38p
 	// return 0 or 1. (true or false)
 	if (decl_ptr != NULL && decl_ptr->declclass == TYPE_ && decl_ptr->typeclass == ARRAY_)
 		return 1;
@@ -249,7 +185,6 @@ int check_is_array(decl* decl_ptr) {
 }
 
 int check_is_proc(decl* decl_ptr) {
-	// 39p
 	// return 0 or 1. (true or false)
 	if (decl_ptr != NULL && decl_ptr->declclass == FUNC_)
 		return 1;
@@ -257,7 +192,6 @@ int check_is_proc(decl* decl_ptr) {
 }
 
 struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
-	// 40p definition!!!
 	struct ste *formals = proc_ptr->formals;
 
 	/*
@@ -269,9 +203,9 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 	while (formals != NULL && formals->decl != NULL && actuals != NULL && actuals->type != NULL) {
 		if (check_is_var(formals->decl) && check_same_type(formals->decl->type, actuals->type)) {
 			formals = formals->prev;
-			// [TODO] save this actual pointer.. to delete??
+			// [TODO] save this actual pointer to delete
 			actuals = actuals->next;
-			// [TODO] memory leak? delete prev actuals?
+			// [TODO] memory leak
 		}
 		else {
 			ERROR("actual args are not equal to formal args");
@@ -294,14 +228,13 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 
 int check_same_type_for_unary(decl* decl_ptr, decl* typedecl_ptr) {
 	if (!decl_ptr) {
-		// printf("decl_ptr is NULL, so can't check the type.\n");
+		// decl_ptr is NULL, so can't check the type
 	}
 	else
 		return check_same_type(decl_ptr->type, typedecl_ptr);
 }
 
 int check_same_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
-	// 36p, 38p
 	if (typedecl_ptr1 == typedecl_ptr2){
 		return 1;
 	}
@@ -333,9 +266,6 @@ struct decl *check_compatible_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
 	if (typedecl_ptr1 == typedecl_ptr2)
 		return typedecl_ptr1;
 	else {
-		// [TODO] maybe , int and float is compatible and plustype is int..??
-		// int+float = int ?
-		// ERROR("ERROR : this is not compatible(same) type!\n");
 		return NULL;
 	}
 }
@@ -381,10 +311,9 @@ struct decl *find_decl_in_struct_fields(struct id* field_id, struct ste* fieldli
 }
 
 struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr) {
-	/* 38p definition!! */
+	/* 38p definition */
 	struct decl *arraytype = array_ptr->type;
 	if (check_is_array(arraytype)) {
-		//printf("this is array!\n");
 		if (check_same_type(inttype, index_ptr))
 			return (arraytype->elementvar);
 		else {
@@ -399,7 +328,7 @@ struct decl *arrayaccess(struct decl* array_ptr, struct decl* index_ptr) {
 }
 
 struct decl *structaccess(struct decl* struct_ptr, struct id* field_id) {
-	/* 38p definition!! */
+	/* 38p definition */
 	if (!struct_ptr){
 		return NULL;
 	}
@@ -428,7 +357,7 @@ int check_redeclaration(struct id* id_ptr, struct decl* decl_ptr) {
 	*/
 
 	if (id_ptr == returnid) {
-		// returnid redeclaration is OK!
+		// returnid redeclaration is OK
 		return 0;
 	}
 
@@ -453,18 +382,10 @@ int check_redeclaration(struct id* id_ptr, struct decl* decl_ptr) {
 
 			so, decl type = proc | var | const
 	*/
+
 	// else case = find in local scope
 	else {
 		struct ste *same_id_ste_list = findcurrentdecls_local(id_ptr);
-		/*
-		while (same_id_ste_list) {
-			if (check_same_decl(same_id_ste_list->decl, decl_ptr)) {
-				return 1;
-			}
-			else
-				same_id_ste_list = same_id_ste_list->prev;
-		}
-		*/
 		if (same_id_ste_list) {
 			return 1;
 		}
@@ -475,22 +396,6 @@ int check_redeclaration(struct id* id_ptr, struct decl* decl_ptr) {
 }
 
 struct decl *plustype(struct decl* typedecl1, struct decl* typedecl2) {
-	// 37p
-	// 39p definition!!
-	// no pointer in param..?
-	/*
-		I think 'minustype' and etc... are needed!!!
-     binary     : binary RELOP binary
-     				   | binary EQUOP binary
-       				 | binary '+' binary
-        			 | binary '-' binary
-        			 | unary %prec '='
-	*/
-
-	// int+int = int.
-	// int+char = int ????? is it ok????? (ok for c..)
-	// int+char*(string) = char*(string)
-	// int+struct = invalid
 	struct decl *type_after;
 	type_after = check_compatible_type(typedecl1, typedecl2);
 	return type_after;
@@ -503,8 +408,6 @@ struct decl *plustype(struct decl* typedecl1, struct decl* typedecl2) {
 
 void init_type()
 {
-	//printf("==init_type() START==\n");
-
 	top = NULL;
 	bottom = NULL;
 
@@ -524,8 +427,6 @@ void init_type()
 
 	returnid = enter(KEYWORD, "*return", 7);
 
-	//printf("==init_type() END==\n");
-	
 	pushscope();
 }
 

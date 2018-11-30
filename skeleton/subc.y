@@ -11,7 +11,7 @@ int    yylex ();
 int    yyerror (char* s);
 void   REDUCE(char* s);
 
-int num_of_err_message = 0; // print only 1 error for 1 line
+int num_of_err_message = 0; /* for print only 1 error for 1 line */
 
 /* flag for subc.y */
 int is_func_decl = 0; /* for scope stack management about block inside of function */
@@ -83,7 +83,6 @@ ext_def
             }
             else
                 $$ = NULL;
-            //printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
@@ -95,21 +94,17 @@ ext_def
             }
             else
                 $$ = NULL;
-            //printscopestack();
         }
         | func_decl ';'
         {   
-            //printscopestack();
         }
         | type_specifier ';'
         {
-            // [TODO] what here?
         }
         | func_decl
         {   
             pushscope();
             pushstelist($1->formalswithreturnid);
-            //printscopestack();
             is_func_decl = 1;
             block_number = 0;
         }
@@ -118,9 +113,8 @@ ext_def
             is_func_decl = 0;
             block_number = 0;
             struct ste *pop = popscope();
-            //printscopestack();
-            // [TODO] delete pop using loop (for prevent from memory leak)
-            // delete hash table id also!?
+
+            /* [TODO] delete pop using loop (for prevent from memory leak) */
         }
 
 type_specifier
@@ -135,23 +129,18 @@ struct_specifier
             declare($2, structdecl);
             
             pushscope();
-            //printscopestack();
             
             $<declptr>$ = structdecl;
         }
         def_list
         {
                 struct decl *structdecl = $<declptr>4;
-                //printscopestack();
                 struct ste *fields = popscope();
-                //printscopestack();
                 structdecl->fieldlist = fields;
                 $<declptr>$ = structdecl;
-                //printscopestack();
         }
         '}'
         {
-            // initial set
             $$ = $<declptr>6;
         }
         | STRUCT ID
@@ -180,8 +169,7 @@ func_decl
             else // pointer
                 declare(returnid, makeptrdecl($1));
 
-            // no formals
-
+            /* no formals */
             struct ste *formals;
             formals = popscope();
 
@@ -209,8 +197,7 @@ func_decl
             else // pointer
                 declare(returnid, makeptrdecl($1));
 
-            // no formals
-
+            /* no formals */
             struct ste *formals;
             formals = popscope();
 
@@ -230,7 +217,6 @@ func_decl
             struct ste *formals;
             struct ste *returntype;
             struct decl *procdecl;
-            //printscopestack();
             formals = popscope();
             procdecl = makeprocdecl();
 
@@ -243,7 +229,6 @@ func_decl
                 declare(returnid, $1);
             else // pointer
                 declare(returnid, makeptrdecl($1));
-            //printscopestack();
             returntype = popscope();
             returntype->prev = formals;
             formals = returntype;
@@ -285,7 +270,6 @@ param_decl  /* formal parameter declaration */
             }
             else
                 $$ = NULL;
-            //printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']'
         {
@@ -302,13 +286,11 @@ param_decl  /* formal parameter declaration */
             }
             else
                 $$ = NULL;
-            //printscopestack();
         }
 
 def_list    /* list of definitions, definition can be type(struct), variable, function */
         : def_list def
         {
-            //printf("def list!\n");
         }
         | /* empty */
 
@@ -323,7 +305,6 @@ def
             }
             else
                 $$ = NULL;
-            //printscopestack();
         }
         | type_specifier pointers ID '[' const_expr ']' ';'
         {
@@ -335,18 +316,9 @@ def
             }
             else
                 $$ = NULL;
-            //printscopestack();
         }
         | type_specifier ';'
-        {
-            if ($1) {
-                // [TODO] what here?
-            }
-        }
         | func_decl ';'
-        {
-            //printscopestack();
-        }
 
 compound_stmt
         : '{'
@@ -354,14 +326,12 @@ compound_stmt
             if (!is_func_decl || block_number > 0)
                 pushscope();
             block_number++;
-            //printscopestack();
         }
         local_defs stmt_list '}'
         {
             block_number--;
             if (!is_func_decl || block_number > 0)
                 popscope();
-            //printscopestack();
         }
 
 local_defs  /* local definitions, of which scope is only inside of compound statement */
@@ -408,8 +378,8 @@ const_expr
 expr
         : unary '=' expr
         {
-            /* assignment */
-            // should have same type (ppt 23p) & not const! (=>check_is_var)
+            /* assignment operation */
+            /* should have same type (ppt 23p) & not const! (=>check_is_var) */
             if ($1) {
                 if (check_is_var($1)) {
                     if (check_same_type_for_unary($1, $3))
@@ -487,7 +457,7 @@ binary
         | binary EQUOP binary
         {   
             if (check_is_array($1) && check_is_array($3) && check_same_type($1->elementvar->type, $3->elementvar->type)) {
-                // for array EQUOP array
+                /* for array EQUOP array */
                 $$ = inttype;
             }
 
@@ -506,9 +476,7 @@ binary
         }
         | binary '+' binary
         {
-            // [TODO] is it only okay for int+int ?
-            // then, plustype is always inttype ?
-
+            /* only for int+int */
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = plustype($1, $3);
             else {
@@ -518,9 +486,7 @@ binary
         }
         | binary '-' binary
         {
-            // [TODO] is it only okay for int-int ?
-            // then, plustype is always inttype ?
-
+            /* only for int+int */
             if (check_same_type($1, inttype) && check_same_type($3, inttype))
                 $$ = plustype($1, $3);
             else {
@@ -537,15 +503,13 @@ binary
             }
             else {
                 $$ = NULL;
-                // ERROR("ERROR : unary is NULL or unary semantic value->type is null!");
             }
         }
 
 unary
         : '(' expr ')'
         {
-            // [TODO] problem : expr is type decl....
-            // unary is just decl...
+            /* expr is type decl and unary is just decl => Make constdecl to solve this problem */
             $$ = makeconstdecl($2);
         }
         | '(' unary ')' 
@@ -558,17 +522,14 @@ unary
         }
         | CHAR_CONST
         {   
-            // [TODO] how about value ?
             $$ = makeconstdecl(chartype);
         }
         | STRING
         {
-            // [TODO] how about value ?
-            // [Q] is this const ???
             $$ = makeconstdecl(stringtype);
         }
         | ID {
-            // find ID
+            /* find ID */
             $$ = findcurrentdecl($1);
             if (!$$)
                 ERROR("not declared");
@@ -635,7 +596,6 @@ unary
         }
         | '&' unary %prec '!'
         {
-            // [TODO]
             /*
                 if use '&', unary becomes pointer type value.
                 ex) int* a -> &a -> int**
@@ -643,7 +603,7 @@ unary
             */
             if ($2) {
                 if (check_is_var($2)) {
-                    // it can't be RHS
+                    /* '&value' can't be LHS */
                     $$ = makeconstdecl(makeptrdecl($2->type));
                 }
                 else {
@@ -687,7 +647,7 @@ unary
         }
         | unary STRUCTOP ID
         {
-            // this is only for pointer to structure type on $1
+            /* this is only for pointer to structure type on $1 */
             if ($1 && check_is_pointer_type($1->type)){
                 $$ = structaccess($1, $3);
             }
@@ -719,14 +679,13 @@ unary
         }
         | NULL_TOKEN
         {
-            // [TODO]
             $$ = nulltype;
         }
 
 args    /* actual parameters(function arguments) transferred to function */
         : expr
         {
-            // expr semantic value type is TYPEDECL.
+            /* expr semantic value type is TYPEDECL */
             $$ = makeconstdecl($1);
             $$->elementvar = $$; /* to save first args pointer. */
         }
