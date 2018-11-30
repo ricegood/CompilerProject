@@ -5,7 +5,7 @@ char global_c;
 struct s; /* incomplete type */
 struct s a; /* incomplete type */
 
-struct s main(int a) {
+struct s main(int a) { /* incomplete type */
   int a; /* redeclaration */
   struct s {
     int a;
@@ -17,7 +17,7 @@ void main(void v) {
   int x;
   char* c;
   c = "abc";
-  x + y; /* not int type */
+  x + y; /* not declared */
   if (x == 1) {
     return x; /* return type was not matched */
   }
@@ -49,13 +49,13 @@ int bar(int i, void a) { /* redeclaration error */
   }
 
   a = bar(); /* not a function */
-  s = bar(); /* LHS RHS error */
-  s2.a = s2.b /* LHS RHS error */
+  s = bar(); /* not a function */
+  s2.a = s2.b; /* LHS RHS error */
 
   i++;
   i--;
   i == s2.b; /* not comparable */
-  s2.b++; /* not int type */
+  s2++; /* [CHECK] not int or char type */
   i || s2->a; /* not pointer */
   i = s2.a && i;
   return s2.a;
@@ -79,7 +79,7 @@ int* foo(int* i, char* c) {
   ptr_s->a == NULL; /* not comparable */
   ptr_s->a = NULL; /* RHS is not const or var */
   a[5] = NULL; /* RHS is not const or var */
-  s.b = NULL; /* not such field */
+  s.d = 5; /* [CHECK] not such field */
 
   i->a; /* variable is not struct */
   a == aa;
@@ -87,7 +87,7 @@ int* foo(int* i, char* c) {
   a < aa; /* not int or char type */
   i = &a[5];
   a[5] = *i;
-  i++; /* not int type */
+  i++; /* not int or char type */
   (*i)++;
   *i = bar(); /* LHS RHS error */
   i[1]; /* not array type */
@@ -106,7 +106,7 @@ int* foo(int* i, char* c) {
   s.a = *i;
   s.a = i; /* LHS RHS error */
   returnIntFunc = s.a[1]; /* not array type */
-  returnIntFunc = 1; /* ? */
+  returnIntFunc = 1; /* LHS is not a variable */
   returnIntFunc() = 1; /* LHS is not variable */
   if (returnIntFunc() == 1)
     return i; 

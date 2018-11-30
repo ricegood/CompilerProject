@@ -1,0 +1,47 @@
+../open_test/test.c:5: error:incomplete type error
+../open_test/test.c:6: error:incomplete type error
+../open_test/test.c:8: error:incomplete type error
+../open_test/test.c:9: error:redeclaration
+../open_test/test.c:20: error:not declared
+../open_test/test.c:22: error:return type was not matched
+../open_test/test.c:31: error:return type was not matched
+../open_test/test.c:37: error:redeclaration
+../open_test/test.c:38: error:redeclaration
+../open_test/test.c:40: error:redeclaration
+../open_test/test.c:41: error:redeclaration
+../open_test/test.c:51: error:not a function
+../open_test/test.c:52: error:not a function
+../open_test/test.c:53: error:LHS and RHS are not same type
+../open_test/test.c:57: error:not comparable
+../open_test/test.c:58: error:not int or char type
+../open_test/test.c:59: error:not a pointer
+../open_test/test.c:71: error:LHS is not a variable
+../open_test/test.c:76: error:LHS is not a variable
+../open_test/test.c:79: error:not comparable
+../open_test/test.c:80: error:RHS is not a const or variable
+../open_test/test.c:81: error:RHS is not a const or variable
+../open_test/test.c:82: error:struct not have same name field
+../open_test/test.c:84: error:variable is not struct
+../open_test/test.c:86: error:not comparable
+../open_test/test.c:87: error:not int or char type
+../open_test/test.c:90: error:not int or char type
+../open_test/test.c:92: error:LHS and RHS are not same type
+../open_test/test.c:93: error:not array type
+../open_test/test.c:94: error:not array type
+../open_test/test.c:95: error:not array type
+../open_test/test.c:96: error:not array type
+../open_test/test.c:97: error:not array type
+../open_test/test.c:101: error:not int type
+../open_test/test.c:102: error:not int type
+../open_test/test.c:103: error:not declared
+../open_test/test.c:104: error:variable is not struct
+../open_test/test.c:107: error:LHS and RHS are not same type
+../open_test/test.c:108: error:not array type
+../open_test/test.c:109: error:LHS is not a variable
+../open_test/test.c:110: error:LHS is not a variable
+../open_test/test.c:113: error:not comparable
+../open_test/test.c:114: error:not int or char type
+../open_test/test.c:115: error:not int or char type
+../open_test/test.c:119: error:not variable
+../open_test/test.c:121: error:return type was not matched
+../open_test/test.c:122: error:return type was not matched

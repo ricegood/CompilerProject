@@ -376,7 +376,10 @@ stmt
         | compound_stmt
         | RETURN ';'
         {
-
+            if (!check_same_type(findcurrentdecl(returnid), voidtype)) {
+                /* return type check */
+                ERROR("return type was not matched");
+            }
         }
         | RETURN expr ';'
         {   
