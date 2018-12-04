@@ -125,18 +125,13 @@ type_specifier
 struct_specifier
         : STRUCT ID '{'
         {
-            decl *structdecl = makestructdecl(NULL);
-            declare($2, structdecl);
-            
             pushscope();
-            
-            $<declptr>$ = structdecl;
         }
         def_list
         {
-                struct decl *structdecl = $<declptr>4;
                 struct ste *fields = popscope();
-                structdecl->fieldlist = fields;
+                decl *structdecl = makestructdecl(fields);
+                declare($2, structdecl);
                 $<declptr>$ = structdecl;
         }
         '}'
