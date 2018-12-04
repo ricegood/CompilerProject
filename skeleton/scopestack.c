@@ -24,7 +24,7 @@ void printscopestack(){
         if(ste_it->name == NULL || ste_it->decl == NULL)
           printf("ste_it->name == NULL || ste_it->decl == NULL\n");
         else
-          printf ("node name : %s, decl class : %d\n", ste_it->name->name, ste_it->decl->declclass);
+          printf ("node name : %s, decl class : %d, size : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size);
         ste_it = ste_it->prev;
       }
       node_it = node_it->next;
@@ -35,7 +35,7 @@ void printscopestack(){
       if(ste_it->name == NULL || ste_it->decl == NULL)
           printf("ste_it->name == NULL || ste_it->decl == NULL\n");
         else
-          printf ("node name : %s, decl class : %d\n", ste_it->name->name, ste_it->decl->declclass);
+          printf ("node name : %s, decl class : %d, size : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size);
       ste_it = ste_it->prev;
     }
   }
