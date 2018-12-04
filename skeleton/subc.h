@@ -7,7 +7,7 @@
 #ifndef __SUBC_H__
 #define __SUBC_H__
 
-#define BLOCK_SIZE 1
+#define WORD_SIZE 1
 
 enum lextype_ {KEYWORD, UNDEFINED, ID_};
 enum typeclass_ {INT_, CHAR_, VOID_, STRUCT_, STRING_, ARRAY_, POINTER_};

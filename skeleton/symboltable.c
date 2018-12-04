@@ -68,6 +68,7 @@ struct decl *makeptrdecl(struct decl* typedecl) {
 	new_decl->declclass = TYPE_;
 	new_decl->typeclass = POINTER_;
 	new_decl->ptrto = typedecl;
+	new_decl->size = WORD_SIZE;
 
 	return new_decl;
 }
@@ -81,6 +82,7 @@ struct decl *makearraydecl(int size, struct decl* vardecl) {
 	new_decl->typeclass = ARRAY_;
 	new_decl->elementvar = vardecl;
 	new_decl->num_index = size;
+	new_decl->size = WORD_SIZE * size;
 
 	return new_decl;
 }
