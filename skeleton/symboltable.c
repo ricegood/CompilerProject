@@ -412,7 +412,6 @@ struct decl *plustype(struct decl* typedecl1, struct decl* typedecl2) {
 void init_type()
 {
 	top = NULL;
-	offsetstack_top = NULL;
 	bottom = NULL;
 
 	inttype = maketypedecl(INT_);
