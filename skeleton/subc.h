@@ -7,6 +7,8 @@
 #ifndef __SUBC_H__
 #define __SUBC_H__
 
+#define BLOCK_SIZE 1
+
 enum lextype_ {KEYWORD, UNDEFINED, ID_};
 enum typeclass_ {INT_, CHAR_, VOID_, STRUCT_, STRING_, ARRAY_, POINTER_};
 enum declclass_ {VAR_, CONST_, FUNC_, TYPE_};
@@ -61,6 +63,7 @@ typedef struct decl {
 	struct ste *fieldlist;
 	struct decl *ptrto;	
 	int size;
+	int offset;
 	struct ste **scope;
 	struct decl *next;
 
@@ -79,6 +82,7 @@ int read_line();
 /* For scope stack */
 typedef struct node
 {
+		int sumofsize; // for offset stack
     struct ste *data;
     struct node *next;
 } node;

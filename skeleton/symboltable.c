@@ -12,11 +12,13 @@ int declare(struct id* id_ptr, struct decl* decl_ptr) {
 	/* return error_found */
 	if (!id_ptr) {
 		// declare failed. id_ptr or decl_ptr is null
+		printscopestack();
 		return 1;
 	}
 
 	else if (check_redeclaration(id_ptr, decl_ptr)) {
 		ERROR("redeclaration");
+		printscopestack();
 		return 1;
 		// [TODO] memory leak
 	}
@@ -31,6 +33,7 @@ int declare(struct id* id_ptr, struct decl* decl_ptr) {
 			// add to top
 			insert(id_ptr, decl_ptr);
 		}
+		printscopestack();
 		return 0;
 	}
 }
@@ -409,6 +412,7 @@ struct decl *plustype(struct decl* typedecl1, struct decl* typedecl2) {
 void init_type()
 {
 	top = NULL;
+	offsetstack_top = NULL;
 	bottom = NULL;
 
 	inttype = maketypedecl(INT_);
