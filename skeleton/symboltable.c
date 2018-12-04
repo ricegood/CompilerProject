@@ -56,6 +56,7 @@ struct decl *maketypedecl(int typeclass) {
 	/* initialization */
 	new_decl->declclass = TYPE_;
 	new_decl->typeclass = typeclass;
+	new_decl->size = WORD_SIZE;
 
 	return new_decl;
 }
@@ -82,7 +83,7 @@ struct decl *makearraydecl(int size, struct decl* vardecl) {
 	new_decl->typeclass = ARRAY_;
 	new_decl->elementvar = vardecl;
 	new_decl->num_index = size;
-	new_decl->size = WORD_SIZE * size;
+	new_decl->size = vardecl->size * size;
 
 	return new_decl;
 }
@@ -90,11 +91,18 @@ struct decl *makearraydecl(int size, struct decl* vardecl) {
 struct decl *makestructdecl(struct ste* fields) {
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
+	struct ste *fields_ptr = fields;
 
 	/* initialization */
 	new_decl->declclass = TYPE_;
 	new_decl->typeclass = STRUCT_;
 	new_decl->fieldlist = fields;
+
+	/* set size */
+	while (fields) {
+		new_decl->size += fields->decl->size;
+		fields = fields->prev;
+	}
 
 	return new_decl;
 }
@@ -106,6 +114,7 @@ struct decl *makevardecl(struct decl* typedecl) {
 	/* initialization */
 	new_decl->declclass = VAR_;
 	new_decl->type = typedecl;
+	new_decl->size = typedecl->size;
 
 	return new_decl;
 }
@@ -117,6 +126,7 @@ struct decl *makeconstdecl(struct decl* typedecl) {
 	/* initialization */
 	new_decl->declclass = CONST_;
 	new_decl->type = typedecl;
+	new_decl->size = typedecl->size;
 
 	return new_decl;
 }
@@ -129,6 +139,7 @@ struct decl *makeintconstdecl(struct decl* typedecl, int value) {
 	new_decl->declclass = CONST_;
 	new_decl->type = typedecl;
 	new_decl->value = value;
+	new_decl->size = typedecl->size;
 
 	return new_decl;
 }
@@ -141,6 +152,7 @@ struct decl *makefloatconstdecl(struct decl* typedecl, float value) {
 	new_decl->declclass = CONST_;
 	new_decl->type = typedecl;
 	new_decl->real_value = value;
+	new_decl->size = typedecl->size;
 
 	return new_decl;
 }

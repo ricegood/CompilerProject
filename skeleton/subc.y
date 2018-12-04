@@ -129,10 +129,10 @@ struct_specifier
         }
         def_list
         {
-                struct ste *fields = popscope();
-                decl *structdecl = makestructdecl(fields);
-                declare($2, structdecl);
-                $<declptr>$ = structdecl;
+            struct ste *fields = popscope();
+            decl *structdecl = makestructdecl(fields);
+            declare($2, structdecl);
+            $<declptr>$ = structdecl;
         }
         '}'
         {
