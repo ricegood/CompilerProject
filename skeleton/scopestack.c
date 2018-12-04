@@ -24,7 +24,7 @@ void printscopestack(){
         if(ste_it->name == NULL || ste_it->decl == NULL)
           printf("ste_it->name == NULL || ste_it->decl == NULL\n");
         else
-          printf ("node name : %s, decl class : %d, size : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size);
+          printf ("node name : %s, decl class : %d, size : %d, offset : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset);
         ste_it = ste_it->prev;
       }
       node_it = node_it->next;
@@ -35,7 +35,7 @@ void printscopestack(){
       if(ste_it->name == NULL || ste_it->decl == NULL)
           printf("ste_it->name == NULL || ste_it->decl == NULL\n");
         else
-          printf ("node name : %s, decl class : %d, size : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size);
+          printf ("node name : %s, decl class : %d, size : %d, offset : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset);
       ste_it = ste_it->prev;
     }
   }
@@ -48,10 +48,14 @@ struct ste *insert(struct id* id_ptr, struct decl* decl_ptr) {
     struct ste *ste_ptr = malloc(sizeof(struct ste));
     ste_ptr->name = id_ptr;
     ste_ptr->decl = decl_ptr;
+    ste_ptr->decl->offset = top->sumofsize; // set offset
     ste_ptr->prev = top->data; // The first ste of the first scope's prev is NULL
 
     // Set the top->data of the scope stack
     top->data = ste_ptr;
+
+    // Update the sumofsize
+    top->sumofsize += ste_ptr->decl->size;
 
     return ste_ptr;
   } else {
@@ -66,11 +70,15 @@ void insert_bottom(struct id* id_ptr, struct decl* decl_ptr) {
     struct ste *ste_ptr = malloc(sizeof(struct ste));
     ste_ptr->name = id_ptr;
     ste_ptr->decl = decl_ptr;
+    ste_ptr->decl->offset = bottom->sumofsize; // set offset
     ste_ptr->prev = NULL; // The first ste of the first scope's prev is NULL
     bottom_ste->prev = ste_ptr;
 
     // Set the bottom of the scope stack
     bottom_ste = ste_ptr;
+
+    // Update the sumofsize
+    bottom->sumofsize += ste_ptr->decl->size;
   } else {
     //printf("Scope stack top is NULL!\n");
   }

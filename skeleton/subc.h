@@ -82,7 +82,7 @@ int read_line();
 /* For scope stack */
 typedef struct node
 {
-		int sumofsize; // for offset stack
+	int sumofsize; // for offset stack
     struct ste *data;
     struct node *next;
 } node;
