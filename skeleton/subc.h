@@ -19,6 +19,7 @@ enum declclass_ {VAR_, CONST_, FUNC_, TYPE_};
 #include <string.h>
 
 char* filename;
+char* labelname;
 
 /* for scope stack */
 struct node *top;
@@ -71,6 +72,7 @@ typedef struct decl {
 	/* (FUNC) add this for procdecl (FUNC decl) return type check */
 	/* (STRUCT) use this field for which function made the struct. */
 	struct ste *formalswithreturnid;
+	struct id *id;
 } decl;
 
 /* For hash table */

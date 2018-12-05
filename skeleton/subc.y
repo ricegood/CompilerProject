@@ -97,6 +97,16 @@ ext_def
         }
         | func_decl ';'
         {   
+            /* code generation */
+            labelname = $1->id->name;
+            LABEL(labelname);
+            FUNC_LABEL(labelname, "start");
+            FUNC_LABEL(labelname, "final");
+            CODE("push_reg fp");
+            CODE("pop_reg sp");
+            CODE("pop_reg fp");
+            CODE("pop_reg pc");
+            FUNC_LABEL(labelname, "end");
         }
         | type_specifier ';'
         {
@@ -107,6 +117,11 @@ ext_def
             pushstelist($1->formalswithreturnid);
             is_func_decl = 1;
             block_number = 0;
+
+            /* code generation */
+            labelname = $1->id->name;
+            top->sumofsize = 0; // reset after pushstelist
+            LABEL(labelname);
         }
         compound_stmt
         {
@@ -115,6 +130,19 @@ ext_def
             struct ste *pop = popscope();
 
             /* [TODO] delete pop using loop (for prevent from memory leak) */
+
+            /* code generation */
+            labelname = $1->id->name;
+            FUNC_LABEL(labelname, "final");
+            CODE("push_reg fp");
+            CODE("pop_reg sp");
+            CODE("pop_reg fp");
+            CODE("pop_reg pc");
+            FUNC_LABEL(labelname, "end");
+            if (strcmp(labelname,"main") == 0) {
+                // in main function, set global variable memory size
+                printf("\tLglob. data %d\n", globalscope->sumofsize);
+            }
         }
 
 type_specifier
@@ -314,6 +342,18 @@ def
         }
         | type_specifier ';'
         | func_decl ';'
+        {
+            /* code generation */
+            labelname = $1->id->name;
+            LABEL(labelname);
+            FUNC_LABEL(labelname, "start");
+            FUNC_LABEL(labelname, "final");
+            CODE("push_reg fp");
+            CODE("pop_reg sp");
+            CODE("pop_reg fp");
+            CODE("pop_reg pc");
+            FUNC_LABEL(labelname, "end");
+        }
 
 compound_stmt
         : '{'
@@ -322,7 +362,13 @@ compound_stmt
                 pushscope();
             block_number++;
         }
-        local_defs stmt_list '}'
+        local_defs
+        {
+            /* code generation */
+            printf("\tshift_sp %d\n", top->sumofsize);
+            FUNC_LABEL(labelname, "start");
+        }
+        stmt_list '}'
         {
             block_number--;
             if (!is_func_decl || block_number > 0)
@@ -654,6 +700,7 @@ unary
         | unary '(' args ')'
         {
             /*
+                function call!
                 args pointer last pushed args.
                 args->elementvar field pointer first pushed args.
             */
@@ -664,6 +711,9 @@ unary
             }
             else
                 ERROR ("not a function");
+
+            /* code generation */
+            printf("function call!\n");
         }
         | unary '(' ')'
         {
@@ -671,6 +721,9 @@ unary
                 $$ = check_function_call($1, NULL);
             else
                 ERROR ("not a function");
+
+            /* code generation */
+            printf("function call!\n");
         }
         | NULL_TOKEN
         {

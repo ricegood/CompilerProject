@@ -50,13 +50,16 @@ struct ste *insert(struct id* id_ptr, struct decl* decl_ptr) {
     ste_ptr->decl = decl_ptr;
     ste_ptr->decl->offset = top->sumofsize; // set offset
     ste_ptr->decl->scope = &(top->data); // set scope
+    ste_ptr->decl->id = id_ptr; // set id
     ste_ptr->prev = top->data; // The first ste of the first scope's prev is NULL
 
     // Set the top->data of the scope stack
     top->data = ste_ptr;
 
-    // Update the sumofsize
-    top->sumofsize += ste_ptr->decl->size;
+    // Update the sumofsize (if this is not in formalswithreturnid)
+    if (id_ptr != returnid){
+      top->sumofsize += ste_ptr->decl->size;
+    }
 
     return ste_ptr;
   } else {
@@ -72,7 +75,8 @@ void insert_bottom(struct id* id_ptr, struct decl* decl_ptr) {
     ste_ptr->name = id_ptr;
     ste_ptr->decl = decl_ptr;
     ste_ptr->decl->offset = bottom->sumofsize; // set offset
-    ste_ptr->decl->scope = &(bottom->data);
+    ste_ptr->decl->scope = &(bottom->data); // set scope
+    ste_ptr->decl->id = id_ptr; // set id
     ste_ptr->prev = NULL; // The first ste of the first scope's prev is NULL
     bottom_ste->prev = ste_ptr;
 

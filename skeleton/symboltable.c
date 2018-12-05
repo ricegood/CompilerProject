@@ -454,7 +454,6 @@ void init_type()
 	CODE("jump main");
 	LABEL("EXIT");
 	CODE("exit");
-	LABEL("main");
 }
 
 void printTypeDecl(struct decl* decl_ptr) {
