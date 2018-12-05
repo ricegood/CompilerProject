@@ -427,6 +427,7 @@ void init_type()
 {
 	top = NULL;
 	bottom = NULL;
+	globalscope = NULL;
 
 	inttype = maketypedecl(INT_);
 	chartype = maketypedecl(CHAR_);
@@ -444,7 +445,7 @@ void init_type()
 
 	returnid = enter(KEYWORD, "*return", 7);
 
-	pushscope();
+	globalscope = pushscope();
 }
 
 void printTypeDecl(struct decl* decl_ptr) {

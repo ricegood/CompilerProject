@@ -23,6 +23,7 @@ char* filename;
 /* for scope stack */
 struct node *top;
 struct node *bottom;
+struct node *globalscope;
 struct ste *bottom_ste;
 
 /* for default type decl */
