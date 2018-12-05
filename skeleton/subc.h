@@ -21,6 +21,7 @@ enum scope_ {GLOBAL, LOCAL, PARAM};
 
 char* filename;
 char* labelname;
+int debugging; // set 1 => debug mode (print scope stack)
 
 /* for scope stack */
 struct node *top;

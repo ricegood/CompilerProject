@@ -435,6 +435,8 @@ struct decl *plustype(struct decl* typedecl1, struct decl* typedecl2) {
 
 void init_type()
 {
+	debugging = 0;
+
 	top = NULL;
 	bottom = NULL;
 

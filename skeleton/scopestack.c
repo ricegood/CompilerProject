@@ -8,37 +8,39 @@
 #include "subc.h"
 
 void printscopestack(){
-  printf("=============PRINT SCOPE STACK=============\n");
-  struct node *node_it = top;
-  struct ste *ste_it = NULL;
+  if (debugging) {
+    printf("=============PRINT SCOPE STACK=============\n");
+    struct node *node_it = top;
+    struct ste *ste_it = NULL;
 
-  if (node_it == NULL)
-    printf("stack is NULL!\n");
-  else {
-    ste_it = node_it->data;
+    if (node_it == NULL)
+      printf("stack is NULL!\n");
+    else {
+      ste_it = node_it->data;
 
-    int i = 0;
-    while (node_it->next != NULL) {
-      printf("=====stack #%d from the top=====\n", i++);
-      while (ste_it != node_it->next->data) {
-        if(ste_it->name == NULL || ste_it->decl == NULL)
-          printf("ste_it->name == NULL || ste_it->decl == NULL\n");
-        else
-          printf ("node name : %s, decl class : %d, size : %d, offset : %d, scope : %d, check_param : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset, *(ste_it->decl->scope) == globalscope->data, ste_it->decl->check_param);
-        ste_it = ste_it->prev;
+      int i = 0;
+      while (node_it->next != NULL) {
+        printf("=====stack #%d from the top=====\n", i++);
+        while (ste_it != node_it->next->data) {
+          if(ste_it->name == NULL || ste_it->decl == NULL)
+            printf("ste_it->name == NULL || ste_it->decl == NULL\n");
+          else
+            printf ("node name : %s, decl class : %d, size : %d, offset : %d, scope : %d, check_param : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset, *(ste_it->decl->scope) == globalscope->data, ste_it->decl->check_param);
+          ste_it = ste_it->prev;
+        }
+        node_it = node_it->next;
       }
-      node_it = node_it->next;
-    }
 
-    printf("=====Final Stack from the top=====\n");
-    while (ste_it != NULL) {
-      if(ste_it->name == NULL || ste_it->decl == NULL)
-          printf("ste_it->name == NULL || ste_it->decl == NULL\n");
-        else
-          printf ("node name : %s, decl class : %d, size : %d, offset : %d, scope : %d, check_param : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset, *(ste_it->decl->scope) == globalscope->data, ste_it->decl->check_param);      ste_it = ste_it->prev;
+      printf("=====Final Stack from the top=====\n");
+      while (ste_it != NULL) {
+        if(ste_it->name == NULL || ste_it->decl == NULL)
+            printf("ste_it->name == NULL || ste_it->decl == NULL\n");
+          else
+            printf ("node name : %s, decl class : %d, size : %d, offset : %d, scope : %d, check_param : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset, *(ste_it->decl->scope) == globalscope->data, ste_it->decl->check_param);      ste_it = ste_it->prev;
+      }
     }
+    printf("===========================================\n");
   }
-  printf("===========================================\n");
 }
 
 struct ste *insert(struct id* id_ptr, struct decl* decl_ptr) {

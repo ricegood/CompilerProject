@@ -417,16 +417,22 @@ const_expr
         : expr
 
 expr
-        : unary '=' expr
+        : unary '='
+        {
+            /* code generation */
+            CODE("push_reg sp");
+            CODE("fetch");
+        }
+        expr
         {
             /* assignment operation */
             /* should have same type (ppt 23p) & not const! (=>check_is_var) */
             if ($1) {
                 if (check_is_var($1)) {
-                    if (check_same_type_for_unary($1, $3))
+                    if (check_same_type_for_unary($1, $4))
                         $$ = $1->type;
                     else {
-                        if ($3 == nulltype) 
+                        if ($4 == nulltype) 
                             ERROR("RHS is not a const or variable");
                         else
                             ERROR("LHS and RHS are not same type");
@@ -440,6 +446,12 @@ expr
             }
             else
                 $$ = NULL;
+
+
+            /* code generation */
+            CODE("assign");
+            CODE("fetch");
+            CODE("shift_sp -1");
         }
         | or_expr
 
@@ -560,6 +572,9 @@ unary
         | INTEGER_CONST
         {
             $$ = makeintconstdecl(inttype, $1);
+
+            /* code generation */
+            printf("\tpush_const %d\n", $$->value);
         }
         | CHAR_CONST
         {   
