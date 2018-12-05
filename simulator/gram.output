@@ -145,7 +145,7 @@ file (57)
     on left: 47 48 49 50 51 52 53 54 55, on right: 0 47 48 49 50
 
 
-state 0
+State 0
 
     0 $accept: . file $end
 
@@ -192,119 +192,119 @@ state 0
     file         go to state 40
 
 
-state 1
+State 1
 
     1 inst: NEGATE .
 
     $default  reduce using rule 1 (inst)
 
 
-state 2
+State 2
 
     2 inst: NOT .
 
     $default  reduce using rule 2 (inst)
 
 
-state 3
+State 3
 
     3 inst: ABS .
 
     $default  reduce using rule 3 (inst)
 
 
-state 4
+State 4
 
     4 inst: ADD .
 
     $default  reduce using rule 4 (inst)
 
 
-state 5
+State 5
 
     5 inst: SUB .
 
     $default  reduce using rule 5 (inst)
 
 
-state 6
+State 6
 
     6 inst: MUL .
 
     $default  reduce using rule 6 (inst)
 
 
-state 7
+State 7
 
     7 inst: DIV .
 
     $default  reduce using rule 7 (inst)
 
 
-state 8
+State 8
 
     8 inst: MOD .
 
     $default  reduce using rule 8 (inst)
 
 
-state 9
+State 9
 
     9 inst: AND .
 
     $default  reduce using rule 9 (inst)
 
 
-state 10
+State 10
 
    10 inst: OR .
 
     $default  reduce using rule 10 (inst)
 
 
-state 11
+State 11
 
    11 inst: EQUAL .
 
     $default  reduce using rule 11 (inst)
 
 
-state 12
+State 12
 
    12 inst: NOT_EQUAL .
 
     $default  reduce using rule 12 (inst)
 
 
-state 13
+State 13
 
    13 inst: GREATER .
 
     $default  reduce using rule 13 (inst)
 
 
-state 14
+State 14
 
    14 inst: GREATER_EQUAL .
 
     $default  reduce using rule 14 (inst)
 
 
-state 15
+State 15
 
    15 inst: LESS .
 
     $default  reduce using rule 15 (inst)
 
 
-state 16
+State 16
 
    16 inst: LESS_EQUAL .
 
     $default  reduce using rule 16 (inst)
 
 
-state 17
+State 17
 
    17 inst: JUMP . const_op
 
@@ -315,7 +315,7 @@ state 17
     const_op  go to state 44
 
 
-state 18
+State 18
 
    18 inst: BRANCH_TRUE . const_op
 
@@ -326,7 +326,7 @@ state 18
     const_op  go to state 45
 
 
-state 19
+State 19
 
    19 inst: BRANCH_FALSE . const_op
 
@@ -337,14 +337,14 @@ state 19
     const_op  go to state 46
 
 
-state 20
+State 20
 
    20 inst: EXIT .
 
     $default  reduce using rule 20 (inst)
 
 
-state 21
+State 21
 
    21 inst: PUSH_CONST . const_op
 
@@ -355,7 +355,7 @@ state 21
     const_op  go to state 47
 
 
-state 22
+State 22
 
    22 inst: PUSH_REG . reg
 
@@ -366,7 +366,7 @@ state 22
     reg  go to state 51
 
 
-state 23
+State 23
 
    23 inst: POP_REG . reg
 
@@ -377,7 +377,7 @@ state 23
     reg  go to state 52
 
 
-state 24
+State 24
 
    24 inst: SHIFT_SP . integer
 
@@ -387,56 +387,56 @@ state 24
     integer  go to state 55
 
 
-state 25
+State 25
 
    25 inst: ASSIGN .
 
     $default  reduce using rule 25 (inst)
 
 
-state 26
+State 26
 
    26 inst: FETCH .
 
     $default  reduce using rule 26 (inst)
 
 
-state 27
+State 27
 
    27 inst: READ_INT .
 
     $default  reduce using rule 27 (inst)
 
 
-state 28
+State 28
 
    28 inst: READ_CHAR .
 
     $default  reduce using rule 28 (inst)
 
 
-state 29
+State 29
 
    29 inst: WRITE_INT .
 
     $default  reduce using rule 29 (inst)
 
 
-state 30
+State 30
 
    30 inst: WRITE_CHAR .
 
     $default  reduce using rule 30 (inst)
 
 
-state 31
+State 31
 
    31 inst: WRITE_STRING .
 
     $default  reduce using rule 31 (inst)
 
 
-state 32
+State 32
 
    34 label: ID . ':' NEW_LINE
    35 global: ID . '.' DATA INT_CONST NEW_LINE
@@ -446,56 +446,56 @@ state 32
     '.'  shift, and go to state 57
 
 
-state 33
+State 33
 
    33 empty_state: NEW_LINE .
 
     $default  reduce using rule 33 (empty_state)
 
 
-state 34
+State 34
 
    32 state: inst . NEW_LINE
 
     NEW_LINE  shift, and go to state 58
 
 
-state 35
+State 35
 
    51 file: state .
 
     $default  reduce using rule 51 (file)
 
 
-state 36
+State 36
 
    53 file: empty_state .
 
     $default  reduce using rule 53 (file)
 
 
-state 37
+State 37
 
    52 file: label .
 
     $default  reduce using rule 52 (file)
 
 
-state 38
+State 38
 
    54 file: global .
 
     $default  reduce using rule 54 (file)
 
 
-state 39
+State 39
 
    55 file: string .
 
     $default  reduce using rule 55 (file)
 
 
-state 40
+State 40
 
     0 $accept: file . $end
    47 file: file . state
@@ -544,14 +544,14 @@ state 40
     string  go to state 63
 
 
-state 41
+State 41
 
    39 const_op: INT_CONST .
 
     $default  reduce using rule 39 (const_op)
 
 
-state 42
+State 42
 
    41 const_op: ID .
    42         | ID . '+' INT_CONST
@@ -563,105 +563,105 @@ state 42
     $default  reduce using rule 41 (const_op)
 
 
-state 43
+State 43
 
    40 const_op: '-' . INT_CONST
 
     INT_CONST  shift, and go to state 66
 
 
-state 44
+State 44
 
    17 inst: JUMP const_op .
 
     $default  reduce using rule 17 (inst)
 
 
-state 45
+State 45
 
    18 inst: BRANCH_TRUE const_op .
 
     $default  reduce using rule 18 (inst)
 
 
-state 46
+State 46
 
    19 inst: BRANCH_FALSE const_op .
 
     $default  reduce using rule 19 (inst)
 
 
-state 47
+State 47
 
    21 inst: PUSH_CONST const_op .
 
     $default  reduce using rule 21 (inst)
 
 
-state 48
+State 48
 
    45 reg: SP .
 
     $default  reduce using rule 45 (reg)
 
 
-state 49
+State 49
 
    44 reg: FP .
 
     $default  reduce using rule 44 (reg)
 
 
-state 50
+State 50
 
    46 reg: PC .
 
     $default  reduce using rule 46 (reg)
 
 
-state 51
+State 51
 
    22 inst: PUSH_REG reg .
 
     $default  reduce using rule 22 (inst)
 
 
-state 52
+State 52
 
    23 inst: POP_REG reg .
 
     $default  reduce using rule 23 (inst)
 
 
-state 53
+State 53
 
    37 integer: INT_CONST .
 
     $default  reduce using rule 37 (integer)
 
 
-state 54
+State 54
 
    38 integer: '-' . INT_CONST
 
     INT_CONST  shift, and go to state 67
 
 
-state 55
+State 55
 
    24 inst: SHIFT_SP integer .
 
     $default  reduce using rule 24 (inst)
 
 
-state 56
+State 56
 
    34 label: ID ':' . NEW_LINE
 
     NEW_LINE  shift, and go to state 68
 
 
-state 57
+State 57
 
    35 global: ID '.' . DATA INT_CONST NEW_LINE
    36 string: ID '.' . STRING STRING_CONST NEW_LINE
@@ -670,133 +670,133 @@ state 57
     STRING  shift, and go to state 70
 
 
-state 58
+State 58
 
    32 state: inst NEW_LINE .
 
     $default  reduce using rule 32 (state)
 
 
-state 59
+State 59
 
     0 $accept: file $end .
 
     $default  accept
 
 
-state 60
+State 60
 
    47 file: file state .
 
     $default  reduce using rule 47 (file)
 
 
-state 61
+State 61
 
    48 file: file label .
 
     $default  reduce using rule 48 (file)
 
 
-state 62
+State 62
 
    49 file: file global .
 
     $default  reduce using rule 49 (file)
 
 
-state 63
+State 63
 
    50 file: file string .
 
     $default  reduce using rule 50 (file)
 
 
-state 64
+State 64
 
    43 const_op: ID '-' . INT_CONST
 
     INT_CONST  shift, and go to state 71
 
 
-state 65
+State 65
 
    42 const_op: ID '+' . INT_CONST
 
     INT_CONST  shift, and go to state 72
 
 
-state 66
+State 66
 
    40 const_op: '-' INT_CONST .
 
     $default  reduce using rule 40 (const_op)
 
 
-state 67
+State 67
 
    38 integer: '-' INT_CONST .
 
     $default  reduce using rule 38 (integer)
 
 
-state 68
+State 68
 
    34 label: ID ':' NEW_LINE .
 
     $default  reduce using rule 34 (label)
 
 
-state 69
+State 69
 
    35 global: ID '.' DATA . INT_CONST NEW_LINE
 
     INT_CONST  shift, and go to state 73
 
 
-state 70
+State 70
 
    36 string: ID '.' STRING . STRING_CONST NEW_LINE
 
     STRING_CONST  shift, and go to state 74
 
 
-state 71
+State 71
 
    43 const_op: ID '-' INT_CONST .
 
     $default  reduce using rule 43 (const_op)
 
 
-state 72
+State 72
 
    42 const_op: ID '+' INT_CONST .
 
     $default  reduce using rule 42 (const_op)
 
 
-state 73
+State 73
 
    35 global: ID '.' DATA INT_CONST . NEW_LINE
 
     NEW_LINE  shift, and go to state 75
 
 
-state 74
+State 74
 
    36 string: ID '.' STRING STRING_CONST . NEW_LINE
 
     NEW_LINE  shift, and go to state 76
 
 
-state 75
+State 75
 
    35 global: ID '.' DATA INT_CONST NEW_LINE .
 
     $default  reduce using rule 35 (global)
 
 
-state 76
+State 76
 
    36 string: ID '.' STRING STRING_CONST NEW_LINE .
 
