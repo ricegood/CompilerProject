@@ -142,5 +142,7 @@ void init_type();
 void printTypeDecl(struct decl* decl_ptr);
 void printArgs(struct decl* const_decl_for_args);
 void ERROR(char* s);
+void CODE(char *s);
+void LABEL(char *s);
 
 #endif

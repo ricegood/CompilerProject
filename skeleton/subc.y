@@ -716,3 +716,11 @@ void ERROR(char* s) {
         num_of_err_message = lineno;
     }
 }
+
+void CODE(char *s) {
+    printf("\t%s\n",s);
+}
+
+void LABEL(char *s) {
+    printf("%s:\n",s);
+}
