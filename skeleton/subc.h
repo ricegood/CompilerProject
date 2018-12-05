@@ -144,5 +144,6 @@ void printArgs(struct decl* const_decl_for_args);
 void ERROR(char* s);
 void CODE(char *s);
 void LABEL(char *s);
+void FUNC_LABEL(char *func_name, char *label);
 
 #endif

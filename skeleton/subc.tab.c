@@ -2393,3 +2393,7 @@ void CODE(char *s) {
 void LABEL(char *s) {
     printf("%s:\n",s);
 }
+
+void FUNC_LABEL(char *func_name, char *label) {
+    printf("%s_%s:\n", func_name, label);
+}
