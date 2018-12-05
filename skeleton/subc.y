@@ -574,6 +574,31 @@ unary
             $$ = findcurrentdecl($1);
             if (!$$)
                 ERROR("not declared");
+
+            /* code generation */
+            // push address
+            switch (check_variable_scope($$)) {
+                case GLOBAL:
+                    CODE("push_const Lglob");
+                    printf("\tpush_const %d\n", $$->offset);
+                    CODE("add");
+                    break;
+
+                case PARAM:
+                    CODE("push_reg FP");
+                    printf("\tpush_const %d\n", ($$->offset) - ($$->check_param) - 1);
+                    CODE("add");
+                    break;
+
+                case LOCAL:
+                    CODE("push_reg FP");
+                    printf("\tpush_const %d\n", 1 + $$->offset);
+                    CODE("add");
+                    break;
+
+                default:
+                    break;
+            }
         }
         | '-' unary %prec '!'
         {   

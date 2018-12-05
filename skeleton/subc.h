@@ -12,6 +12,7 @@
 enum lextype_ {KEYWORD, UNDEFINED, ID_};
 enum typeclass_ {INT_, CHAR_, VOID_, STRUCT_, STRING_, ARRAY_, POINTER_};
 enum declclass_ {VAR_, CONST_, FUNC_, TYPE_};
+enum scope_ {GLOBAL, LOCAL, PARAM};
 
 #include <stdio.h>
 #include <strings.h>
@@ -73,6 +74,7 @@ typedef struct decl {
 	/* (STRUCT) use this field for which function made the struct. */
 	struct ste *formalswithreturnid;
 	struct id *id;
+	int check_param; // It saves sum_of_args_size (if it is greater than 0, it isparameter)
 } decl;
 
 /* For hash table */
@@ -139,6 +141,7 @@ int check_same_type_for_unary(decl* decl_ptr, decl* typedecl_ptr);
 int check_same_type(struct decl* decl_ptr, struct decl* indexptr);
 int check_same_decl(decl* decl_ptr1, decl* decl_ptr2);
 struct decl *check_compatible_type(decl* typedecl_ptr1, decl* typedecl_ptr2);
+int check_variable_scope(decl* decl_ptr);
 
 void init_type();
 void printTypeDecl(struct decl* decl_ptr);

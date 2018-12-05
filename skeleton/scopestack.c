@@ -24,7 +24,7 @@ void printscopestack(){
         if(ste_it->name == NULL || ste_it->decl == NULL)
           printf("ste_it->name == NULL || ste_it->decl == NULL\n");
         else
-          printf ("node name : %s, decl class : %d, size : %d, offset : %d, scope : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset, *(ste_it->decl->scope) == globalscope->data);
+          printf ("node name : %s, decl class : %d, size : %d, offset : %d, scope : %d, check_param : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset, *(ste_it->decl->scope) == globalscope->data, ste_it->decl->check_param);
         ste_it = ste_it->prev;
       }
       node_it = node_it->next;
@@ -35,8 +35,7 @@ void printscopestack(){
       if(ste_it->name == NULL || ste_it->decl == NULL)
           printf("ste_it->name == NULL || ste_it->decl == NULL\n");
         else
-          printf ("node name : %s, decl class : %d, size : %d, offset : %d, scope : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset, *(ste_it->decl->scope) == globalscope->data);
-      ste_it = ste_it->prev;
+          printf ("node name : %s, decl class : %d, size : %d, offset : %d, scope : %d, check_param : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset, *(ste_it->decl->scope) == globalscope->data, ste_it->decl->check_param);      ste_it = ste_it->prev;
     }
   }
   printf("===========================================\n");
@@ -57,9 +56,8 @@ struct ste *insert(struct id* id_ptr, struct decl* decl_ptr) {
     top->data = ste_ptr;
 
     // Update the sumofsize (if this is not in formalswithreturnid)
-    if (id_ptr != returnid){
+    if (id_ptr != returnid)
       top->sumofsize += ste_ptr->decl->size;
-    }
 
     return ste_ptr;
   } else {
@@ -181,7 +179,20 @@ struct node *pushscope() {
 
 void pushstelist(ste *ste_list) {
   struct ste *ste_it = ste_list;
+  int sum_of_param_size = 0;
+
+  // set sum_of_param_size
   while (ste_it != NULL) {
+    if (ste_it->name != returnid)
+      sum_of_param_size += ste_it->decl->size;
+    ste_it = ste_it->prev;
+  }
+
+  // set check_param & insert
+  ste_it = ste_list;
+  while (ste_it != NULL) {
+    if (ste_it->name != returnid)
+      ste_it->decl->check_param = sum_of_param_size;
     insert(ste_it->name, ste_it->decl); // malloc
     ste_it = ste_it->prev;
   }
