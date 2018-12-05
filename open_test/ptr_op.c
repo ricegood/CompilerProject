@@ -6,11 +6,11 @@ int main(void) {
 	char c[20];
 	char *d;
 
-	a = b;		/* [Q] error => error:LHS is not a variable */
+	a = b;		/* error => error:LHS is not a variable */
 	a[0] = 0;
 	c[5] = 'a';
 
-	b = &a;		/* [Q] error => not variable */
+	b = &a;		/* error => not variable */
 	b = &a[10];
 	b = &b;		/* error */
 	b = &*(a+5);/* error */
