@@ -557,6 +557,9 @@ binary
             else {
                 $$ = NULL;
             }
+
+            /* code generation */
+            CODE("fetch");
         }
 
 unary
@@ -737,7 +740,7 @@ unary
                 $$ = NULL;
             }
         }
-        | unary '(' args ')'
+        | unary CODEGEN '(' args ')'
         {
             /*
                 function call!
@@ -753,10 +756,15 @@ unary
                 ERROR ("not a function");
 
             /* code generation */
-            // caller convention
-            printf("function call!\n");
+            // push the actual parameters on the stack in 'args' reducing procedure
+            CODE("push_reg sp"); // FP = SP
+            printf("\tpush_const -%d\n", sumofargs);
+            CODE("add");
+            CODE("pop_reg fp");
+            printf("\tjump %s\n", $1->id->name); // Then, jump
+            printf("label_%d:\n", labelnumber); // print label
         }
-        | unary '(' ')'
+        | unary CODEGEN '(' ')'
         {
             if (check_is_proc($1))
                 $$ = check_function_call($1, NULL);
@@ -765,11 +773,23 @@ unary
 
             /* code generation */
             // caller convention
-            printf("function call!\n");
+            // no actual parameters
+            CODE("push_reg sp"); // FP = SP
+            CODE("pop_reg fp");
+            printf("\tjump %s\n", $1->id->name); // Then, jump
         }
         | NULL_TOKEN
         {
             $$ = nulltype;
+        }
+
+codegen :
+        {
+            /* code generation */
+            // caller convention
+            CODE("shift_sp 1"); // push a hole for return value
+            printf("\tpush_const label_%d\n", new_label()); // push the return address
+            CODE("push_reg fp"); // push the old FP
         }
 
 args    /* actual parameters(function arguments) transferred to function */
@@ -822,4 +842,8 @@ void LABEL(char *s) {
 
 void FUNC_LABEL(char *func_name, char *label) {
     printf("%s_%s:\n", func_name, label);
+}
+
+int new_label() {
+    return labelnumber++;
 }

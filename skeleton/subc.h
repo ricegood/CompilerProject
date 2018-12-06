@@ -21,6 +21,8 @@ enum scope_ {GLOBAL, LOCAL, PARAM};
 
 char* filename;
 char* labelname;
+int labelnumber;
+int sumofargs;
 int debugging; // set 1 => debug mode (print scope stack)
 
 /* for scope stack */
@@ -151,5 +153,6 @@ void ERROR(char* s);
 void CODE(char *s);
 void LABEL(char *s);
 void FUNC_LABEL(char *func_name, char *label);
+int new_label();
 
 #endif

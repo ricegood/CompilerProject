@@ -191,6 +191,7 @@ void pushstelist(ste *ste_list) {
   }
 
   // set check_param & insert
+  sumofargs = sum_of_param_size; // set global variable for caller convention
   ste_it = ste_list;
   while (ste_it != NULL) {
     if (ste_it->name != returnid)
