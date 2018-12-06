@@ -14,7 +14,7 @@ main_start:
 	add
 	push_reg sp
 	fetch
-	push_const 1
+	push_const 2
 	assign
 	fetch
 	shift_sp -1
@@ -24,6 +24,7 @@ main_start:
 	push_reg sp
 	fetch
 	push_const 1
+	negate
 	assign
 	fetch
 	shift_sp -1
@@ -36,7 +37,7 @@ label_1:
 	push_const 2
 	add
 	fetch
-	equal
+	greater
 	branch_false label_2
 	push_reg fp
 	push_const 3
@@ -47,7 +48,18 @@ label_1:
 	assign
 	fetch
 	shift_sp -1
+	jump label_3
 label_2:
+	push_reg fp
+	push_const 3
+	add
+	push_reg sp
+	fetch
+	push_const 2
+	assign
+	fetch
+	shift_sp -1
+label_3:
 	push_reg fp
 	push_const 3
 	add

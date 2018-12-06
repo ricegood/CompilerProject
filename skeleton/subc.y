@@ -47,10 +47,10 @@ int is_if_stmt = 0; /* for printing label in if-else statement */
 /* Tokens and Types */
 /* Tokens */
 %token        STRUCT RETURN IF ELSE WHILE FOR BREAK CONTINUE
-%token        LOGICAL_OR LOGICAL_AND RELOP EQUOP INCOP DECOP STRUCTOP
+%token        LOGICAL_OR LOGICAL_AND INCOP DECOP STRUCTOP
 
 /* string, int, id */
-%token<stringVal>   CHAR_CONST STRING
+%token<stringVal>   CHAR_CONST STRING EQUOP RELOP
 %token<intVal>      INTEGER_CONST
 %token<idptr>       ID
 %token<declptr>     TYPE VOID NULL_TOKEN
@@ -483,8 +483,6 @@ if_branch_code_gen : /* empty */
             is_if_stmt = 1; // prevent from printing label wrongly
         }
 
-/* binary~expr~args semantic value type = type decl */
-
 expr_e
         : expr
         | /* empty */
@@ -546,6 +544,9 @@ or_list
             }
             else
                 $$ = NULL;
+
+            /* code generation */
+            CODE("or");
         }
         | and_expr
 
@@ -564,6 +565,9 @@ and_list
             }
             else
                 $$ = NULL;
+
+            /* code generation */
+            CODE("and");
         }
         | binary
 
@@ -581,6 +585,20 @@ binary
             /* ERROR */
             else {
                 ERROR("not comparable");
+            }
+
+            /* code generation */
+            if (strcmp($2, "<") == 0) {
+                CODE("less");
+            }
+            else if (strcmp($2, "<=") == 0){
+                CODE("less_equal");
+            }
+            else if (strcmp($2, ">") == 0){
+                CODE("greater");
+            }
+            else if (strcmp($2, ">=") == 0){
+                CODE("greater_equal");
             }
         }
         | binary EQUOP binary
@@ -604,7 +622,12 @@ binary
             }
 
             /* code generation */
-            CODE("equal");
+            if (strcmp($2, "==") == 0) {
+                CODE("equal");
+            }
+            else {
+                CODE("not_equal");
+            }
         }
         | binary '+' binary
         {
@@ -615,6 +638,9 @@ binary
                 ERROR("not int type");
                 $$ = NULL;
             }
+
+            /* code generation */
+            CODE("add");
         }
         | binary '-' binary
         {
@@ -642,7 +668,6 @@ binary
             }
 
             /* code generation */
-            // [TODO] is it work at array well????
             // this code is for prevent from such as const_int fetch
             // fetch only "unary->ID" reduce case. (same condition!)
             if (check_is_var($1) || check_is_array($1->type))
@@ -721,6 +746,9 @@ unary
                 ERROR("not int type");
                 $$ = NULL;
             }
+
+            /* code generation */
+            CODE("negate");
         }
         | '!' unary
         {
@@ -731,6 +759,9 @@ unary
                 ERROR("not int type");
                 $$ = NULL;
             }
+
+            /* code generation */
+            CODE("not");
         }
         | unary INCOP
         {

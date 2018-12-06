@@ -56,8 +56,12 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 "continue"	{ return CONTINUE; }
 "||"		{ return LOGICAL_OR; }
 "&&"		{ return LOGICAL_AND; }
-"<"|"<="|">"|">=" { return RELOP; }
-"=="|"!="	{ return EQUOP; }
+"<"|"<="|">"|">=" { yylval.stringVal = malloc(2);
+			  		strcpy(yylval.stringVal, yytext);
+			  		return RELOP; }
+"=="|"!="	{ yylval.stringVal = malloc(2);
+			  strcpy(yylval.stringVal, yytext);
+			  return EQUOP; }
 "++"		{ return INCOP; }
 "--"		{ return DECOP; }
 "->"		{ return STRUCTOP; }
