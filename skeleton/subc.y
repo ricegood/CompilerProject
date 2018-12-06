@@ -610,7 +610,10 @@ unary
         | STRING
         {
             $$ = makestringconstdecl(stringtype, $1);
-            parsing_string_const = $$->stringvalue;
+
+            /* code generation */
+            printf("str_%d. string %s\n", new_string(), $$->stringvalue);
+            printf("\tpush_const str_%d\n", stringnumber);
         }
         | ID {
             /* find ID */
@@ -787,8 +790,6 @@ unary
                 CODE("write_int");
             }
             else if ($1 == write_string) {
-                printf("str_%d. string %s\n", new_string(), parsing_string_const);
-                printf("\tpush_const str_%d\n", stringnumber);
                 CODE("write_string");
             }
             else {
