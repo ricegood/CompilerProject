@@ -559,7 +559,11 @@ binary
             }
 
             /* code generation */
-            CODE("fetch");
+            // [TODO] is it work at array well????
+            // this code is for prevent from such as const_int fetch
+            // fetch only "unary->ID" reduce case. (same condition!)
+            if (check_is_var($1) || check_is_array($1->type))
+                CODE("fetch");
         }
 
 unary
@@ -595,27 +599,29 @@ unary
 
             /* code generation */
             // push address
-            switch (check_variable_scope($$)) {
-                case GLOBAL:
-                    CODE("push_const Lglob");
-                    printf("\tpush_const %d\n", $$->offset);
-                    CODE("add");
-                    break;
+            if (check_is_var($$) || check_is_array($$->type)) {
+                switch (check_variable_scope($$)) {
+                    case GLOBAL:
+                        CODE("push_const Lglob");
+                        printf("\tpush_const %d\n", $$->offset);
+                        CODE("add");
+                        break;
 
-                case PARAM:
-                    CODE("push_reg FP");
-                    printf("\tpush_const %d\n", ($$->offset) - ($$->check_param) - 1);
-                    CODE("add");
-                    break;
+                    case PARAM:
+                        CODE("push_reg FP");
+                        printf("\tpush_const %d\n", ($$->offset) - ($$->check_param) - 1);
+                        CODE("add");
+                        break;
 
-                case LOCAL:
-                    CODE("push_reg FP");
-                    printf("\tpush_const %d\n", 1 + $$->offset);
-                    CODE("add");
-                    break;
+                    case LOCAL:
+                        CODE("push_reg FP");
+                        printf("\tpush_const %d\n", 1 + $$->offset);
+                        CODE("add");
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
         }
         | '-' unary %prec '!'
@@ -740,7 +746,7 @@ unary
                 $$ = NULL;
             }
         }
-        | unary CODEGEN '(' args ')'
+        | unary '(' codegen args ')'
         {
             /*
                 function call!
@@ -749,8 +755,8 @@ unary
             */
 
             if (check_is_proc($1)) {
-                if ($3)
-                    $$ = check_function_call($1, $3->elementvar);
+                if ($4)
+                    $$ = check_function_call($1, $4->elementvar);
             }
             else
                 ERROR ("not a function");
@@ -764,7 +770,7 @@ unary
             printf("\tjump %s\n", $1->id->name); // Then, jump
             printf("label_%d:\n", labelnumber); // print label
         }
-        | unary CODEGEN '(' ')'
+        | unary '(' codegen ')'
         {
             if (check_is_proc($1))
                 $$ = check_function_call($1, NULL);
@@ -783,13 +789,14 @@ unary
             $$ = nulltype;
         }
 
-codegen :
+codegen : /* empty */
         {
             /* code generation */
             // caller convention
             CODE("shift_sp 1"); // push a hole for return value
             printf("\tpush_const label_%d\n", new_label()); // push the return address
             CODE("push_reg fp"); // push the old FP
+            sumofargs = 0; // reset
         }
 
 args    /* actual parameters(function arguments) transferred to function */
@@ -798,6 +805,9 @@ args    /* actual parameters(function arguments) transferred to function */
             /* expr semantic value type is TYPEDECL */
             $$ = makeconstdecl($1);
             $$->elementvar = $$; /* to save first args pointer. */
+
+            /* code generation */
+            sumofargs += $1->size; // set global variable for caller convention
         }
         | args ',' expr
         {
@@ -808,6 +818,9 @@ args    /* actual parameters(function arguments) transferred to function */
             }
             else
                 $$ = NULL;
+
+            /* code generation */
+            sumofargs += $1->size; // set global variable for caller convention
         }
 
 %%
@@ -845,5 +858,5 @@ void FUNC_LABEL(char *func_name, char *label) {
 }
 
 int new_label() {
-    return labelnumber++;
+    return ++labelnumber;
 }
