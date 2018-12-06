@@ -22,7 +22,11 @@ enum scope_ {GLOBAL, LOCAL, PARAM};
 char* filename;
 char* labelname;
 int labelnumber;
+int stringnumber;
 int sumofargs;
+int parsing_int_const;
+char* parsing_string_const;
+
 int debugging; // set 1 => debug mode (print scope stack)
 
 /* for scope stack */
@@ -37,6 +41,8 @@ struct decl *chartype;
 struct decl *voidtype;
 struct decl *stringtype;
 struct decl *nulltype;
+struct decl *write_int;
+struct decl *write_string;
 struct id *returnid;
 
 struct ste *inttype_ste; // fixed ste pointer
@@ -78,6 +84,7 @@ typedef struct decl {
 	struct ste *formalswithreturnid;
 	struct id *id;
 	int check_param; // It saves sum_of_args_size (if it is greater than 0, it isparameter)
+	char *stringvalue;
 } decl;
 
 /* For hash table */
@@ -115,6 +122,7 @@ struct decl *makevardecl(struct decl* typedecl);
 struct decl *makearraydecl(int size, struct decl* vardecl);
 struct decl *makeconstdecl(struct decl* typedecl);
 struct decl *makeintconstdecl(struct decl* typedecl, int value);
+struct decl *makestringconstdecl(struct decl* typedecl, char* value);
 struct decl *makefloatconstdecl(struct decl* typedecl, float value);
 struct decl *makeptrdecl(struct decl* typedecl);
 struct decl *makeprocdecl();
@@ -155,5 +163,6 @@ void CODE(char *s);
 void LABEL(char *s);
 void FUNC_LABEL(char *func_name, char *label);
 int new_label();
+int new_string();
 
 #endif

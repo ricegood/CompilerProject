@@ -61,6 +61,8 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 "++"		{ return INCOP; }
 "--"		{ return DECOP; }
 "->"		{ return STRUCTOP; }
+"write_int"	{ yylval.idptr = enter(KEYWORD, "write_int", 9); return ID; }
+"write_string" { yylval.idptr = enter(KEYWORD, "write_string", 12); return ID; }
 
 
 {integer-const}	{
@@ -72,7 +74,7 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 								//printf("OP\t%s\n",yytext);
 								return yytext[0];
 							}
-{id}					{
+{id}					{	
 								/* Determine the token type, and get the data */
 								id* data = enter(UNDEFINED, yytext, strlen(yytext));
 

@@ -144,6 +144,20 @@ struct decl *makeintconstdecl(struct decl* typedecl, int value) {
 	return new_decl;
 }
 
+struct decl *makestringconstdecl(struct decl* typedecl, char* value) {
+	/* make new decl */
+	struct decl *new_decl = malloc(sizeof(struct decl));
+
+	/* initialization */
+	new_decl->declclass = CONST_;
+	new_decl->type = typedecl;
+	new_decl->stringvalue = malloc(sizeof(value));
+	strcpy(new_decl->stringvalue, value);
+	new_decl->size = typedecl->size;
+
+	return new_decl;
+}
+
 struct decl *makefloatconstdecl(struct decl* typedecl, float value) {
 	/* make new decl */
 	struct decl *new_decl = malloc(sizeof(struct decl));
@@ -445,6 +459,8 @@ void init_type()
 	voidtype = maketypedecl(VOID_);
 	stringtype = maketypedecl(STRING_);
 	nulltype = maketypedecl(POINTER_);
+	write_int = makeprocdecl();
+	write_string = makeprocdecl();
 
 	bottom = pushscope();
 
@@ -453,7 +469,22 @@ void init_type()
 	insert(enter(KEYWORD, "char", 4), chartype);
 	insert(enter(KEYWORD, "void", 4), voidtype);
 	insert(enter(KEYWORD, "string", 6), stringtype);
+	insert(enter(KEYWORD, "write_int", 9), write_int);
+	insert(enter(KEYWORD, "write_string", 12), write_string);
 
+	// set write_int function
+	write_int->returntype = voidtype;
+	pushscope();
+	declare(enter(KEYWORD, "write_int", 9), makevardecl(inttype));
+	write_int->formals = popscope();
+
+	// set write_string function
+	write_string->returntype = voidtype;
+	pushscope();
+	declare(enter(KEYWORD, "write_string", 12), makevardecl(stringtype));
+	write_string->formals = popscope();
+
+	// set returnid
 	returnid = enter(KEYWORD, "*return", 7);
 
 	globalscope = pushscope();

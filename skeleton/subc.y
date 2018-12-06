@@ -567,7 +567,7 @@ binary
             }
         }
         | unary %prec '='
-        {   
+        {
             if ($1 && $1->type) {
                 $$ = $1->type;
             }
@@ -609,7 +609,8 @@ unary
         }
         | STRING
         {
-            $$ = makeconstdecl(stringtype);
+            $$ = makestringconstdecl(stringtype, $1);
+            parsing_string_const = $$->stringvalue;
         }
         | ID {
             /* find ID */
@@ -782,17 +783,28 @@ unary
                 ERROR ("not a function");
 
             /* code generation */
-            // push the actual parameters on the stack in 'args' reducing procedure
-            CODE("push_reg sp"); // FP = SP
-            printf("\tpush_const -%d\n", sumofargs);
-            CODE("add");
-            CODE("pop_reg fp");
-            printf("\tjump %s\n", $1->id->name); // Then, jump
-            printf("label_%d:\n", labelnumber); // print label
+            if ($1 == write_int) {
+                CODE("write_int");
+            }
+            else if ($1 == write_string) {
+                printf("str_%d. string %s\n", new_string(), parsing_string_const);
+                printf("\tpush_const str_%d\n", stringnumber);
+                CODE("write_string");
+            }
+            else {
+                // push the actual parameters on the stack in 'args' reducing procedure
+                CODE("push_reg sp"); // FP = SP
+                printf("\tpush_const -%d\n", sumofargs);
+                CODE("add");
+                CODE("pop_reg fp");
+                printf("\tjump %s\n", $1->id->name); // Then, jump
+                printf("label_%d:\n", labelnumber); // print label
+                break;
+            }
         }
         | unary '(' codegen ')'
         {
-            if (check_is_proc($1))
+            if (check_is_proc($1)) 
                 $$ = check_function_call($1, NULL);
             else
                 ERROR ("not a function");
@@ -813,9 +825,11 @@ codegen : /* empty */
         {
             /* code generation */
             // caller convention
-            CODE("shift_sp 1"); // push a hole for return value
-            printf("\tpush_const label_%d\n", new_label()); // push the return address
-            CODE("push_reg fp"); // push the old FP
+            if($<declptr>-1 != write_int && $<declptr>-1 != write_string) {
+                CODE("shift_sp 1"); // push a hole for return value
+                printf("\tpush_const label_%d\n", new_label()); // push the return address
+                CODE("push_reg fp"); // push the old FP
+            }
             sumofargs = 0; // reset
         }
 
@@ -879,4 +893,8 @@ void FUNC_LABEL(char *func_name, char *label) {
 
 int new_label() {
     return ++labelnumber;
+}
+
+int new_string() {
+    return ++stringnumber;
 }
