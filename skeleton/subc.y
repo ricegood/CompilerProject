@@ -17,6 +17,7 @@ int num_of_err_message = 0; /* for print only 1 error for 1 line */
 int is_func_decl = 0; /* for scope stack management about block inside of function */
 int block_number = 0; /* for scope stack management about block inside of function */
 int start_param_parsing = 1; /* for prevent from conflicts. */
+int is_var_decl = 0; /* for prevent from printing 'push_const int' */
 %}
 
 /* yylval types */
@@ -84,13 +85,21 @@ ext_def
             else
                 $$ = NULL;
         }
-        | type_specifier pointers ID '[' unary ']' ';'
+        | type_specifier pointers ID '[' 
         {
-            if ($1 && $5) {
+            is_var_decl = 1; // prevent from printing 'push_const' in unary
+        }
+        unary
+        {
+            is_var_decl = 0; // reset
+        }
+        ']' ';'
+        {
+            if ($1 && $6) {
                 if ($2 == 0) // no pointer
-                    declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
+                    declare($3, $$ = makeconstdecl(makearraydecl($6->value, makevardecl($1))));
                 else // pointer
-                    declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
+                    declare($3, $$ = makeconstdecl(makearraydecl($6->value, makevardecl(makeptrdecl($1)))));
             }
             else
                 $$ = NULL;
@@ -294,18 +303,26 @@ param_decl  /* formal parameter declaration */
             else
                 $$ = NULL;
         }
-        | type_specifier pointers ID '[' unary ']'
+        | type_specifier pointers ID '['
+        {
+            is_var_decl = 1; // prevent from printing 'push_const' in unary
+        }
+        unary
+        {
+            is_var_decl = 0; // reset
+        }
+        ']'
         {
             if (start_param_parsing) {
                 pushscope();
                 start_param_parsing = 0;
             }
 
-            if ($1 && $5) {
+            if ($1 && $6) {
                 if ($2 == 0) // no pointer
-                    declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
+                    declare($3, $$ = makeconstdecl(makearraydecl($6->value, makevardecl($1))));
                 else // pointer
-                    declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
+                    declare($3, $$ = makeconstdecl(makearraydecl($6->value, makevardecl(makeptrdecl($1)))));
             }
             else
                 $$ = NULL;
@@ -329,13 +346,21 @@ def
             else
                 $$ = NULL;
         }
-        | type_specifier pointers ID '[' unary ']' ';'
+        | type_specifier pointers ID '['
         {
-            if ($1 && $5) {
+            is_var_decl = 1; // prevent from printing 'push_const' in unary
+        }
+        unary
+        {
+            is_var_decl = 0; // reset
+        }
+        ']' ';'
+        {
+            if ($1 && $6) {
                 if ($2 == 0) // no pointer
-                    declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl($1))));
+                    declare($3, $$ = makeconstdecl(makearraydecl($6->value, makevardecl($1))));
                 else // pointer
-                    declare($3, $$ = makeconstdecl(makearraydecl($5->value, makevardecl(makeptrdecl($1)))));
+                    declare($3, $$ = makeconstdecl(makearraydecl($6->value, makevardecl(makeptrdecl($1)))));
             }
             else
                 $$ = NULL;
@@ -601,7 +626,8 @@ unary
             $$ = makeintconstdecl(inttype, $1);
 
             /* code generation */
-            printf("\tpush_const %d\n", $$->value);
+            if (!is_var_decl)
+                printf("\tpush_const %d\n", $$->value);
         }
         | CHAR_CONST
         {   

@@ -20,8 +20,10 @@ int main(){
 	i = 7;
 
 	teststr[i].y = i - 10;
+	/*
 	j = teststr[i].y;
 
 	write_int(j);
 	write_string("\n");
+	*/
 }
