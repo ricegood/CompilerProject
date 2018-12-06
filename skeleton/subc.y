@@ -753,6 +753,7 @@ unary
                 ERROR ("not a function");
 
             /* code generation */
+            // caller convention
             printf("function call!\n");
         }
         | unary '(' ')'
@@ -763,6 +764,7 @@ unary
                 ERROR ("not a function");
 
             /* code generation */
+            // caller convention
             printf("function call!\n");
         }
         | NULL_TOKEN
