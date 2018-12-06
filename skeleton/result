@@ -21,7 +21,7 @@ test_final:
 	pop_reg pc
 test_end:
 main:
-	shift_sp 5
+	shift_sp 7
 main_start:
 	push_reg FP
 	push_const 1
@@ -42,7 +42,7 @@ main_start:
 	fetch
 	shift_sp -1
 	push_reg FP
-	push_const 4
+	push_const 6
 	add
 	push_reg sp
 	fetch
@@ -51,7 +51,7 @@ main_start:
 	fetch
 	shift_sp -1
 	push_reg FP
-	push_const 5
+	push_const 7
 	add
 	push_reg sp
 	fetch
@@ -67,11 +67,11 @@ main_start:
 	add
 	fetch
 	push_reg FP
-	push_const 4
+	push_const 6
 	add
 	fetch
 	push_reg sp
-	push_const -4
+	push_const -6
 	add
 	pop_reg fp
 	jump test
