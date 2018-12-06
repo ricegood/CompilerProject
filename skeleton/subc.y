@@ -773,6 +773,12 @@ unary
         {
             if ($1)
                 $$ = arrayaccess($1, $3);
+
+            /* code generation */
+            // array access
+            printf("\tpush_const %d\n", ($1->size)/($1->num_index));
+            CODE("mul");
+            CODE("add");
         }
         | unary '.' ID
         {
@@ -784,6 +790,11 @@ unary
                 ERROR("variable is not struct");
                 $$ = NULL;
             }
+
+            /* code generation */
+            // struct access
+            printf("\tpush_const %d\n", $$->offset);
+            CODE("add");
         }
         | unary STRUCTOP ID
         {

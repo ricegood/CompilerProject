@@ -127,6 +127,7 @@ struct decl *makeconstdecl(struct decl* typedecl) {
 	new_decl->declclass = CONST_;
 	new_decl->type = typedecl;
 	new_decl->size = typedecl->size;
+	new_decl->num_index = typedecl->num_index; // for array const decl
 
 	return new_decl;
 }
