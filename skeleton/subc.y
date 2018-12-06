@@ -17,7 +17,7 @@ int num_of_err_message = 0; /* for print only 1 error for 1 line */
 int is_func_decl = 0; /* for scope stack management about block inside of function */
 int block_number = 0; /* for scope stack management about block inside of function */
 int start_param_parsing = 1; /* for prevent from conflicts. */
-int is_var_decl = 0; /* for prevent from printing 'push_const int' */
+int is_array_decl = 0; /* for prevent from printing 'push_const int' */
 %}
 
 /* yylval types */
@@ -87,11 +87,11 @@ ext_def
         }
         | type_specifier pointers ID '[' 
         {
-            is_var_decl = 1; // prevent from printing 'push_const' in unary
+            is_array_decl = 1; // prevent from printing 'push_const' in unary
         }
         unary
         {
-            is_var_decl = 0; // reset
+            is_array_decl = 0; // reset
         }
         ']' ';'
         {
@@ -305,11 +305,11 @@ param_decl  /* formal parameter declaration */
         }
         | type_specifier pointers ID '['
         {
-            is_var_decl = 1; // prevent from printing 'push_const' in unary
+            is_array_decl = 1; // prevent from printing 'push_const' in unary
         }
         unary
         {
-            is_var_decl = 0; // reset
+            is_array_decl = 0; // reset
         }
         ']'
         {
@@ -348,11 +348,11 @@ def
         }
         | type_specifier pointers ID '['
         {
-            is_var_decl = 1; // prevent from printing 'push_const' in unary
+            is_array_decl = 1; // prevent from printing 'push_const' in unary
         }
         unary
         {
-            is_var_decl = 0; // reset
+            is_array_decl = 0; // reset
         }
         ']' ';'
         {
@@ -626,7 +626,7 @@ unary
             $$ = makeintconstdecl(inttype, $1);
 
             /* code generation */
-            if (!is_var_decl)
+            if (!is_array_decl)
                 printf("\tpush_const %d\n", $$->value);
         }
         | CHAR_CONST

@@ -82,7 +82,7 @@ int num_of_err_message = 0; /* for print only 1 error for 1 line */
 int is_func_decl = 0; /* for scope stack management about block inside of function */
 int block_number = 0; /* for scope stack management about block inside of function */
 int start_param_parsing = 1; /* for prevent from conflicts. */
-int is_var_decl = 0; /* for prevent from printing 'push_const int' */
+int is_array_decl = 0; /* for prevent from printing 'push_const int' */
 
 #line 88 "subc.tab.c" /* yacc.c:339  */
 
@@ -1392,7 +1392,7 @@ yyreduce:
   case 6:
 #line 89 "subc.y" /* yacc.c:1646  */
     {
-            is_var_decl = 1; // prevent from printing 'push_const' in unary
+            is_array_decl = 1; // prevent from printing 'push_const' in unary
         }
 #line 1398 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1400,7 +1400,7 @@ yyreduce:
   case 7:
 #line 93 "subc.y" /* yacc.c:1646  */
     {
-            is_var_decl = 0; // reset
+            is_array_decl = 0; // reset
         }
 #line 1406 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1663,7 +1663,7 @@ yyreduce:
   case 28:
 #line 307 "subc.y" /* yacc.c:1646  */
     {
-            is_var_decl = 1; // prevent from printing 'push_const' in unary
+            is_array_decl = 1; // prevent from printing 'push_const' in unary
         }
 #line 1669 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1671,7 +1671,7 @@ yyreduce:
   case 29:
 #line 311 "subc.y" /* yacc.c:1646  */
     {
-            is_var_decl = 0; // reset
+            is_array_decl = 0; // reset
         }
 #line 1677 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1721,7 +1721,7 @@ yyreduce:
   case 34:
 #line 350 "subc.y" /* yacc.c:1646  */
     {
-            is_var_decl = 1; // prevent from printing 'push_const' in unary
+            is_array_decl = 1; // prevent from printing 'push_const' in unary
         }
 #line 1727 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1729,7 +1729,7 @@ yyreduce:
   case 35:
 #line 354 "subc.y" /* yacc.c:1646  */
     {
-            is_var_decl = 0; // reset
+            is_array_decl = 0; // reset
         }
 #line 1735 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2033,7 +2033,7 @@ yyreduce:
             (yyval.declptr) = makeintconstdecl(inttype, (yyvsp[0].intVal));
 
             /* code generation */
-            if (!is_var_decl)
+            if (!is_array_decl)
                 printf("\tpush_const %d\n", (yyval.declptr)->value);
         }
 #line 2040 "subc.tab.c" /* yacc.c:1646  */
