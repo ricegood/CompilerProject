@@ -24,7 +24,6 @@ char* labelname;
 int labelnumber;
 int stringnumber;
 int sumofargs;
-int parsing_int_const;
 
 int debugging; // set 1 => debug mode (print scope stack)
 
