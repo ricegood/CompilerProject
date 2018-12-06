@@ -385,19 +385,28 @@ stmt_list
 stmt
         : expr ';'
         | compound_stmt
-        | RETURN ';'
+        | RETURN return_code_gen ';'
         {
             if (!check_same_type(findcurrentdecl(returnid), voidtype)) {
                 /* return type check */
                 ERROR("return type was not matched");
             }
+
+            /* code generation */
+            CODE("push_const 0"); // no return expr, so return value = 0
+            CODE("assign");
+            printf("\tjump %s_final\n", labelname);
         }
-        | RETURN expr ';'
+        | RETURN return_code_gen expr ';'
         {   
-            if ($2 && !check_same_type(findcurrentdecl(returnid), $2)) {
+            if ($3 && !check_same_type(findcurrentdecl(returnid), $3)) {
                 /* return type check */
                 ERROR("return type was not matched");
             }
+
+            /* code generation */
+            CODE("assign"); // assign return value (fp-2)
+            printf("\tjump %s_final\n", labelname);
         }
         | ';'
         | IF '(' expr ')' stmt
@@ -406,6 +415,16 @@ stmt
         | FOR '(' expr_e ';' expr_e ';' expr_e ')' stmt
         | BREAK ';'
         | CONTINUE ';'
+
+return_code_gen : /* empty */
+        {
+            /* code generation */
+            CODE("push_reg fp");
+            CODE("push_const -1");
+            CODE("add"); // return address : fp-1
+            CODE("push_const -1");
+            CODE("add"); // return value : fp-2
+        }
 
 /* binary~expr~args semantic value type = type decl */
 
@@ -609,13 +628,13 @@ unary
                         break;
 
                     case PARAM:
-                        CODE("push_reg FP");
+                        CODE("push_reg fp");
                         printf("\tpush_const %d\n", 1 + $$->offset);
                         CODE("add");
                         break;
 
                     case LOCAL:
-                        CODE("push_reg FP");
+                        CODE("push_reg fp");
                         printf("\tpush_const %d\n", 1 + $$->scope->sumofparams + $$->offset);
                         CODE("add");
                         break;

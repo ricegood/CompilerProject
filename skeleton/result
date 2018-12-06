@@ -10,10 +10,17 @@ EXIT:
 test:
 	shift_sp 0
 test_start:
-	push_reg FP
+	push_reg fp
+	push_const -1
+	add
+	push_const -1
+	add
+	push_reg fp
 	push_const 1
 	add
 	fetch
+	assign
+	jump test_final
 test_final:
 	push_reg fp
 	pop_reg sp
@@ -23,7 +30,7 @@ test_end:
 main:
 	shift_sp 7
 main_start:
-	push_reg FP
+	push_reg fp
 	push_const 1
 	add
 	push_reg sp
@@ -32,7 +39,7 @@ main_start:
 	assign
 	fetch
 	shift_sp -1
-	push_reg FP
+	push_reg fp
 	push_const 2
 	add
 	push_reg sp
@@ -41,7 +48,7 @@ main_start:
 	assign
 	fetch
 	shift_sp -1
-	push_reg FP
+	push_reg fp
 	push_const 6
 	add
 	push_reg sp
@@ -50,7 +57,7 @@ main_start:
 	assign
 	fetch
 	shift_sp -1
-	push_reg FP
+	push_reg fp
 	push_const 7
 	add
 	push_reg sp
@@ -58,15 +65,15 @@ main_start:
 	shift_sp 1
 	push_const label_1
 	push_reg fp
-	push_reg FP
+	push_reg fp
 	push_const 1
 	add
 	fetch
-	push_reg FP
+	push_reg fp
 	push_const 2
 	add
 	fetch
-	push_reg FP
+	push_reg fp
 	push_const 6
 	add
 	fetch
