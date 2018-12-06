@@ -84,7 +84,7 @@ ext_def
             else
                 $$ = NULL;
         }
-        | type_specifier pointers ID '[' unary ']' ';'
+        | type_specifier pointers ID '[' const_expr ']' ';'
         {
             if ($1 && $5) {
                 if ($2 == 0) // no pointer
@@ -294,7 +294,7 @@ param_decl  /* formal parameter declaration */
             else
                 $$ = NULL;
         }
-        | type_specifier pointers ID '[' unary ']'
+        | type_specifier pointers ID '[' const_expr ']'
         {
             if (start_param_parsing) {
                 pushscope();
@@ -329,7 +329,7 @@ def
             else
                 $$ = NULL;
         }
-        | type_specifier pointers ID '[' unary ']' ';'
+        | type_specifier pointers ID '[' const_expr ']' ';'
         {
             if ($1 && $5) {
                 if ($2 == 0) // no pointer
