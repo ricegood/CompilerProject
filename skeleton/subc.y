@@ -590,6 +590,9 @@ binary
                 ERROR("not int type");
                 $$ = NULL;
             }
+
+            /* code generation */
+            CODE("sub");
         }
         | unary %prec '='
         {

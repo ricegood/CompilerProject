@@ -37,6 +37,7 @@ main_start:
 	add
 	fetch
 	push_const 10
+	sub
 	assign
 	fetch
 	shift_sp -1
