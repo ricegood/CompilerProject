@@ -25,7 +25,7 @@ void printscopestack(){
           if(ste_it->name == NULL || ste_it->decl == NULL)
             printf("ste_it->name == NULL || ste_it->decl == NULL\n");
           else
-            printf ("node name : %s, decl class : %d, size : %d, offset : %d, scope : %d, check_param : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset, *(ste_it->decl->scope) == globalscope->data, ste_it->decl->check_param);
+            printf ("node name : %s, decl class : %d, size : %d, offset : %d, scope : %d, check_param : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset, ste_it->decl->scope == globalscope, ste_it->decl->check_param);
           ste_it = ste_it->prev;
         }
         node_it = node_it->next;
@@ -36,7 +36,7 @@ void printscopestack(){
         if(ste_it->name == NULL || ste_it->decl == NULL)
             printf("ste_it->name == NULL || ste_it->decl == NULL\n");
           else
-            printf ("node name : %s, decl class : %d, size : %d, offset : %d, scope : %d, check_param : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset, *(ste_it->decl->scope) == globalscope->data, ste_it->decl->check_param);      ste_it = ste_it->prev;
+            printf ("node name : %s, decl class : %d, size : %d, offset : %d, scope : %d, check_param : %d\n", ste_it->name->name, ste_it->decl->declclass, ste_it->decl->size, ste_it->decl->offset, ste_it->decl->scope == globalscope, ste_it->decl->check_param);      ste_it = ste_it->prev;
       }
     }
     printf("===========================================\n");
@@ -50,7 +50,7 @@ struct ste *insert(struct id* id_ptr, struct decl* decl_ptr) {
     ste_ptr->name = id_ptr;
     ste_ptr->decl = decl_ptr;
     ste_ptr->decl->offset = top->sumofsize; // set offset
-    ste_ptr->decl->scope = &(top->data); // set scope
+    ste_ptr->decl->scope = top; // set scope
     ste_ptr->decl->id = id_ptr; // set id
     ste_ptr->prev = top->data; // The first ste of the first scope's prev is NULL
 
@@ -75,7 +75,7 @@ void insert_bottom(struct id* id_ptr, struct decl* decl_ptr) {
     ste_ptr->name = id_ptr;
     ste_ptr->decl = decl_ptr;
     ste_ptr->decl->offset = bottom->sumofsize; // set offset
-    ste_ptr->decl->scope = &(bottom->data); // set scope
+    ste_ptr->decl->scope = bottom; // set scope
     ste_ptr->decl->id = id_ptr; // set id
     ste_ptr->prev = NULL; // The first ste of the first scope's prev is NULL
     bottom_ste->prev = ste_ptr;
@@ -189,6 +189,9 @@ void pushstelist(ste *ste_list) {
       sum_of_param_size += ste_it->decl->size;
     ste_it = ste_it->prev;
   }
+
+  // set sumofparams
+  top->sumofparams = sum_of_param_size;
 
   // set check_param & insert
   ste_it = ste_list;

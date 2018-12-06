@@ -1999,13 +1999,13 @@ yyreduce:
 
                     case PARAM:
                         CODE("push_reg FP");
-                        printf("\tpush_const %d\n", ((yyval.declptr)->offset) - ((yyval.declptr)->check_param) - 1);
+                        printf("\tpush_const %d\n", 1 + (yyval.declptr)->offset);
                         CODE("add");
                         break;
 
                     case LOCAL:
                         CODE("push_reg FP");
-                        printf("\tpush_const %d\n", 1 + (yyval.declptr)->offset);
+                        printf("\tpush_const %d\n", 1 + (yyval.declptr)->scope->sumofparams + (yyval.declptr)->offset);
                         CODE("add");
                         break;
 

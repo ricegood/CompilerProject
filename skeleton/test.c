@@ -1,7 +1,8 @@
 struct temp {
 	/* size = 4 */
 	int x;
-	char y[3];
+	char y[2];
+	int z;
 };
 
 int test(int a, struct temp b, int c) {
@@ -16,7 +17,8 @@ int main(){
 	int l;
 
 	i = 1;
-	j.x = 2;
+	j.z = 2;
+	/* j.y[1] = 'c'; */
 	k = 3;
 
 	l = test(i, j, k);

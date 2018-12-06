@@ -70,7 +70,7 @@ typedef struct decl {
 	struct decl *ptrto;	
 	int size;
 	int offset;
-	struct ste **scope;
+	struct node *scope;
 	struct decl *next;
 
 	/* (FUNC) add this for procdecl (FUNC decl) return type check */
@@ -91,6 +91,7 @@ int read_line();
 typedef struct node
 {
 	int sumofsize; // for offset stack
+	int sumofparams; // for get sum of param size
     struct ste *data;
     struct node *next;
 } node;

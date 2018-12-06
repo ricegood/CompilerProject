@@ -609,13 +609,13 @@ unary
 
                     case PARAM:
                         CODE("push_reg FP");
-                        printf("\tpush_const %d\n", ($$->offset) - ($$->check_param) - 1);
+                        printf("\tpush_const %d\n", 1 + $$->offset);
                         CODE("add");
                         break;
 
                     case LOCAL:
                         CODE("push_reg FP");
-                        printf("\tpush_const %d\n", 1 + $$->offset);
+                        printf("\tpush_const %d\n", 1 + $$->scope->sumofparams + $$->offset);
                         CODE("add");
                         break;
 

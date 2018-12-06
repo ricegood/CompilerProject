@@ -289,7 +289,7 @@ struct decl *check_compatible_type(decl* typedecl_ptr1, decl* typedecl_ptr2) {
 
 int check_variable_scope(decl* decl_ptr) {
 	/* return enum {GLOBAL, LOCAL, PARAM} */
-	if (*(decl_ptr->scope) == globalscope->data)
+	if (decl_ptr->scope == globalscope)
 		return GLOBAL;
 	else if (decl_ptr->check_param > 0)
 		return PARAM;

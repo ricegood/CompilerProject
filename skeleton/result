@@ -6,12 +6,12 @@
 	jump main
 EXIT:
 	exit
-	push_const 3
+	push_const 2
 test:
 	shift_sp 0
 test_start:
 	push_reg FP
-	push_const -7
+	push_const 1
 	add
 	fetch
 test_final:
@@ -24,6 +24,7 @@ main:
 	shift_sp 7
 main_start:
 	push_reg FP
+	sum of params : 0
 	push_const 1
 	add
 	push_reg sp
@@ -33,6 +34,7 @@ main_start:
 	fetch
 	shift_sp -1
 	push_reg FP
+	sum of params : 0
 	push_const 2
 	add
 	push_reg sp
@@ -42,6 +44,7 @@ main_start:
 	fetch
 	shift_sp -1
 	push_reg FP
+	sum of params : 0
 	push_const 6
 	add
 	push_reg sp
@@ -51,6 +54,7 @@ main_start:
 	fetch
 	shift_sp -1
 	push_reg FP
+	sum of params : 0
 	push_const 7
 	add
 	push_reg sp
@@ -59,14 +63,17 @@ main_start:
 	push_const label_1
 	push_reg fp
 	push_reg FP
+	sum of params : 0
 	push_const 1
 	add
 	fetch
 	push_reg FP
+	sum of params : 0
 	push_const 2
 	add
 	fetch
 	push_reg FP
+	sum of params : 0
 	push_const 6
 	add
 	fetch
