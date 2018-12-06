@@ -7,37 +7,14 @@
 EXIT:
 	exit
 main:
-	shift_sp 84
+	shift_sp 3
 main_start:
 	push_reg fp
 	push_const 1
 	add
 	push_reg sp
 	fetch
-	push_const 7
-	assign
-	fetch
-	shift_sp -1
-	push_reg fp
-	push_const 5
-	add
-	push_reg fp
 	push_const 1
-	add
-	fetch
-	push_const 8
-	mul
-	add
-	push_const 1
-	add
-	push_reg sp
-	fetch
-	push_reg fp
-	push_const 1
-	add
-	fetch
-	push_const 10
-	sub
 	assign
 	fetch
 	shift_sp -1
@@ -46,24 +23,44 @@ main_start:
 	add
 	push_reg sp
 	fetch
-	push_reg fp
-	push_const 5
-	add
-	push_reg fp
-	push_const 1
-	add
-	fetch
-	push_const 8
-	mul
-	add
-	push_const 1
-	add
-	fetch
+	push_const 2
 	assign
 	fetch
 	shift_sp -1
+label_1:
+	push_reg fp
+	push_const 1
+	add
+	fetch
 	push_reg fp
 	push_const 2
+	add
+	fetch
+	equal
+	branch_false label_2
+	push_reg fp
+	push_const 3
+	add
+	push_reg sp
+	fetch
+	push_const 1
+	assign
+	fetch
+	shift_sp -1
+	jump label_3
+label_2:
+	push_reg fp
+	push_const 3
+	add
+	push_reg sp
+	fetch
+	push_const 0
+	assign
+	fetch
+	shift_sp -1
+label_3:
+	push_reg fp
+	push_const 3
 	add
 	fetch
 	write_int
@@ -76,4 +73,4 @@ main_final:
 	pop_reg fp
 	pop_reg pc
 main_end:
-	Lglob. data 10
+	Lglob. data 0

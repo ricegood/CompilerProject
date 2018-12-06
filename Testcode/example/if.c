@@ -12,7 +12,8 @@ int main(){
 	} else {
 		x = 0;
 	}
-
+	
 	write_int(x);
 	write_string("\n");
+	
 }

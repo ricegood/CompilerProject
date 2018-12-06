@@ -21,7 +21,8 @@ enum scope_ {GLOBAL, LOCAL, PARAM};
 
 char* filename;
 char* labelname;
-int labelnumber;
+int unused_labelnumber;
+int used_labelnumber;
 int stringnumber;
 int sumofargs;
 
@@ -161,6 +162,7 @@ void CODE(char *s);
 void LABEL(char *s);
 void FUNC_LABEL(char *func_name, char *label);
 int new_label();
+int use_label();
 int new_string();
 
 #endif

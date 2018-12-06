@@ -18,6 +18,7 @@ int is_func_decl = 0; /* for scope stack management about block inside of functi
 int block_number = 0; /* for scope stack management about block inside of function */
 int start_param_parsing = 1; /* for prevent from conflicts. */
 int is_array_decl = 0; /* for prevent from printing 'push_const int' */
+int is_if_stmt = 0; /* for printing label in if-else statement */
 %}
 
 /* yylval types */
@@ -390,8 +391,15 @@ compound_stmt
         local_defs
         {
             /* code generation */
-            printf("\tshift_sp %d\n", top->sumofsize);
-            FUNC_LABEL(labelname, "start");
+            if (is_func_decl && block_number == 1) {
+                printf("\tshift_sp %d\n", top->sumofsize);
+                FUNC_LABEL(labelname, "start");
+            }
+            else if (!is_if_stmt) {
+                printf("label_%d:\n", use_label());
+            }
+
+            is_if_stmt = 0; // reset
         }
         stmt_list '}'
         {
@@ -434,8 +442,18 @@ stmt
             printf("\tjump %s_final\n", labelname);
         }
         | ';'
-        | IF '(' expr ')' stmt
-        | IF '(' expr ')' stmt ELSE stmt
+        | IF if_code_gen '(' expr ')' if_branch_code_gen stmt
+        {   
+            printf("label_%d:\n", use_label());
+        }
+        | IF if_code_gen '(' expr ')' if_branch_code_gen stmt ELSE
+        {   
+            printf("\tjump label_%d\n", new_label());
+        }
+        stmt
+        {
+            printf("label_%d:\n", use_label());
+        }
         | WHILE '(' expr ')' stmt
         | FOR '(' expr_e ';' expr_e ';' expr_e ')' stmt
         | BREAK ';'
@@ -449,6 +467,20 @@ return_code_gen : /* empty */
             CODE("add"); // return address : fp-1
             CODE("push_const -1");
             CODE("add"); // return value : fp-2
+        }
+
+if_code_gen : /* empty */
+        {
+            /* code generation */
+            printf("label_%d:\n", new_label());
+            use_label();
+        }
+
+if_branch_code_gen : /* empty */
+        {
+            /* code generation */
+            printf("\tbranch_false label_%d\n", new_label());
+            is_if_stmt = 1; // prevent from printing label wrongly
         }
 
 /* binary~expr~args semantic value type = type decl */
@@ -570,6 +602,9 @@ binary
             else {
                 ERROR("not comparable");
             }
+
+            /* code generation */
+            CODE("equal");
         }
         | binary '+' binary
         {
@@ -839,7 +874,7 @@ unary
                 CODE("add");
                 CODE("pop_reg fp");
                 printf("\tjump %s\n", $1->id->name); // Then, jump
-                printf("label_%d:\n", labelnumber); // print label
+                printf("label_%d:\n", use_label()); // print label
                 break;
             }
         }
@@ -933,7 +968,16 @@ void FUNC_LABEL(char *func_name, char *label) {
 }
 
 int new_label() {
-    return ++labelnumber;
+    return ++unused_labelnumber;
+}
+
+int use_label() {
+    if (used_labelnumber < unused_labelnumber)
+        return ++used_labelnumber;
+    else {
+        printf("* * LABELING ERROR!!!!!\n");
+        return -1;
+    }
 }
 
 int new_string() {
