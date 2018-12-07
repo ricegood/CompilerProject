@@ -161,6 +161,7 @@ void ERROR(char* s);
 void CODE(char *s);
 void LABEL(char *s);
 void FUNC_LABEL(char *func_name, char *label);
+void push_address(struct decl* decl_ptr);
 int new_label();
 int use_label();
 int new_string();

@@ -711,7 +711,9 @@ unary
                 ERROR("not declared");
 
             /* code generation */
+            /*
             // push address
+            push_address($$);
             if (check_is_var($$) || check_is_array($$->type)) {
                 switch (check_variable_scope($$)) {
                     case GLOBAL:
@@ -736,6 +738,7 @@ unary
                         break;
                 }
             }
+            */
         }
         | '-' unary %prec '!'
         {   
@@ -772,6 +775,10 @@ unary
                 ERROR("not int or char type");
                 $$ = NULL;
             }
+
+            /* code generation */
+            CODE("fetch");
+            push_address($$);
         }
         | unary DECOP
         {
@@ -970,6 +977,33 @@ args    /* actual parameters(function arguments) transferred to function */
 
 int yyerror (char* s) {
     fprintf (stderr, "%s\n", s);
+}
+
+void push_address(struct decl* decl_ptr) {
+    if (check_is_var(decl_ptr) || check_is_array(decl_ptr->type)) {
+        switch (check_variable_scope(decl_ptr)) {
+            case GLOBAL:
+                CODE("push_const Lglob");
+                printf("\tpush_const %d\n", decl_ptr->offset);
+                CODE("add");
+                break;
+
+            case PARAM:
+                CODE("push_reg fp");
+                printf("\tpush_const %d\n", 1 + decl_ptr->offset);
+                CODE("add");
+                break;
+
+            case LOCAL:
+                CODE("push_reg fp");
+                printf("\tpush_const %d\n", 1 + decl_ptr->scope->sumofparams + decl_ptr->offset);
+                CODE("add");
+                break;
+
+            default:
+                break;
+        }
+    }
 }
 
 void REDUCE(char* s) {
