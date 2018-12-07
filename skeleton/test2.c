@@ -15,5 +15,13 @@ int main(){
 	
 	write_int(x);
 	write_string("\n");
+	write_int(x+1);
+	write_string("\n");
+	write_int(x++);
+	write_string("\n");
+	write_int(x+1);
+	write_string("\n");
+	write_int(x);
+	write_string("\n");
 	
 }

@@ -19,6 +19,7 @@ int block_number = 0; /* for scope stack management about block inside of functi
 int start_param_parsing = 1; /* for prevent from conflicts. */
 int is_array_decl = 0; /* for prevent from printing 'push_const int' */
 int is_if_stmt = 0; /* for printing label in if-else statement */
+int no_fetch = 0; /* no fetch flag for INCOP, DECOP in unary->ID production */
 %}
 
 /* yylval types */
@@ -670,8 +671,10 @@ binary
             /* code generation */
             // this code is for prevent from such as const_int fetch
             // fetch only "unary->ID" reduce case. (same condition!)
-            if (check_is_var($1) || check_is_array($1->type))
+            if ((check_is_var($1) || check_is_array($1->type)) && !no_fetch) {
                 CODE("fetch");
+            }
+            no_fetch = 0; // reset
         }
 
 unary
@@ -711,34 +714,7 @@ unary
                 ERROR("not declared");
 
             /* code generation */
-            /*
-            // push address
             push_address($$);
-            if (check_is_var($$) || check_is_array($$->type)) {
-                switch (check_variable_scope($$)) {
-                    case GLOBAL:
-                        CODE("push_const Lglob");
-                        printf("\tpush_const %d\n", $$->offset);
-                        CODE("add");
-                        break;
-
-                    case PARAM:
-                        CODE("push_reg fp");
-                        printf("\tpush_const %d\n", 1 + $$->offset);
-                        CODE("add");
-                        break;
-
-                    case LOCAL:
-                        CODE("push_reg fp");
-                        printf("\tpush_const %d\n", 1 + $$->scope->sumofparams + $$->offset);
-                        CODE("add");
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-            */
         }
         | '-' unary %prec '!'
         {   
@@ -777,8 +753,14 @@ unary
             }
 
             /* code generation */
-            CODE("fetch");
+            CODE("fetch"); /* fetch! */
             push_address($$);
+            push_address($$);
+            CODE("fetch");
+            CODE("push_const 1");
+            CODE("add");
+            CODE("assign");
+            no_fetch = 1; /* it has already fetched */
         }
         | unary DECOP
         {
