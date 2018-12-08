@@ -31,6 +31,7 @@ main_start:
         sub
         assign
         fetch
+        write_int
         shift_sp -1
 main_final:
         push_reg fp
