@@ -748,7 +748,7 @@ unary
         | unary INCOP
         {
             /* only char, integer */
-            if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
+            if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype) || check_is_pointer_type($1->type) || check_is_struct_type($1->type))
                 $$ = $1;
             else {
                 ERROR("not int or char type");
@@ -760,7 +760,14 @@ unary
             push_address($$);
             push_address($$);
             CODE("fetch");
-            printf("\tpush_const %d\n", $1->size);
+            if (check_is_pointer_type($1->type)){
+                // pointer (++ptrto size)
+                printf("\tpush_const %d\n", $1->type->ptrto->size);
+            }
+            else {
+                // int, char, struct
+                printf("\tpush_const %d\n", $1->size);
+            }
             CODE("add");
             CODE("assign");
             no_fetch = 1; /* it has already fetched */
@@ -780,7 +787,14 @@ unary
             push_address($$);
             push_address($$);
             CODE("fetch");
-            printf("\tpush_const -%d\n", $1->size);
+            if (check_is_pointer_type($1->type)){
+                // pointer (++ptrto size)
+                printf("\tpush_const -%d\n", $1->type->ptrto->size);
+            }
+            else {
+                // int, char, struct
+                printf("\tpush_const -%d\n", $1->size);
+            }
             CODE("add");
             CODE("assign");
             no_fetch = 1; /* it has already fetched */
@@ -799,7 +813,14 @@ unary
             push_address($$);
             push_address($$);
             CODE("fetch");
-            printf("\tpush_const %d\n", $2->size);
+            if (check_is_pointer_type($2->type)){
+                // pointer (++ptrto size)
+                printf("\tpush_const %d\n", $2->type->ptrto->size);
+            }
+            else {
+                // int, char, struct
+                printf("\tpush_const %d\n", $2->size);
+            }
             CODE("add");
             CODE("assign");
         }
@@ -817,7 +838,14 @@ unary
             push_address($$);
             push_address($$);
             CODE("fetch");
-            printf("\tpush_const -%d\n", $2->size);
+            if (check_is_pointer_type($2->type)){
+                // pointer (++ptrto size)
+                printf("\tpush_const -%d\n", $2->type->ptrto->size);
+            }
+            else {
+                // int, char, struct
+                printf("\tpush_const -%d\n", $2->size);
+            }
             CODE("add");
             CODE("assign");
         }
