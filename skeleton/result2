@@ -109,8 +109,16 @@ str_3. string "\n"
 	push_const 4
 	add
 	fetch
-	push_const 1
+	push_reg fp
+	push_const 4
 	add
+	push_reg fp
+	push_const 4
+	add
+	fetch
+	push_const -1
+	add
+	assign
 	write_int
 str_4. string "\n"
 	push_const str_4
@@ -145,9 +153,27 @@ str_6. string "\n"
 	push_const 3
 	add
 	fetch
+	push_reg fp
+	push_const 3
+	add
+	push_reg fp
+	push_const 3
+	add
+	fetch
+	push_const -1
+	add
+	assign
 	write_char
 str_7. string "\n"
 	push_const str_7
+	write_string
+	push_reg fp
+	push_const 3
+	add
+	fetch
+	write_char
+str_8. string "\n"
+	push_const str_8
 	write_string
 main_final:
 	push_reg fp

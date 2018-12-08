@@ -15,19 +15,21 @@ int main(){
 		x = 2;
 	}
 	
-	write_int(x);
+	write_int(x);	/* 1 */
 	write_string("\n");
-	write_int(x+1);
+	write_int(x+1); /* 2 */
 	write_string("\n");
-	write_int(x++);
+	write_int(x++); /* 1 */
 	write_string("\n");
-	write_int(x+1);
+	write_int(x--); /* 2 */
 	write_string("\n");
-	write_int(x);
+	write_int(x); /* 1 */
 	write_string("\n");
-	write_char(c++);
+	write_char(c++); /* a */
 	write_string("\n");
-	write_char(c);
+	write_char(c--); /* b */
+	write_string("\n");
+	write_char(c); /* a */
 	write_string("\n");
 	
 }

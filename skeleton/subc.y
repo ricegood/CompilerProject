@@ -774,6 +774,16 @@ unary
                 ERROR("not int or char type");
                 $$ = NULL;
             }
+
+            /* code generation */
+            CODE("fetch"); /* fetch! */
+            push_address($$);
+            push_address($$);
+            CODE("fetch");
+            CODE("push_const -1");
+            CODE("add");
+            CODE("assign");
+            no_fetch = 1; /* it has already fetched */
         }
         | INCOP unary
         {
@@ -875,7 +885,7 @@ unary
                 args pointer last pushed args.
                 args->elementvar field pointer first pushed args.
             */
-            
+
             if (check_is_proc($1)) {
                 if ($4)
                     $$ = check_function_call($1, $4->elementvar);
