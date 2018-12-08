@@ -23,6 +23,10 @@ int main(){
 	write_string("\n");
 	write_int(x--); /* 2 */
 	write_string("\n");
+	write_int(++x); /* 2 */
+	write_string("\n");
+	write_int(--x); /* 1 */
+	write_string("\n");
 	write_int(x); /* 1 */
 	write_string("\n");
 	write_char(c++); /* a */
@@ -31,5 +35,10 @@ int main(){
 	write_string("\n");
 	write_char(c); /* a */
 	write_string("\n");
-	
+	write_char(++c); /* b */
+	write_string("\n");
+	write_char(--c); /* a */
+	write_string("\n");
+	write_char(c); /* a */
+	write_string("\n");
 }

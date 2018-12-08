@@ -794,6 +794,14 @@ unary
                 ERROR("not int or char type");
                 $$ = NULL;
             }
+
+            /* code generation */
+            push_address($$);
+            push_address($$);
+            CODE("fetch");
+            CODE("push_const 1");
+            CODE("add");
+            CODE("assign");
         }
         | DECOP unary
         {
@@ -804,6 +812,14 @@ unary
                 ERROR("not int or char type");
                 $$ = NULL;
             }
+
+            /* code generation */
+            push_address($$);
+            push_address($$);
+            CODE("fetch");
+            CODE("push_const -1");
+            CODE("add");
+            CODE("assign");
         }
         | '&' unary %prec '!'
         {
