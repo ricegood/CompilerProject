@@ -929,6 +929,11 @@ unary
                 ERROR("not a pointer");
                 $$ = NULL;
             }
+
+            /* code generation */
+            // struct access
+            printf("\tpush_const %d\n", $$->offset);
+            CODE("add");
         }
         | unary '(' codegen args ')'
         {
