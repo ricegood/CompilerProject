@@ -44,7 +44,9 @@ int main(){
 	write_int(teststr[2]->strstr.z); /* 0 */
 	write_string("\n");
 	write_int(teststr[2]->strstr.w[0]); /* 0 */
+	write_string("\n");
 	write_int(teststr[2]->strstr.w[3]); /* 0 */
+	write_string("\n");
 
 	teststr[2] = teststr[7]; /* struct assignment */
 

@@ -1,0 +1,380 @@
+	shift_sp 1
+	push_const EXIT
+	push_reg fp
+	push_reg sp
+	pop_reg fp
+	jump main
+EXIT:
+	exit
+main:
+	shift_sp 30
+main_start:
+	push_reg fp
+	push_const 5
+	add
+	push_const 7
+	push_const 1
+	mul
+	add
+	push_reg sp
+	fetch
+	push_reg fp
+	push_const 15
+	add
+	assign
+	fetch
+	shift_sp -1
+	push_reg fp
+	push_const 5
+	add
+	push_const 2
+	push_const 1
+	mul
+	add
+	push_reg sp
+	fetch
+	push_reg fp
+	push_const 23
+	add
+	assign
+	fetch
+	shift_sp -1
+	push_reg fp
+	push_const 1
+	add
+	push_reg sp
+	fetch
+	push_const 7
+	assign
+	fetch
+	shift_sp -1
+	push_reg fp
+	push_const 5
+	add
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 1
+	add
+	push_reg sp
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 10
+	sub
+	assign
+	fetch
+	shift_sp -1
+	push_reg fp
+	push_const 5
+	add
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 0
+	add
+	push_reg sp
+	fetch
+	push_const 2
+	assign
+	fetch
+	shift_sp -1
+	push_reg fp
+	push_const 5
+	add
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 2
+	add
+	push_const 0
+	add
+	push_reg sp
+	fetch
+	push_const 5
+	assign
+	fetch
+	shift_sp -1
+	push_reg fp
+	push_const 5
+	add
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 2
+	add
+	push_const 1
+	add
+	push_const 3
+	push_const 1
+	mul
+	add
+	push_reg sp
+	fetch
+	push_const 7
+	assign
+	fetch
+	shift_sp -1
+	push_reg fp
+	push_const 2
+	add
+	push_reg sp
+	fetch
+	push_reg fp
+	push_const 5
+	add
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 1
+	add
+	fetch
+	assign
+	fetch
+	shift_sp -1
+	push_reg fp
+	push_const 2
+	add
+	fetch
+	write_int
+str_1. string "\n"
+	push_const str_1
+	write_string
+str_2. string "=========================\n"
+	push_const str_2
+	write_string
+	push_reg fp
+	push_const 5
+	add
+	push_const 2
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 1
+	add
+	fetch
+	write_int
+str_3. string "\n"
+	push_const str_3
+	write_string
+	push_reg fp
+	push_const 5
+	add
+	push_const 2
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 0
+	add
+	fetch
+	write_int
+str_4. string "\n"
+	push_const str_4
+	write_string
+	push_reg fp
+	push_const 5
+	add
+	push_const 2
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 2
+	add
+	push_const 0
+	add
+	fetch
+	write_int
+str_5. string "\n"
+	push_const str_5
+	write_string
+	push_reg fp
+	push_const 5
+	add
+	push_const 2
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 2
+	add
+	push_const 1
+	add
+	push_const 0
+	push_const 1
+	mul
+	add
+	fetch
+	write_int
+str_6. string "\n"
+	push_const str_6
+	write_string
+	push_reg fp
+	push_const 5
+	add
+	push_const 2
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 2
+	add
+	push_const 1
+	add
+	push_const 3
+	push_const 1
+	mul
+	add
+	fetch
+	write_int
+str_7. string "\n"
+	push_const str_7
+	write_string
+	push_reg fp
+	push_const 5
+	add
+	push_const 2
+	push_const 1
+	mul
+	add
+	push_reg sp
+	fetch
+	push_reg fp
+	push_const 5
+	add
+	push_const 7
+	push_const 1
+	mul
+	add
+	fetch
+	assign
+	fetch
+	shift_sp -1
+str_8. string "=========================\n"
+	push_const str_8
+	write_string
+	push_reg fp
+	push_const 5
+	add
+	push_const 2
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 1
+	add
+	fetch
+	write_int
+str_9. string "\n"
+	push_const str_9
+	write_string
+	push_reg fp
+	push_const 5
+	add
+	push_const 2
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 0
+	add
+	fetch
+	write_int
+str_10. string "\n"
+	push_const str_10
+	write_string
+	push_reg fp
+	push_const 5
+	add
+	push_const 2
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 2
+	add
+	push_const 0
+	add
+	fetch
+	write_int
+str_11. string "\n"
+	push_const str_11
+	write_string
+	push_reg fp
+	push_const 5
+	add
+	push_const 2
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 2
+	add
+	push_const 1
+	add
+	push_const 0
+	push_const 1
+	mul
+	add
+	fetch
+	write_int
+str_12. string "\n"
+	push_const str_12
+	write_string
+	push_reg fp
+	push_const 5
+	add
+	push_const 2
+	push_const 1
+	mul
+	add
+	fetch
+	push_const 2
+	add
+	push_const 1
+	add
+	push_const 3
+	push_const 1
+	mul
+	add
+	fetch
+	write_int
+str_13. string "\n"
+	push_const str_13
+	write_string
+main_final:
+	push_reg fp
+	pop_reg sp
+	pop_reg fp
+	pop_reg pc
+main_end:
+	Lglob. data 10

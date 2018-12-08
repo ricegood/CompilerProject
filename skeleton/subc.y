@@ -440,7 +440,50 @@ stmt
             }
 
             /* code generation */
-            CODE("assign"); // assign return value (fp-2)
+            
+            // assign return value (fp-2)
+            //CODE("assign"); 
+
+            int var_offset = 0;
+
+            // fill the value
+            while (++var_offset < findcurrentdecl(returnid)->size) {
+                // for not singleton variable (struct) *array assignment is semantic error*
+                /*
+                CODE("push_reg fp");
+                CODE("push_const -1");
+                CODE("add"); // fp-1 (return address)
+                printf("\tpush_const %d\n", -findcurrentdecl(returnid)->size+var_offset);
+                CODE("add"); // return value : fp-2 => (struct : fp-1-size)
+                */
+                push_address(parsing_binary_decl, var_offset);
+                CODE("fetch");
+                //CODE("assign");
+            }
+            
+            // assign
+            while (--var_offset > 0) {
+                // push address
+                CODE("push_reg fp");
+                CODE("push_const -1");
+                CODE("add"); // fp-1 (return address)
+                printf("\tpush_const %d\n", -findcurrentdecl(returnid)->size + var_offset);
+                CODE("add"); // return value : fp-2 => (struct : fp-1-size)
+
+                // push value
+                CODE("push_reg sp");
+                CODE("push_const -1");
+                CODE("add");
+                CODE("fetch");
+
+                // assign
+                CODE("assign");
+
+                // shift sp
+                CODE("shift_sp -1");
+            }
+
+            CODE("assign");
             printf("\tjump %s_final\n", labelname);
         }
         | ';'
@@ -466,9 +509,9 @@ return_code_gen : /* empty */
             /* code generation */
             CODE("push_reg fp");
             CODE("push_const -1");
-            CODE("add"); // return address : fp-1
-            CODE("push_const -1");
-            CODE("add"); // return value : fp-2
+            CODE("add"); // fp-1 (return address)
+            printf("\tpush_const %d\n", -findcurrentdecl(returnid)->size);
+            CODE("add"); // return value : fp-2 => (struct : fp-1-size)
         }
 
 if_code_gen : /* empty */
@@ -525,17 +568,43 @@ expr
 
 
             /* code generation */
-            CODE("assign");
+            //CODE("assign");
 
             int var_offset = 0;
+/*
+            // fill the value
             while (++var_offset < $1->size) {
                 // for not singleton variable (struct) *array assignment is semantic error*
-                push_address($1, var_offset);
                 push_address(parsing_binary_decl, var_offset);
                 CODE("fetch");
+            }
+        */
+
+            var_offset = $1->size;
+            // assign
+            while (var_offset > 1) {
+                // push address
+                CODE("push_reg sp");
+                printf("\tpush_const %d\n", -var_offset);
+                CODE("add");
+                CODE("fetch");
+                printf("\tpush_const %d\n", --var_offset);
+                CODE("add");
+
+                // push value
+                CODE("push_reg sp");
+                CODE("push_const -1");
+                CODE("add");
+                CODE("fetch");
+
+                // assign
                 CODE("assign");
+
+                // shift sp
+                CODE("shift_sp -1");
             }
             
+            CODE("assign");
             CODE("fetch");
             CODE("shift_sp -1");
         }
@@ -1009,7 +1078,7 @@ codegen : /* empty */
             /* code generation */
             // caller convention
             if($<declptr>-1 != write_int && $<declptr>-1 != write_string && $<declptr>-1 != write_char) {
-                CODE("shift_sp 1"); // push a hole for return value
+                printf("\tshift_sp %d\n", $<declptr>-1->returntype->size); // push a hole for return value
                 printf("\tpush_const label_%d\n", new_label()); // push the return address
                 CODE("push_reg fp"); // push the old FP
             }
