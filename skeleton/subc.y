@@ -760,7 +760,7 @@ unary
             push_address($$);
             push_address($$);
             CODE("fetch");
-            CODE("push_const 1");
+            printf("\tpush_const %d\n", $1->size);
             CODE("add");
             CODE("assign");
             no_fetch = 1; /* it has already fetched */
@@ -780,7 +780,7 @@ unary
             push_address($$);
             push_address($$);
             CODE("fetch");
-            CODE("push_const -1");
+            printf("\tpush_const -%d\n", $1->size);
             CODE("add");
             CODE("assign");
             no_fetch = 1; /* it has already fetched */
@@ -799,7 +799,7 @@ unary
             push_address($$);
             push_address($$);
             CODE("fetch");
-            CODE("push_const 1");
+            printf("\tpush_const %d\n", $2->size);
             CODE("add");
             CODE("assign");
         }
@@ -817,7 +817,7 @@ unary
             push_address($$);
             push_address($$);
             CODE("fetch");
-            CODE("push_const -1");
+            printf("\tpush_const -%d\n", $2->size);
             CODE("add");
             CODE("assign");
         }

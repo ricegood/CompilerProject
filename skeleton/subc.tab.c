@@ -2216,7 +2216,7 @@ yyreduce:
             push_address((yyval.declptr));
             push_address((yyval.declptr));
             CODE("fetch");
-            CODE("push_const 1");
+            printf("\tpush_const %d\n", (yyvsp[-1].declptr)->size);
             CODE("add");
             CODE("assign");
             no_fetch = 1; /* it has already fetched */
@@ -2240,7 +2240,7 @@ yyreduce:
             push_address((yyval.declptr));
             push_address((yyval.declptr));
             CODE("fetch");
-            CODE("push_const -1");
+            printf("\tpush_const -%d\n", (yyvsp[-1].declptr)->size);
             CODE("add");
             CODE("assign");
             no_fetch = 1; /* it has already fetched */
@@ -2263,7 +2263,7 @@ yyreduce:
             push_address((yyval.declptr));
             push_address((yyval.declptr));
             CODE("fetch");
-            CODE("push_const 1");
+            printf("\tpush_const %d\n", (yyvsp[0].declptr)->size);
             CODE("add");
             CODE("assign");
         }
@@ -2285,7 +2285,7 @@ yyreduce:
             push_address((yyval.declptr));
             push_address((yyval.declptr));
             CODE("fetch");
-            CODE("push_const -1");
+            printf("\tpush_const -%d\n", (yyvsp[0].declptr)->size);
             CODE("add");
             CODE("assign");
         }
