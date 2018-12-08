@@ -20,6 +20,7 @@ int start_param_parsing = 1; /* for prevent from conflicts. */
 int is_array_decl = 0; /* for prevent from printing 'push_const int' */
 int is_if_stmt = 0; /* for printing label in if-else statement */
 int no_fetch = 0; /* no fetch flag for INCOP, DECOP in unary->ID production */
+struct decl* parsing_binary_decl = NULL; /* to save the decl upper binary */
 %}
 
 /* yylval types */
@@ -525,6 +526,16 @@ expr
 
             /* code generation */
             CODE("assign");
+
+            int var_offset = 0;
+            while (++var_offset < $1->size) {
+                // for not singleton variable (struct) *array assignment is semantic error*
+                push_address($1, var_offset);
+                push_address(parsing_binary_decl, var_offset);
+                CODE("fetch");
+                CODE("assign");
+            }
+            
             CODE("fetch");
             CODE("shift_sp -1");
         }
@@ -658,6 +669,8 @@ binary
         }
         | unary %prec '='
         {
+            parsing_binary_decl = $1;
+
             if ($1 && $1->type) {
                 $$ = $1->type;
             }
@@ -717,7 +730,7 @@ unary
                 ERROR("not declared");
 
             /* code generation */
-            push_address($$);
+            push_address($$, 0);
         }
         | '-' unary %prec '!'
         {   
@@ -757,8 +770,8 @@ unary
 
             /* code generation */
             CODE("fetch"); /* fetch! */
-            push_address($$);
-            push_address($$);
+            push_address($$, 0);
+            push_address($$, 0);
             CODE("fetch");
             if (check_is_pointer_type($1->type)){
                 // pointer (++ptrto size)
@@ -784,8 +797,8 @@ unary
 
             /* code generation */
             CODE("fetch"); /* fetch! */
-            push_address($$);
-            push_address($$);
+            push_address($$, 0);
+            push_address($$, 0);
             CODE("fetch");
             if (check_is_pointer_type($1->type)){
                 // pointer (++ptrto size)
@@ -810,8 +823,8 @@ unary
             }
 
             /* code generation */
-            push_address($$);
-            push_address($$);
+            push_address($$, 0);
+            push_address($$, 0);
             CODE("fetch");
             if (check_is_pointer_type($2->type)){
                 // pointer (++ptrto size)
@@ -835,8 +848,8 @@ unary
             }
 
             /* code generation */
-            push_address($$);
-            push_address($$);
+            push_address($$, 0);
+            push_address($$, 0);
             CODE("fetch");
             if (check_is_pointer_type($2->type)){
                 // pointer (++ptrto size)
@@ -932,6 +945,7 @@ unary
 
             /* code generation */
             // struct access
+            CODE("fetch");
             printf("\tpush_const %d\n", $$->offset);
             CODE("add");
         }
@@ -1034,24 +1048,24 @@ int yyerror (char* s) {
     fprintf (stderr, "%s\n", s);
 }
 
-void push_address(struct decl* decl_ptr) {
+void push_address(struct decl* decl_ptr, int offset) {
     if (check_is_var(decl_ptr) || check_is_array(decl_ptr->type)) {
         switch (check_variable_scope(decl_ptr)) {
             case GLOBAL:
                 CODE("push_const Lglob");
-                printf("\tpush_const %d\n", decl_ptr->offset);
+                printf("\tpush_const %d\n", decl_ptr->offset + offset);
                 CODE("add");
                 break;
 
             case PARAM:
                 CODE("push_reg fp");
-                printf("\tpush_const %d\n", 1 + decl_ptr->offset);
+                printf("\tpush_const %d\n", 1 + decl_ptr->offset + offset);
                 CODE("add");
                 break;
 
             case LOCAL:
                 CODE("push_reg fp");
-                printf("\tpush_const %d\n", 1 + decl_ptr->scope->sumofparams + decl_ptr->offset);
+                printf("\tpush_const %d\n", 1 + decl_ptr->scope->sumofparams + decl_ptr->offset + offset);
                 CODE("add");
                 break;
 
