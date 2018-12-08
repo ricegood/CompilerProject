@@ -51,8 +51,8 @@ int no_fetch = 0; /* no fetch flag for INCOP, DECOP in unary->ID production */
 %token        LOGICAL_OR LOGICAL_AND INCOP DECOP STRUCTOP
 
 /* string, int, id */
-%token<stringVal>   CHAR_CONST STRING EQUOP RELOP
-%token<intVal>      INTEGER_CONST
+%token<stringVal>   STRING EQUOP RELOP
+%token<intVal>      CHAR_CONST INTEGER_CONST
 %token<idptr>       ID
 %token<declptr>     TYPE VOID NULL_TOKEN
 
@@ -697,7 +697,10 @@ unary
         }
         | CHAR_CONST
         {   
-            $$ = makeconstdecl(chartype);
+            $$ = makeintconstdecl(chartype, $1);
+
+            /* code generation */
+            printf("\tpush_const %d\n", $$->value);
         }
         | STRING
         {
@@ -872,7 +875,7 @@ unary
                 args pointer last pushed args.
                 args->elementvar field pointer first pushed args.
             */
-
+            
             if (check_is_proc($1)) {
                 if ($4)
                     $$ = check_function_call($1, $4->elementvar);
@@ -886,6 +889,9 @@ unary
             }
             else if ($1 == write_string) {
                 CODE("write_string");
+            }
+            else if ($1 == write_char) {
+                CODE("write_char");
             }
             else {
                 // push the actual parameters on the stack in 'args' reducing procedure
@@ -921,7 +927,7 @@ codegen : /* empty */
         {
             /* code generation */
             // caller convention
-            if($<declptr>-1 != write_int && $<declptr>-1 != write_string) {
+            if($<declptr>-1 != write_int && $<declptr>-1 != write_string && $<declptr>-1 != write_char) {
                 CODE("shift_sp 1"); // push a hole for return value
                 printf("\tpush_const label_%d\n", new_label()); // push the return address
                 CODE("push_reg fp"); // push the old FP

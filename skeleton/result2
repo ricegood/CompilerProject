@@ -7,7 +7,7 @@
 EXIT:
 	exit
 main:
-	shift_sp 3
+	shift_sp 4
 main_start:
 	push_reg fp
 	push_const 1
@@ -28,6 +28,15 @@ main_start:
 	assign
 	fetch
 	shift_sp -1
+	push_reg fp
+	push_const 3
+	add
+	push_reg sp
+	fetch
+	push_const 97
+	assign
+	fetch
+	shift_sp -1
 label_1:
 	push_reg fp
 	push_const 1
@@ -40,7 +49,7 @@ label_1:
 	greater
 	branch_false label_2
 	push_reg fp
-	push_const 3
+	push_const 4
 	add
 	push_reg sp
 	fetch
@@ -51,7 +60,7 @@ label_1:
 	jump label_3
 label_2:
 	push_reg fp
-	push_const 3
+	push_const 4
 	add
 	push_reg sp
 	fetch
@@ -61,7 +70,7 @@ label_2:
 	shift_sp -1
 label_3:
 	push_reg fp
-	push_const 3
+	push_const 4
 	add
 	fetch
 	write_int
@@ -69,7 +78,7 @@ str_1. string "\n"
 	push_const str_1
 	write_string
 	push_reg fp
-	push_const 3
+	push_const 4
 	add
 	fetch
 	push_const 1
@@ -79,14 +88,14 @@ str_2. string "\n"
 	push_const str_2
 	write_string
 	push_reg fp
-	push_const 3
+	push_const 4
 	add
 	fetch
 	push_reg fp
-	push_const 3
+	push_const 4
 	add
 	push_reg fp
-	push_const 3
+	push_const 4
 	add
 	fetch
 	push_const 1
@@ -97,7 +106,7 @@ str_3. string "\n"
 	push_const str_3
 	write_string
 	push_reg fp
-	push_const 3
+	push_const 4
 	add
 	fetch
 	push_const 1
@@ -107,12 +116,38 @@ str_4. string "\n"
 	push_const str_4
 	write_string
 	push_reg fp
-	push_const 3
+	push_const 4
 	add
 	fetch
 	write_int
 str_5. string "\n"
 	push_const str_5
+	write_string
+	push_reg fp
+	push_const 3
+	add
+	fetch
+	push_reg fp
+	push_const 3
+	add
+	push_reg fp
+	push_const 3
+	add
+	fetch
+	push_const 1
+	add
+	assign
+	write_char
+str_6. string "\n"
+	push_const str_6
+	write_string
+	push_reg fp
+	push_const 3
+	add
+	fetch
+	write_char
+str_7. string "\n"
+	push_const str_7
 	write_string
 main_final:
 	push_reg fp

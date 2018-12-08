@@ -462,6 +462,7 @@ void init_type()
 	nulltype = maketypedecl(POINTER_);
 	write_int = makeprocdecl();
 	write_string = makeprocdecl();
+	write_char = makeprocdecl();
 
 	bottom = pushscope();
 
@@ -472,6 +473,7 @@ void init_type()
 	insert(enter(KEYWORD, "string", 6), stringtype);
 	insert(enter(KEYWORD, "write_int", 9), write_int);
 	insert(enter(KEYWORD, "write_string", 12), write_string);
+	insert(enter(KEYWORD, "write_char", 10), write_char);
 
 	// set write_int function
 	write_int->returntype = voidtype;
@@ -484,6 +486,12 @@ void init_type()
 	pushscope();
 	declare(enter(KEYWORD, "write_string", 12), makevardecl(stringtype));
 	write_string->formals = popscope();
+
+	// set write_char function
+	write_char->returntype = voidtype;
+	pushscope();
+	declare(enter(KEYWORD, "write_char", 10), makevardecl(chartype));
+	write_char->formals = popscope();
 
 	// set returnid
 	returnid = enter(KEYWORD, "*return", 7);

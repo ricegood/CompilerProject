@@ -67,6 +67,7 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 "->"		{ return STRUCTOP; }
 "write_int"	{ yylval.idptr = enter(KEYWORD, "write_int", 9); return ID; }
 "write_string" { yylval.idptr = enter(KEYWORD, "write_string", 12); return ID; }
+"write_char" { yylval.idptr = enter(KEYWORD, "write_char", 10); return ID; }
 
 
 {integer-const}	{
@@ -100,7 +101,7 @@ operator		("("|")"|"["|"]"|"{"|"}"|"->"|"."|","|".."|"!"|"~"|"++"|"--"|"*"|"/"|"
 								}
 '({special-char}|[^\\'\n])'		{
 									/* Character Variable */
-									yylval.stringVal = yytext;
+									yylval.intVal = yytext[1] - '0' + 48;
 									return CHAR_CONST;
 								}
 <*>\n		   					{ ++lineno; }

@@ -42,6 +42,7 @@ struct decl *stringtype;
 struct decl *nulltype;
 struct decl *write_int;
 struct decl *write_string;
+struct decl *write_char;
 struct id *returnid;
 
 struct ste *inttype_ste; // fixed ste pointer
