@@ -868,6 +868,10 @@ unary
             }
             else
                 $$ = NULL;
+
+            /* code generation */
+            // no need to generate code!
+            // Naturally no fetch step, just add address. (no unary->binary)
             
         }
         | '*' unary %prec '!'
@@ -883,6 +887,10 @@ unary
             }
             else
                 $$ = NULL;
+
+            /* code generation */
+            // one more fetch to read address
+            CODE("fetch");
         }
         | unary '[' expr ']'
         {
