@@ -49,6 +49,60 @@ str_2. string "\n"
 	write_string
 	jump label_1
 label_2:
+str_3. string "====================\n"
+	push_const str_3
+	write_string
+	push_reg fp
+	push_const 1
+	add
+	push_reg sp
+	fetch
+	push_const 0
+	assign
+	fetch
+	shift_sp -1
+label_3:
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 10
+	less
+	push_reg sp
+	fetch
+	branch_true label_4
+	branch_false label_5
+label_6:
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 1
+	add
+	assign
+	jump label_3
+label_4:
+	shift_sp -1
+str_4. string "a : "
+	push_const str_4
+	write_string
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	write_int
+str_5. string "\n"
+	push_const str_5
+	write_string
+	jump label_6
+label_5:
 main_final:
 	push_reg fp
 	pop_reg sp

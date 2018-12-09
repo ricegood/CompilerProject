@@ -509,7 +509,47 @@ stmt
             printf("\tjump label_%d\n", $<intVal>2);
             printf("label_%d:\n", $<intVal>6);
         }
-        | FOR '(' expr_e ';' expr_e ';' expr_e ')' stmt
+        | FOR '(' expr_e ';'
+        {
+            /* $<intVal>5 */
+            /* code generation */
+            $<intVal>$ = new_label();
+            printf("label_%d:\n", $<intVal>$);
+        }
+        expr_e
+        {
+            /* $<intVal>7 */
+            /* code generation */
+            $<intVal>$ = new_label();
+            CODE("push_reg sp");
+            CODE("fetch"); // to compare false condition
+            printf("\tbranch_true label_%d\n", $<intVal>$);
+            printf("\tbranch_false label_%d\n", new_label()); // $<intVal>7+1
+        }
+        ';'
+        {
+            /* $<intVal>9 */
+            /* code generation */
+            $<intVal>$ = new_label();
+            printf("label_%d:\n", $<intVal>$);
+        }
+        expr_e
+        {
+            /* code generation */
+            printf("\tjump label_%d\n", $<intVal>5);
+        }
+        ')'
+        {
+           /* code generation */
+            printf("label_%d:\n", $<intVal>7); // branch true
+            CODE("shift_sp -1"); // pop the top one which pushed to compare the false label
+        }
+        stmt
+        {
+            /* code generation */
+            printf("\tjump label_%d\n", $<intVal>9);
+            printf("label_%d:\n", $<intVal>7 + 1); // branch false
+        }
         | BREAK ';'
         | CONTINUE ';'
 
