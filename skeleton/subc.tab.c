@@ -2626,7 +2626,7 @@ yyreduce:
                 (yyval.declptr) = NULL;
 
             /* code generation */
-            sumofargs += (yyvsp[-2].declptr)->size; // set global variable for caller convention
+            sumofargs += (yyvsp[0].declptr)->size; // set global variable for caller convention
         }
 #line 2632 "subc.tab.c" /* yacc.c:1646  */
     break;

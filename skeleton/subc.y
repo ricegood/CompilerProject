@@ -1117,7 +1117,7 @@ args    /* actual parameters(function arguments) transferred to function */
                 $$ = NULL;
 
             /* code generation */
-            sumofargs += $1->size; // set global variable for caller convention
+            sumofargs += $3->size; // set global variable for caller convention
         }
 
 %%
