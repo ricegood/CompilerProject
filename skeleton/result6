@@ -111,13 +111,33 @@ str_2. string "\n"
 str_3. string "\n"
 	push_const str_3
 	write_string
+	push_reg fp
+	push_const 2
+	add
+	fetch
+	fetch
+	push_const 5
+	add
+	write_int
+str_4. string "\n"
+	push_const str_4
+	write_string
+	push_reg fp
+	push_const 2
+	add
+	fetch
+	fetch
+	write_int
+str_5. string "\n"
+	push_const str_5
+	write_string
 	push_const Lglob
 	push_const 0
 	add
 	fetch
 	write_int
-str_4. string "\n"
-	push_const str_4
+str_6. string "\n"
+	push_const str_6
 	write_string
 main_final:
 	push_reg fp

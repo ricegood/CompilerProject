@@ -34,16 +34,25 @@ void main() {
 	write_string("\n");
 	write_int(s2->z); /* 3 */
 	write_string("\n=====================\n");
-/*
-	write_int(*(foo2(5)).x); /* 18 */
+
+	write_int(foo2(5)->x); /* 18 */
 	write_string("\n");
-	write_int(*(foo2(5)).y[0]); /* 7 */
+	write_int(foo2(5)->y[0]); /* 7 */
 	write_string("\n");
-	write_int(*(foo2(5)).y[1]); /* 5 */
+	write_int(foo2(5)->y[1]); /* 5 */
 	write_string("\n");
-	write_int(*(foo2(5)).z); /* 3 */
+	write_int(foo2(5)->z); /* 3 */
 	write_string("\n=====================\n");
-*/
+
+	write_int((*foo2(5)).x); /* 18 */
+	write_string("\n");
+	write_int((*foo2(5)).y[0]); /* 7 */
+	write_string("\n");
+	write_int((*foo2(5)).y[1]); /* 5 */
+	write_string("\n");
+	write_int((*foo2(5)).z); /* 3 */
+	write_string("\n=====================\n");
+
 	write_int(s0.x); /* 18 */
 	write_string("\n");
 	write_int(s0.y[0]); /* 7 */
