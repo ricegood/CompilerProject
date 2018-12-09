@@ -1,11 +1,11 @@
 /* func struct return , parameter test */
 struct _str1{
 	int x;
-	int y;
 	struct _st2{
 		int z;
 		int w[5];
 	} strstr;
+	int y;
 } sample_str;
 
 struct _str1 test(int a, int b, int c, int d){
@@ -14,8 +14,8 @@ struct _str1 test(int a, int b, int c, int d){
 	s.x = a;
 	s.y = b;
 	s.strstr.z = c;
-	s.strstr.w[1] = 4;
-	s.strstr.w[3] = -d;
+	s.strstr.w[1] = 1313113;
+	s.strstr.w[3] = -d + 100013;
 
 	return s;
 }

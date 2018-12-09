@@ -26,7 +26,7 @@ test_start:
 	push_reg fp
 	push_const 5
 	add
-	push_const 1
+	push_const 7
 	add
 	push_reg sp
 	fetch
@@ -40,7 +40,7 @@ test_start:
 	push_reg fp
 	push_const 5
 	add
-	push_const 2
+	push_const 1
 	add
 	push_const 0
 	add
@@ -56,7 +56,7 @@ test_start:
 	push_reg fp
 	push_const 5
 	add
-	push_const 2
+	push_const 1
 	add
 	push_const 1
 	add
@@ -66,14 +66,14 @@ test_start:
 	add
 	push_reg sp
 	fetch
-	push_const 4
+	push_const 1313113
 	assign
 	fetch
 	shift_sp -1
 	push_reg fp
 	push_const 5
 	add
-	push_const 2
+	push_const 1
 	add
 	push_const 1
 	add
@@ -87,11 +87,12 @@ test_start:
 	push_const 4
 	add
 	fetch
+	negate
+	push_const 100013
+	add
 	assign
 	fetch
 	shift_sp -1
-
-	// return
 	push_reg fp
 	push_const -1
 	add
@@ -230,7 +231,7 @@ str_1. string "\n"
 	push_reg fp
 	push_const 5
 	add
-	push_const 1
+	push_const 7
 	add
 	fetch
 	write_int
@@ -240,7 +241,7 @@ str_2. string "\n"
 	push_reg fp
 	push_const 5
 	add
-	push_const 2
+	push_const 1
 	add
 	push_const 0
 	add
@@ -252,7 +253,7 @@ str_3. string "\n"
 	push_reg fp
 	push_const 5
 	add
-	push_const 2
+	push_const 1
 	add
 	push_const 1
 	add
@@ -268,7 +269,7 @@ str_4. string "\n"
 	push_reg fp
 	push_const 5
 	add
-	push_const 2
+	push_const 1
 	add
 	push_const 1
 	add
@@ -479,7 +480,7 @@ label_3:
 	push_reg sp
 	push_const -7
 	add
-	push_const 1
+	push_const 7
 	add
 	fetch
 	write_int
@@ -511,7 +512,7 @@ label_4:
 	push_reg sp
 	push_const -7
 	add
-	push_const 2
+	push_const 1
 	add
 	push_const 0
 	add
@@ -545,7 +546,7 @@ label_5:
 	push_reg sp
 	push_const -7
 	add
-	push_const 2
+	push_const 1
 	add
 	push_const 1
 	add
@@ -583,7 +584,7 @@ label_6:
 	push_reg sp
 	push_const -7
 	add
-	push_const 2
+	push_const 1
 	add
 	push_const 1
 	add
@@ -609,7 +610,7 @@ str_11. string "\n"
 	push_reg fp
 	push_const 5
 	add
-	push_const 1
+	push_const 7
 	add
 	fetch
 	write_int
@@ -619,7 +620,7 @@ str_12. string "\n"
 	push_reg fp
 	push_const 5
 	add
-	push_const 2
+	push_const 1
 	add
 	push_const 0
 	add
@@ -631,7 +632,7 @@ str_13. string "\n"
 	push_reg fp
 	push_const 5
 	add
-	push_const 2
+	push_const 1
 	add
 	push_const 1
 	add
@@ -647,7 +648,7 @@ str_14. string "\n"
 	push_reg fp
 	push_const 5
 	add
-	push_const 2
+	push_const 1
 	add
 	push_const 1
 	add
