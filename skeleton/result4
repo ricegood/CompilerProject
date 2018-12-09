@@ -235,7 +235,7 @@ str_5. string "\n"
 	add
 	fetch
 	write_int
-str_6. string "\n====\n"
+str_6. string "\n"
 	push_const str_6
 	write_string
 	push_reg fp
@@ -256,7 +256,7 @@ str_6. string "\n====\n"
 	add
 	fetch
 	write_int
-str_7. string "\n====\n"
+str_7. string "\n"
 	push_const str_7
 	write_string
 	push_reg fp

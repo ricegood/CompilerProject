@@ -223,6 +223,13 @@ int check_is_proc(decl* decl_ptr) {
 	else return 0;
 }
 
+int check_is_struct_from_return(struct decl* decl_ptr) {
+	// return 0 or 1. (true or false)
+	if (decl_ptr != NULL && decl_ptr->declclass == CONST_ && check_is_struct_type(decl_ptr->type))
+		return 1;
+	else return 0;
+}
+
 struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 	struct ste *formals = proc_ptr->formals;
 

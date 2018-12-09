@@ -449,16 +449,8 @@ stmt
             // fill the value
             while (++var_offset < findcurrentdecl(returnid)->size) {
                 // for not singleton variable (struct) *array assignment is semantic error*
-                /*
-                CODE("push_reg fp");
-                CODE("push_const -1");
-                CODE("add"); // fp-1 (return address)
-                printf("\tpush_const %d\n", -findcurrentdecl(returnid)->size+var_offset);
-                CODE("add"); // return value : fp-2 => (struct : fp-1-size)
-                */
                 push_address(parsing_binary_decl, var_offset);
                 CODE("fetch");
-                //CODE("assign");
             }
             
             // assign
@@ -568,19 +560,20 @@ expr
 
 
             /* code generation */
-            //CODE("assign");
 
             int var_offset = 0;
-/*
-            // fill the value
-            while (++var_offset < $1->size) {
-                // for not singleton variable (struct) *array assignment is semantic error*
-                push_address(parsing_binary_decl, var_offset);
-                CODE("fetch");
+
+            if(!check_is_struct_from_return(parsing_binary_decl)) {
+                // fill the value
+                while (++var_offset < $1->size) {
+                    // for not singleton variable (struct) *array assignment is semantic error*
+                    push_address(parsing_binary_decl, var_offset);
+                    CODE("fetch");
+                }
             }
-        */
 
             var_offset = $1->size;
+            
             // assign
             while (var_offset > 1) {
                 // push address

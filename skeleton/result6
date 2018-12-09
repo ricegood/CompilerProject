@@ -29,7 +29,7 @@ foo_final:
 	pop_reg pc
 foo_end:
 foo2:
-	shift_sp 2
+	shift_sp 4
 foo2_start:
 	push_reg fp
 	push_const 2
@@ -52,6 +52,10 @@ foo2_start:
 	add
 	push_const 1
 	add
+	push_const 0
+	push_const 1
+	mul
+	add
 	push_reg sp
 	fetch
 	push_const 7
@@ -59,9 +63,43 @@ foo2_start:
 	fetch
 	shift_sp -1
 	push_reg fp
+	push_const 2
+	add
+	push_const 1
+	add
+	push_const 1
+	push_const 1
+	mul
+	add
+	push_reg sp
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	assign
+	fetch
+	shift_sp -1
+	push_reg fp
+	push_const 2
+	add
+	push_const 3
+	add
+	push_reg sp
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 2
+	sub
+	assign
+	fetch
+	shift_sp -1
+	push_reg fp
 	push_const -1
 	add
-	push_const -2
+	push_const -4
 	add
 	push_reg fp
 	push_const 2
@@ -72,9 +110,39 @@ foo2_start:
 	add
 	fetch
 	push_reg fp
+	push_const 4
+	add
+	fetch
+	push_reg fp
+	push_const 5
+	add
+	fetch
+	push_reg fp
 	push_const -1
 	add
 	push_const -1
+	add
+	push_reg sp
+	push_const -1
+	add
+	fetch
+	assign
+	shift_sp -1
+	push_reg fp
+	push_const -1
+	add
+	push_const -2
+	add
+	push_reg sp
+	push_const -1
+	add
+	fetch
+	assign
+	shift_sp -1
+	push_reg fp
+	push_const -1
+	add
+	push_const -3
 	add
 	push_reg sp
 	push_const -1
@@ -91,14 +159,73 @@ foo2_final:
 	pop_reg pc
 foo2_end:
 main:
-	shift_sp 2
+	shift_sp 4
 main_start:
+	push_reg fp
+	push_const 1
+	add
+	push_const 0
+	add
+	push_reg sp
+	fetch
+	push_const 0
+	assign
+	fetch
+	shift_sp -1
+	push_reg fp
+	push_const 1
+	add
+	push_const 0
+	add
+	fetch
+	write_int
+str_1. string "\n"
+	push_const str_1
+	write_string
+	push_reg fp
+	push_const 1
+	add
+	push_const 1
+	add
+	push_const 0
+	push_const 1
+	mul
+	add
+	fetch
+	write_int
+str_2. string "\n"
+	push_const str_2
+	write_string
+	push_reg fp
+	push_const 1
+	add
+	push_const 1
+	add
+	push_const 1
+	push_const 1
+	mul
+	add
+	fetch
+	write_int
+str_3. string "\n"
+	push_const str_3
+	write_string
+	push_reg fp
+	push_const 1
+	add
+	push_const 3
+	add
+	fetch
+	write_int
+str_4. string "\n=====================\n"
+	push_const str_4
+	write_string
 	push_reg fp
 	push_const 1
 	add
 	push_reg sp
 	fetch
-	shift_sp 2
+	shift_sp 4
 	push_const label_1
 	push_reg fp
 	push_const 5
@@ -108,6 +235,30 @@ main_start:
 	pop_reg fp
 	jump foo2
 label_1:
+	push_reg sp
+	push_const -4
+	add
+	fetch
+	push_const 3
+	add
+	push_reg sp
+	push_const -1
+	add
+	fetch
+	assign
+	shift_sp -1
+	push_reg sp
+	push_const -3
+	add
+	fetch
+	push_const 2
+	add
+	push_reg sp
+	push_const -1
+	add
+	fetch
+	assign
+	shift_sp -1
 	push_reg sp
 	push_const -2
 	add
@@ -130,8 +281,46 @@ label_1:
 	add
 	fetch
 	write_int
-str_1. string "\n"
-	push_const str_1
+str_5. string "\n"
+	push_const str_5
+	write_string
+	push_reg fp
+	push_const 1
+	add
+	push_const 1
+	add
+	push_const 0
+	push_const 1
+	mul
+	add
+	fetch
+	write_int
+str_6. string "\n"
+	push_const str_6
+	write_string
+	push_reg fp
+	push_const 1
+	add
+	push_const 1
+	add
+	push_const 1
+	push_const 1
+	mul
+	add
+	fetch
+	write_int
+str_7. string "\n"
+	push_const str_7
+	write_string
+	push_reg fp
+	push_const 1
+	add
+	push_const 3
+	add
+	fetch
+	write_int
+str_8. string "\n=====================\n"
+	push_const str_8
 	write_string
 main_final:
 	push_reg fp
