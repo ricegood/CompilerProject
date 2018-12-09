@@ -39,6 +39,23 @@ foo_final:
 	pop_reg fp
 	pop_reg pc
 foo_end:
+foo2:
+	shift_sp 0
+foo2_start:
+	push_reg fp
+	push_const -1
+	add
+	push_const -1
+	add
+	push_const 1227
+	assign
+	jump foo2_final
+foo2_final:
+	push_reg fp
+	pop_reg sp
+	pop_reg fp
+	pop_reg pc
+foo2_end:
 main:
 	shift_sp 2
 main_start:
@@ -82,30 +99,32 @@ label_2:
 	shift_sp 1
 	push_const label_3
 	push_reg fp
+	push_reg sp
+	pop_reg fp
+	jump foo2
+label_3:
+	write_int
+str_1. string "\n"
+	push_const str_1
+	write_string
+	shift_sp 1
+	push_const label_4
+	push_reg fp
 	push_const 5
 	push_reg sp
 	push_const -1
 	add
 	pop_reg fp
 	jump foo
-label_3:
-	fetch
-	write_int
-str_1. string "\n"
-	push_const str_1
-	write_string
-	push_reg fp
-	push_const 1
-	add
+label_4:
 	fetch
 	write_int
 str_2. string "\n"
 	push_const str_2
 	write_string
 	push_reg fp
-	push_const 2
+	push_const 1
 	add
-	fetch
 	fetch
 	write_int
 str_3. string "\n"
@@ -116,8 +135,6 @@ str_3. string "\n"
 	add
 	fetch
 	fetch
-	push_const 5
-	add
 	write_int
 str_4. string "\n"
 	push_const str_4
@@ -127,17 +144,28 @@ str_4. string "\n"
 	add
 	fetch
 	fetch
+	push_const 5
+	add
 	write_int
 str_5. string "\n"
 	push_const str_5
+	write_string
+	push_reg fp
+	push_const 2
+	add
+	fetch
+	fetch
+	write_int
+str_6. string "\n"
+	push_const str_6
 	write_string
 	push_const Lglob
 	push_const 0
 	add
 	fetch
 	write_int
-str_6. string "\n"
-	push_const str_6
+str_7. string "\n"
+	push_const str_7
 	write_string
 main_final:
 	push_reg fp
