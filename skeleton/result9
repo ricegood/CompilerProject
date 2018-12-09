@@ -14,7 +14,7 @@ main_start:
 	add
 	push_reg sp
 	fetch
-	push_const 1
+	push_const 4
 	assign
 	fetch
 	shift_sp -1
@@ -23,7 +23,7 @@ main_start:
 	add
 	push_reg sp
 	fetch
-	push_const 10
+	push_const 5
 	assign
 	fetch
 	shift_sp -1
@@ -32,55 +32,12 @@ main_start:
 	add
 	push_reg sp
 	fetch
-	push_const 5
+	push_const 3
+	fetch
+	negate
 	assign
 	fetch
 	shift_sp -1
-label_1:
-	push_reg fp
-	push_const 1
-	add
-	fetch
-	push_reg fp
-	push_const 2
-	add
-	fetch
-	equal
-	push_reg fp
-	push_const 3
-	add
-	fetch
-	push_const 5
-	less
-	or
-	branch_false label_2
-str_1. string "or check\n"
-	push_const str_1
-	write_string
-label_2:
-label_3:
-	push_reg fp
-	push_const 1
-	add
-	fetch
-	push_reg fp
-	push_const 2
-	add
-	fetch
-	equal
-	push_reg fp
-	push_const 3
-	add
-	fetch
-	push_const 5
-	less
-	and
-	branch_false label_4
-str_2. string "and check\n"
-	push_const str_2
-	write_string
-label_4:
-label_5:
 	push_reg fp
 	push_const 1
 	add
@@ -90,77 +47,19 @@ label_5:
 	add
 	fetch
 	less
-	branch_false label_6
-str_3. string "a < b\n"
-	push_const str_3
-	write_string
-	jump label_7
-label_8:
-	push_reg fp
-	push_const 1
-	add
-	fetch
-	push_reg fp
-	push_const 2
-	add
-	fetch
-	greater
-	branch_false label_9
-bbbbbbbbbbbbbbbbb
-label_7:
-str_4. string "a > b\n"
-	push_const str_4
-	write_string
-	jump label_10
-bbbbbbbbbbbbbbbbb
-label_8:
-str_5. string "a == b\n"
-	push_const str_5
-	write_string
-label_9:
-label_10:
-label_11:
-	push_reg fp
-	push_const 1
-	add
-	fetch
-	push_reg fp
-	push_const 2
-	add
-	fetch
-	less
-	branch_false label_12
-str_6. string "a < b\n"
-	push_const str_6
-	write_string
-label_13:
+	branch_false label_1
 	push_reg fp
 	push_const 3
 	add
 	fetch
 	push_const 0
 	greater
-	branch_false label_14
-label_15:
-	push_reg fp
-	push_const 3
-	add
-	fetch
-	push_const 5
-	less
-	branch_false label_16
-str_7. string "0 < x < 5\n"
-	push_const str_7
+	branch_false label_2
+str_1. string "x > 0\n"
+	push_const str_1
 	write_string
-	jump label_17
-bbbbbbbbbbbbbbbbb
-label_14:
-str_8. string "x >= 5\n"
-	push_const str_8
-	write_string
-label_15:
-	jump label_18
-label_19:
+	jump label_3
+label_2:
 	push_reg fp
 	push_const 3
 	add
@@ -169,35 +68,18 @@ label_19:
 	fetch
 	negate
 	greater
-	branch_false label_20
-bbbbbbbbbbbbbbbbb
-label_17:
-str_9. string "-10 < x < 0\n"
-	push_const str_9
+	branch_false label_4
+str_2. string "x > -10\n"
+	push_const str_2
 	write_string
-label_21:
-	push_reg fp
-	push_const 3
-	add
-	fetch
-	push_const 5
-	fetch
-	negate
-	equal
-	branch_false label_22
-str_10. string "x == -5\n"
-	push_const str_10
+	jump label_5
+label_4:
+str_3. string "x <= -10\n"
+	push_const str_3
 	write_string
-label_19:
-	jump label_23
-bbbbbbbbbbbbbbbbb
-label_20:
-str_11. string "x < -10\n"
-	push_const str_11
-	write_string
-label_21:
-label_22:
-label_23:
+label_5:
+label_3:
+label_1:
 main_final:
 	push_reg fp
 	pop_reg sp

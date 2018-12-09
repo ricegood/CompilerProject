@@ -163,7 +163,7 @@ void CODE(char *s);
 void LABEL(char *s);
 void FUNC_LABEL(char *func_name, char *label);
 void push_address(struct decl* decl_ptr, int offset);
-int new_label_for_function_call();
+int new_label();
 int new_string();
 
 #endif

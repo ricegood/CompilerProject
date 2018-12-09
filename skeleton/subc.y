@@ -19,7 +19,6 @@ int is_func_decl = 0; /* for scope stack management about block inside of functi
 int block_number = 0; /* for scope stack management about block inside of function */
 int start_param_parsing = 1; /* for prevent from conflicts. */
 int is_array_decl = 0; /* for prevent from printing 'push_const int' */
-int is_else_stmt = 0; /* for printing label in if-else statement */
 int no_fetch = 0; /* no fetch flag for INCOP, DECOP in unary->ID production */
 struct decl* parsing_binary_decl = NULL; /* to save the decl upper binary */
 %}
@@ -64,7 +63,7 @@ struct decl* parsing_binary_decl = NULL; /* to save the decl upper binary */
 /* type decl */
 %type<declptr>      type_specifier const_expr expr or_expr or_list and_expr and_list binary args
 
-%type<intVal>       pointers codegen;
+%type<intVal>       pointers codegen if_branch_code_gen;
 
 %%
 
@@ -398,12 +397,6 @@ compound_stmt
                 printf("\tshift_sp %d\n", top->sumofsize);
                 FUNC_LABEL(labelname, "start");
             }
-            else if (is_else_stmt) {
-                // it is printed when else or else if
-                //printf("label_%d:\n", use_label());
-            }
-
-            is_else_stmt = 0; // reset
         }
         stmt_list '}'
         {
@@ -481,21 +474,22 @@ stmt
             printf("\tjump %s_final\n", labelname);
         }
         | ';'
-        | IF if_code_gen '(' expr ')' if_branch_code_gen stmt
+        | IF '(' expr ')' if_branch_code_gen stmt
         {   
             /* code generation */
-            //printf("label_%d:\n", use_label());
+            printf("label_%d:\n", $5);
         }
-        | IF if_code_gen '(' expr ')' if_branch_code_gen stmt ELSE
+        | IF '(' expr ')' if_branch_code_gen stmt ELSE
         {   
             /* code generation */
-            //printf("\tjump label_%d\n", new_label_for_function_call());
-            is_else_stmt = 1;
+            $<intVal>$ = new_label();
+            printf("\tjump label_%d\n", $<intVal>$);
+            printf("label_%d:\n", $5);
         }
         stmt
         {
             /* code generation */
-            //printf("label_%d:\n", use_label());
+            printf("label_%d:\n", $<intVal>8);
         }
         | WHILE '(' expr ')' stmt
         | FOR '(' expr_e ';' expr_e ';' expr_e ')' stmt
@@ -512,17 +506,11 @@ return_code_gen : /* empty */
             CODE("add"); // return value : fp-2 => (struct : fp-1-size)
         }
 
-if_code_gen : /* empty */
-        {
-            /* code generation */
-            //printf("label_%d:\n", new_label_for_function_call());
-            //use_label();
-        }
-
 if_branch_code_gen : /* empty */
         {
             /* code generation */
-            //printf("\tbranch_false label_%d\n", new_label_for_function_call());
+            $$ = new_label();
+            printf("\tbranch_false label_%d\n", $$);
         }
 
 expr_e
@@ -1095,7 +1083,7 @@ codegen : /* empty */
             // caller convention
             if($<declptr>-1 != write_int && $<declptr>-1 != write_string && $<declptr>-1 != write_char) {
                 printf("\tshift_sp %d\n", $<declptr>-1->returntype->size); // push a hole for return value
-                $$ = new_label_for_function_call();
+                $$ = new_label();
                 printf("\tpush_const label_%d\n", $$); // push the return address
                 CODE("push_reg fp"); // push the old FP
             }
@@ -1199,7 +1187,7 @@ void FUNC_LABEL(char *func_name, char *label) {
     printf("%s_%s:\n", func_name, label);
 }
 
-int new_label_for_function_call() {
+int new_label() {
     return ++labelnumber;
 }
 

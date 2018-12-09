@@ -75,7 +75,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 28 "subc.y" /* yacc.c:1909  */
+#line 27 "subc.y" /* yacc.c:1909  */
 
     int intVal;
     char *stringVal;
