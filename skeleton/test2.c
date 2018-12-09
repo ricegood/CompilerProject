@@ -1,3 +1,4 @@
+/* INCOP, DECOP test */
 int main(){
 	int a;
 	int b;

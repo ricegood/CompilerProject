@@ -1,3 +1,4 @@
+/* [TODO] structure pointer return */
 struct s {int x; int y[2]; int z;} s0;
 
 struct s *foo2(int a) {

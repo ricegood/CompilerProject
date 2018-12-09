@@ -1,4 +1,4 @@
-/* func struct return , parameter test */
+/* func structure return test */
 struct _str1{
 	int x;
 	struct _st2{

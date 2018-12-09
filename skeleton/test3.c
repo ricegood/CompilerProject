@@ -1,5 +1,5 @@
+/* write_int, write_char, pointer '*', '&' test */
 int main(){
-	/* test pointer */
 	int *a;
 	int b;
 	int bb;

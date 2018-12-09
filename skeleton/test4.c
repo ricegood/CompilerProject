@@ -1,7 +1,8 @@
 int global_1;
 int global_2;
 
-/* struct, array operation */
+/* struct, array operation (assignment) */
+/* [Q] array => no assignment , i think */
 
 struct _str1{
 	int x;

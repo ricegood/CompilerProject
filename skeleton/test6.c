@@ -1,3 +1,5 @@
+/* int pointer return */
+
 int c;
 int *foo(int a) {
 	c = a+10;
