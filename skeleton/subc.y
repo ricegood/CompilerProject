@@ -802,9 +802,11 @@ unary
             }
 
             /* code generation */
-            CODE("fetch");
+            if (check_is_var($2) || check_is_array($2->type)) {
+                CODE("fetch");
+                no_fetch = 1;
+            }
             CODE("negate");
-            no_fetch = 1;
         }
         | '!' unary
         {
@@ -817,9 +819,11 @@ unary
             }
 
             /* code generation */
-            CODE("fetch");
+            if (check_is_var($2) || check_is_array($2->type)) {
+                CODE("fetch");
+                no_fetch = 1;
+            }
             CODE("not");
-            no_fetch = 1;
         }
         | unary INCOP
         {

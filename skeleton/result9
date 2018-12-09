@@ -33,7 +33,6 @@ main_start:
 	push_reg sp
 	fetch
 	push_const 3
-	fetch
 	negate
 	assign
 	fetch
@@ -65,7 +64,6 @@ label_2:
 	add
 	fetch
 	push_const 10
-	fetch
 	negate
 	greater
 	branch_false label_4
