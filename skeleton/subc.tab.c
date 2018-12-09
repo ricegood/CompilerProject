@@ -485,7 +485,7 @@ static const yytype_uint16 yyrline[] =
      524,   525,   532,   531,   608,   611,   614,   629,   632,   635,
      650,   653,   682,   710,   723,   736,   760,   765,   769,   777,
      784,   792,   801,   816,   831,   858,   885,   910,   935,   960,
-     980,   991,  1015,  1032,  1068,  1082,  1088,  1100,  1109
+     980,   991,  1015,  1032,  1068,  1082,  1088,  1100,  1115
 };
 #endif
 
@@ -2610,12 +2610,18 @@ yyreduce:
 
             /* code generation */
             sumofargs += (yyvsp[0].declptr)->size; // set global variable for caller convention
+            // if expr is struct, push remain values
+            int var_offset = 0;
+            while (++var_offset < (yyvsp[0].declptr)->size) {
+                push_address(parsing_binary_decl, var_offset);
+                CODE("fetch");
+            }
         }
-#line 2615 "subc.tab.c" /* yacc.c:1646  */
+#line 2621 "subc.tab.c" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 1110 "subc.y" /* yacc.c:1646  */
+#line 1116 "subc.y" /* yacc.c:1646  */
     {
             if ((yyval.declptr) && (yyvsp[-2].declptr)) {
                 (yyvsp[-2].declptr)->next = makeconstdecl((yyvsp[0].declptr));
@@ -2627,12 +2633,18 @@ yyreduce:
 
             /* code generation */
             sumofargs += (yyvsp[0].declptr)->size; // set global variable for caller convention
+            // if expr is struct, push remain values
+            int var_offset = 0;
+            while (++var_offset < (yyvsp[0].declptr)->size) {
+                push_address(parsing_binary_decl, var_offset);
+                CODE("fetch");
+            }
         }
-#line 2632 "subc.tab.c" /* yacc.c:1646  */
+#line 2644 "subc.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2636 "subc.tab.c" /* yacc.c:1646  */
+#line 2648 "subc.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2860,7 +2872,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1123 "subc.y" /* yacc.c:1906  */
+#line 1135 "subc.y" /* yacc.c:1906  */
 
 
 /*  Additional C Codes  */

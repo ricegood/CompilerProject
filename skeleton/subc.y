@@ -1105,6 +1105,12 @@ args    /* actual parameters(function arguments) transferred to function */
 
             /* code generation */
             sumofargs += $1->size; // set global variable for caller convention
+            // if expr is struct, push remain values
+            int var_offset = 0;
+            while (++var_offset < $1->size) {
+                push_address(parsing_binary_decl, var_offset);
+                CODE("fetch");
+            }
         }
         | args ',' expr
         {
@@ -1118,6 +1124,12 @@ args    /* actual parameters(function arguments) transferred to function */
 
             /* code generation */
             sumofargs += $3->size; // set global variable for caller convention
+            // if expr is struct, push remain values
+            int var_offset = 0;
+            while (++var_offset < $3->size) {
+                push_address(parsing_binary_decl, var_offset);
+                CODE("fetch");
+            }
         }
 
 %%
