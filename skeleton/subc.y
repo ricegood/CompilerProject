@@ -563,13 +563,17 @@ expr
 
             int var_offset = 0;
 
+            // fill the value
             if(!check_is_struct_from_return(parsing_binary_decl)) {
-                // fill the value
+                // if it has its struct scope (declared struct)
                 while (++var_offset < $1->size) {
                     // for not singleton variable (struct) *array assignment is semantic error*
                     push_address(parsing_binary_decl, var_offset);
                     CODE("fetch");
                 }
+
+                // no has its scope : struct pointer
+                // (ex. return from function pointer struct, declared pointer struct...)
             }
 
             var_offset = $1->size;
@@ -969,7 +973,9 @@ unary
 
             /* code generation */
             // one more fetch to read address
-            CODE("fetch");
+            // but pointer from function return is already fetched value (already true address)
+            if (!check_is_pointer_from_return($2))
+                CODE("fetch");
         }
         | unary '[' expr ']'
         {

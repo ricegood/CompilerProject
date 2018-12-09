@@ -9,16 +9,27 @@ EXIT:
 foo:
 	shift_sp 0
 foo_start:
-	push_reg fp
-	push_const -1
+	push_const Lglob
+	push_const 0
 	add
-	push_const -1
-	add
+	push_reg sp
+	fetch
 	push_reg fp
 	push_const 1
 	add
 	fetch
-	push_const 1
+	push_const 10
+	add
+	assign
+	fetch
+	shift_sp -1
+	push_reg fp
+	push_const -1
+	add
+	push_const -1
+	add
+	push_const Lglob
+	push_const 0
 	add
 	assign
 	jump foo_final
@@ -28,155 +39,56 @@ foo_final:
 	pop_reg fp
 	pop_reg pc
 foo_end:
-foo2:
-	shift_sp 4
-foo2_start:
-	push_reg fp
-	push_const 2
-	add
-	push_const 0
-	add
-	push_reg sp
-	fetch
-	push_reg fp
-	push_const 1
-	add
-	fetch
-	push_const 13
-	add
-	assign
-	fetch
-	shift_sp -1
-	push_reg fp
-	push_const 2
-	add
-	push_const 1
-	add
-	push_const 0
-	push_const 1
-	mul
-	add
-	push_reg sp
-	fetch
-	push_const 7
-	assign
-	fetch
-	shift_sp -1
-	push_reg fp
-	push_const 2
-	add
-	push_const 1
-	add
-	push_const 1
-	push_const 1
-	mul
-	add
-	push_reg sp
-	fetch
-	push_reg fp
-	push_const 1
-	add
-	fetch
-	assign
-	fetch
-	shift_sp -1
-	push_reg fp
-	push_const 2
-	add
-	push_const 3
-	add
-	push_reg sp
-	fetch
-	push_reg fp
-	push_const 1
-	add
-	fetch
-	push_const 2
-	sub
-	assign
-	fetch
-	shift_sp -1
-	push_reg fp
-	push_const -1
-	add
-	push_const -4
-	add
-	push_reg fp
-	push_const 2
-	add
-	fetch
-	push_reg fp
-	push_const 3
-	add
-	fetch
-	push_reg fp
-	push_const 4
-	add
-	fetch
-	push_reg fp
-	push_const 5
-	add
-	fetch
-	push_reg fp
-	push_const -1
-	add
-	push_const -1
-	add
-	push_reg sp
-	push_const -1
-	add
-	fetch
-	assign
-	shift_sp -1
-	push_reg fp
-	push_const -1
-	add
-	push_const -2
-	add
-	push_reg sp
-	push_const -1
-	add
-	fetch
-	assign
-	shift_sp -1
-	push_reg fp
-	push_const -1
-	add
-	push_const -3
-	add
-	push_reg sp
-	push_const -1
-	add
-	fetch
-	assign
-	shift_sp -1
-	assign
-	jump foo2_final
-foo2_final:
-	push_reg fp
-	pop_reg sp
-	pop_reg fp
-	pop_reg pc
-foo2_end:
 main:
-	shift_sp 4
+	shift_sp 2
 main_start:
 	push_reg fp
 	push_const 1
 	add
-	push_const 0
-	add
 	push_reg sp
 	fetch
-	push_const 0
+	shift_sp 1
+	push_const label_1
+	push_reg fp
+	push_const 5
+	push_reg sp
+	push_const -1
+	add
+	pop_reg fp
+	jump foo
+label_1:
+	fetch
 	assign
 	fetch
 	shift_sp -1
 	push_reg fp
-	push_const 1
+	push_const 2
 	add
-	push_const 0
+	push_reg sp
+	fetch
+	shift_sp 1
+	push_const label_2
+	push_reg fp
+	push_const 5
+	push_reg sp
+	push_const -1
 	add
+	pop_reg fp
+	jump foo
+label_2:
+	assign
+	fetch
+	shift_sp -1
+	shift_sp 1
+	push_const label_3
+	push_reg fp
+	push_const 5
+	push_reg sp
+	push_const -1
+	add
+	pop_reg fp
+	jump foo
+label_3:
 	fetch
 	write_int
 str_1. string "\n"
@@ -185,142 +97,27 @@ str_1. string "\n"
 	push_reg fp
 	push_const 1
 	add
-	push_const 1
-	add
-	push_const 0
-	push_const 1
-	mul
-	add
 	fetch
 	write_int
 str_2. string "\n"
 	push_const str_2
 	write_string
 	push_reg fp
-	push_const 1
+	push_const 2
 	add
-	push_const 1
-	add
-	push_const 1
-	push_const 1
-	mul
-	add
+	fetch
 	fetch
 	write_int
 str_3. string "\n"
 	push_const str_3
 	write_string
-	push_reg fp
-	push_const 1
-	add
-	push_const 3
+	push_const Lglob
+	push_const 0
 	add
 	fetch
 	write_int
-str_4. string "\n=====================\n"
+str_4. string "\n"
 	push_const str_4
-	write_string
-	push_reg fp
-	push_const 1
-	add
-	push_reg sp
-	fetch
-	shift_sp 4
-	push_const label_1
-	push_reg fp
-	push_const 5
-	push_reg sp
-	push_const -1
-	add
-	pop_reg fp
-	jump foo2
-label_1:
-	push_reg sp
-	push_const -4
-	add
-	fetch
-	push_const 3
-	add
-	push_reg sp
-	push_const -1
-	add
-	fetch
-	assign
-	shift_sp -1
-	push_reg sp
-	push_const -3
-	add
-	fetch
-	push_const 2
-	add
-	push_reg sp
-	push_const -1
-	add
-	fetch
-	assign
-	shift_sp -1
-	push_reg sp
-	push_const -2
-	add
-	fetch
-	push_const 1
-	add
-	push_reg sp
-	push_const -1
-	add
-	fetch
-	assign
-	shift_sp -1
-	assign
-	fetch
-	shift_sp -1
-	push_reg fp
-	push_const 1
-	add
-	push_const 0
-	add
-	fetch
-	write_int
-str_5. string "\n"
-	push_const str_5
-	write_string
-	push_reg fp
-	push_const 1
-	add
-	push_const 1
-	add
-	push_const 0
-	push_const 1
-	mul
-	add
-	fetch
-	write_int
-str_6. string "\n"
-	push_const str_6
-	write_string
-	push_reg fp
-	push_const 1
-	add
-	push_const 1
-	add
-	push_const 1
-	push_const 1
-	mul
-	add
-	fetch
-	write_int
-str_7. string "\n"
-	push_const str_7
-	write_string
-	push_reg fp
-	push_const 1
-	add
-	push_const 3
-	add
-	fetch
-	write_int
-str_8. string "\n=====================\n"
-	push_const str_8
 	write_string
 main_final:
 	push_reg fp
@@ -328,4 +125,4 @@ main_final:
 	pop_reg fp
 	pop_reg pc
 main_end:
-	Lglob. data 0
+	Lglob. data 1

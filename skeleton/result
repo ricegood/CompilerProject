@@ -6,90 +6,125 @@
 	jump main
 EXIT:
 	exit
-	push_const 2
-test:
+foo:
 	shift_sp 0
-test_start:
-	push_reg fp
-	push_const -1
+foo_start:
+	push_const Lglob
+	push_const 0
 	add
-	push_const -1
-	add
+	push_reg sp
+	fetch
 	push_reg fp
 	push_const 1
 	add
 	fetch
+	push_const 10
+	add
 	assign
-	jump test_final
-test_final:
+	fetch
+	shift_sp -1
+	push_reg fp
+	push_const -1
+	add
+	push_const -1
+	add
+	push_const Lglob
+	push_const 0
+	add
+	assign
+	jump foo_final
+foo_final:
 	push_reg fp
 	pop_reg sp
 	pop_reg fp
 	pop_reg pc
-test_end:
+foo_end:
 main:
-	shift_sp 7
+	shift_sp 2
 main_start:
 	push_reg fp
 	push_const 1
 	add
 	push_reg sp
 	fetch
-	push_const 1
+	shift_sp 1
+	push_const label_1
+	push_reg fp
+	push_const 5
+	push_reg sp
+	push_const -1
+	add
+	pop_reg fp
+	jump foo
+label_1:
+	fetch
+	fetch
 	assign
 	fetch
 	shift_sp -1
 	push_reg fp
 	push_const 2
-	add
-	push_reg sp
-	fetch
-	push_const 2
-	assign
-	fetch
-	shift_sp -1
-	push_reg fp
-	push_const 6
-	add
-	push_reg sp
-	fetch
-	push_const 3
-	assign
-	fetch
-	shift_sp -1
-	push_reg fp
-	push_const 7
 	add
 	push_reg sp
 	fetch
 	shift_sp 1
-	push_const label_1
+	push_const label_2
 	push_reg fp
+	push_const 5
+	push_reg sp
+	push_const -1
+	add
+	pop_reg fp
+	jump foo
+label_2:
+	assign
+	fetch
+	shift_sp -1
+	shift_sp 1
+	push_const label_3
+	push_reg fp
+	push_const 5
+	push_reg sp
+	push_const -1
+	add
+	pop_reg fp
+	jump foo
+label_3:
+	fetch
+	fetch
+	write_int
+str_1. string "\n"
+	push_const str_1
+	write_string
 	push_reg fp
 	push_const 1
 	add
 	fetch
+	write_int
+str_2. string "\n"
+	push_const str_2
+	write_string
 	push_reg fp
 	push_const 2
 	add
 	fetch
-	push_reg fp
-	push_const 6
+	fetch
+	write_int
+str_3. string "\n"
+	push_const str_3
+	write_string
+	push_const Lglob
+	push_const 0
 	add
 	fetch
-	push_reg sp
-	push_const -6
-	add
-	pop_reg fp
-	jump test
-label_1:
-	assign
-	fetch
-	shift_sp -1
+	write_int
+str_4. string "\n"
+	push_const str_4
+	write_string
 main_final:
 	push_reg fp
 	pop_reg sp
 	pop_reg fp
 	pop_reg pc
 main_end:
-	Lglob. data 0
+	Lglob. data 1
