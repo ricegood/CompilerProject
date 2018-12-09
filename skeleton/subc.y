@@ -12,13 +12,14 @@ int    yyerror (char* s);
 void   REDUCE(char* s);
 
 int num_of_err_message = 0; /* for print only 1 error for 1 line */
+int labelnumber; /* for codegen (function call) */
 
 /* flag for subc.y */
 int is_func_decl = 0; /* for scope stack management about block inside of function */
 int block_number = 0; /* for scope stack management about block inside of function */
 int start_param_parsing = 1; /* for prevent from conflicts. */
 int is_array_decl = 0; /* for prevent from printing 'push_const int' */
-int is_if_stmt = 0; /* for printing label in if-else statement */
+int is_else_stmt = 0; /* for printing label in if-else statement */
 int no_fetch = 0; /* no fetch flag for INCOP, DECOP in unary->ID production */
 struct decl* parsing_binary_decl = NULL; /* to save the decl upper binary */
 %}
@@ -63,7 +64,7 @@ struct decl* parsing_binary_decl = NULL; /* to save the decl upper binary */
 /* type decl */
 %type<declptr>      type_specifier const_expr expr or_expr or_list and_expr and_list binary args
 
-%type<intVal>       pointers;
+%type<intVal>       pointers codegen;
 
 %%
 
@@ -397,11 +398,12 @@ compound_stmt
                 printf("\tshift_sp %d\n", top->sumofsize);
                 FUNC_LABEL(labelname, "start");
             }
-            else if (!is_if_stmt) {
-                printf("label_%d:\n", use_label());
+            else if (is_else_stmt) {
+                // it is printed when else or else if
+                //printf("label_%d:\n", use_label());
             }
 
-            is_if_stmt = 0; // reset
+            is_else_stmt = 0; // reset
         }
         stmt_list '}'
         {
@@ -481,15 +483,19 @@ stmt
         | ';'
         | IF if_code_gen '(' expr ')' if_branch_code_gen stmt
         {   
-            printf("label_%d:\n", use_label());
+            /* code generation */
+            //printf("label_%d:\n", use_label());
         }
         | IF if_code_gen '(' expr ')' if_branch_code_gen stmt ELSE
         {   
-            printf("\tjump label_%d\n", new_label());
+            /* code generation */
+            //printf("\tjump label_%d\n", new_label_for_function_call());
+            is_else_stmt = 1;
         }
         stmt
         {
-            printf("label_%d:\n", use_label());
+            /* code generation */
+            //printf("label_%d:\n", use_label());
         }
         | WHILE '(' expr ')' stmt
         | FOR '(' expr_e ';' expr_e ';' expr_e ')' stmt
@@ -509,15 +515,14 @@ return_code_gen : /* empty */
 if_code_gen : /* empty */
         {
             /* code generation */
-            printf("label_%d:\n", new_label());
-            use_label();
+            //printf("label_%d:\n", new_label_for_function_call());
+            //use_label();
         }
 
 if_branch_code_gen : /* empty */
         {
             /* code generation */
-            printf("\tbranch_false label_%d\n", new_label());
-            is_if_stmt = 1; // prevent from printing label wrongly
+            //printf("\tbranch_false label_%d\n", new_label_for_function_call());
         }
 
 expr_e
@@ -1061,8 +1066,7 @@ unary
                 CODE("add");
                 CODE("pop_reg fp");
                 printf("\tjump %s\n", $1->id->name); // Then, jump
-                printf("label_%d:\n", use_label()); // print label
-                break;
+                printf("label_%d:\n", $3); // print label
             }
         }
         | unary '(' codegen ')'
@@ -1078,6 +1082,7 @@ unary
             CODE("push_reg sp"); // FP = SP
             CODE("pop_reg fp");
             printf("\tjump %s\n", $1->id->name); // Then, jump
+            printf("label_%d:\n", $3); // print label
         }
         | NULL_TOKEN
         {
@@ -1090,7 +1095,8 @@ codegen : /* empty */
             // caller convention
             if($<declptr>-1 != write_int && $<declptr>-1 != write_string && $<declptr>-1 != write_char) {
                 printf("\tshift_sp %d\n", $<declptr>-1->returntype->size); // push a hole for return value
-                printf("\tpush_const label_%d\n", new_label()); // push the return address
+                $$ = new_label_for_function_call();
+                printf("\tpush_const label_%d\n", $$); // push the return address
                 CODE("push_reg fp"); // push the old FP
             }
             sumofargs = 0; // reset
@@ -1193,17 +1199,8 @@ void FUNC_LABEL(char *func_name, char *label) {
     printf("%s_%s:\n", func_name, label);
 }
 
-int new_label() {
-    return ++unused_labelnumber;
-}
-
-int use_label() {
-    if (used_labelnumber < unused_labelnumber)
-        return ++used_labelnumber;
-    else {
-        printf("* * LABELING ERROR!!!!!\n");
-        return -1;
-    }
+int new_label_for_function_call() {
+    return ++labelnumber;
 }
 
 int new_string() {
