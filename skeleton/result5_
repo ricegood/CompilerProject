@@ -86,8 +86,8 @@ test_start:
 	push_reg fp
 	push_const 4
 	add
-	negate
 	fetch
+	negate
 	assign
 	fetch
 	shift_sp -1

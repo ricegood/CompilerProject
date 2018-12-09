@@ -51,9 +51,9 @@ int main(){
 	write_string("\n");
 	write_int(test(i, j, k, 13).strstr.z); /* 3 */
 	write_string("\n");
-	write_int(test(i, j, k, 13).strstr.w[1]); /* -13 */
+	write_int(test(i, j, k, 13).strstr.w[1]); /* 4 */
 	write_string("\n");
-	write_int(test(i, j, k, 13).strstr.w[3]); /* 13 */
+	write_int(test(i, j, k, 13).strstr.w[3]); /* -13 */
 	write_string("\n========================\n");
 
 	write_int(a.x); /* 5 */
@@ -62,8 +62,8 @@ int main(){
 	write_string("\n");
 	write_int(a.strstr.z); /* 3 */
 	write_string("\n");
-	write_int(a.strstr.w[1]); /* -13 */
+	write_int(a.strstr.w[1]); /* 4 */
 	write_string("\n");
-	write_int(a.strstr.w[3]); /* 13 */
+	write_int(a.strstr.w[3]); /* -13 */
 	write_string("\n");
 }

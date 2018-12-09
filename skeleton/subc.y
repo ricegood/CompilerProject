@@ -805,7 +805,9 @@ unary
             }
 
             /* code generation */
+            CODE("fetch");
             CODE("negate");
+            no_fetch = 1;
         }
         | '!' unary
         {
@@ -818,7 +820,9 @@ unary
             }
 
             /* code generation */
+            CODE("fetch");
             CODE("not");
+            no_fetch = 1;
         }
         | unary INCOP
         {
