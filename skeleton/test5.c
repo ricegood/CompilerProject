@@ -14,7 +14,8 @@ struct _str1 test(int a, int b, int c, int d){
 	s.x = a;
 	s.y = b;
 	s.strstr.z = c;
-	s.strstr.w[3] = d;
+	s.strstr.w[1] = 4;
+	s.strstr.w[3] = -d;
 
 	return s;
 }
@@ -50,7 +51,7 @@ int main(){
 	write_string("\n");
 	write_int(test(i, j, k, 13).strstr.z); /* 3 */
 	write_string("\n");
-	write_int(test(i, j, k, 13).strstr.w[1]); /* 0 */
+	write_int(test(i, j, k, 13).strstr.w[1]); /* -13 */
 	write_string("\n");
 	write_int(test(i, j, k, 13).strstr.w[3]); /* 13 */
 	write_string("\n========================\n");
@@ -61,7 +62,7 @@ int main(){
 	write_string("\n");
 	write_int(a.strstr.z); /* 3 */
 	write_string("\n");
-	write_int(a.strstr.w[1]); /* 0 */
+	write_int(a.strstr.w[1]); /* -13 */
 	write_string("\n");
 	write_int(a.strstr.w[3]); /* 13 */
 	write_string("\n");

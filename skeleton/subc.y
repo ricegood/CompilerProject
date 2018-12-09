@@ -573,7 +573,7 @@ expr
             }
 
             var_offset = $1->size;
-            
+
             // assign
             while (var_offset > 1) {
                 // push address
@@ -991,6 +991,14 @@ unary
 
             /* code generation */
             // struct access
+
+            // print unary address (in case of struct from function return)
+            if (check_is_struct_from_return($1)) {
+                CODE("push_reg sp");
+                printf("\tpush_const %d\n", -($1->size-1));
+                CODE("add");
+            }
+            
             printf("\tpush_const %d\n", $$->offset);
             CODE("add");
         }
