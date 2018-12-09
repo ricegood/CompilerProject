@@ -491,7 +491,24 @@ stmt
             /* code generation */
             printf("label_%d:\n", $<intVal>8);
         }
-        | WHILE '(' expr ')' stmt
+        | WHILE
+        {
+            /* code generation */
+            $<intVal>$ = new_label();
+            printf("label_%d:\n", $<intVal>$);
+        }
+        '(' expr ')' 
+        {
+            /* code generation */
+            $<intVal>$ = new_label();
+            printf("\tbranch_false label_%d\n", $<intVal>$);
+        }
+        stmt
+        {
+            /* code generation */
+            printf("\tjump label_%d\n", $<intVal>2);
+            printf("label_%d:\n", $<intVal>6);
+        }
         | FOR '(' expr_e ';' expr_e ';' expr_e ')' stmt
         | BREAK ';'
         | CONTINUE ';'
