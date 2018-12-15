@@ -496,18 +496,22 @@ stmt
             /* code generation */
             $<intVal>$ = new_label();
             printf("label_%d:\n", $<intVal>$);
+            push_label_stack(&continue_label_stack, $<intVal>$); // save the return label number for CONTINUE in WHLIE
         }
         '(' expr ')' 
         {
             /* code generation */
             $<intVal>$ = new_label();
             printf("\tbranch_false label_%d\n", $<intVal>$);
+            push_label_stack(&break_label_stack, $<intVal>$); // save the return label number for BREAK in WHILE
         }
         stmt
         {
             /* code generation */
             printf("\tjump label_%d\n", $<intVal>2);
-            printf("label_%d:\n", $<intVal>6);
+            printf("label_%d:\n", $<intVal>6); // branch false
+            pop_label_stack(&continue_label_stack); // pop this loop stmt label for CONTINUE
+            pop_label_stack(&break_label_stack); // pop this loop stmt label for BREAK
         }
         | FOR '(' expr_e ';'
         {
@@ -525,6 +529,7 @@ stmt
             CODE("fetch"); // to compare false condition
             printf("\tbranch_true label_%d\n", $<intVal>$);
             printf("\tbranch_false label_%d\n", new_label()); // $<intVal>7+1
+            push_label_stack(&break_label_stack, $<intVal>$+1); // save the return label number for BREAK in FOR
         }
         ';'
         {
@@ -532,6 +537,7 @@ stmt
             /* code generation */
             $<intVal>$ = new_label();
             printf("label_%d:\n", $<intVal>$);
+            push_label_stack(&continue_label_stack, $<intVal>$); // save the return label number for CONTINUE in FOR
         }
         expr_e
         {
@@ -549,9 +555,17 @@ stmt
             /* code generation */
             printf("\tjump label_%d\n", $<intVal>9);
             printf("label_%d:\n", $<intVal>7 + 1); // branch false
+            pop_label_stack(&continue_label_stack); // pop this loop stmt label for CONTINUE
+            pop_label_stack(&break_label_stack); // pop this loop stmt label for BREAK
         }
         | BREAK ';'
+        {
+            printf("\tjump label_%d\n", get_break_label_number());
+        }
         | CONTINUE ';'
+        {
+            printf("\tjump label_%d\n", get_continue_label_number());
+        }
 
 return_code_gen : /* empty */
         {

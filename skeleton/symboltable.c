@@ -469,6 +469,9 @@ void init_type()
 	top = NULL;
 	bottom = NULL;
 
+	break_label_stack = NULL;
+	continue_label_stack = NULL;
+
 	inttype = maketypedecl(INT_);
 	chartype = maketypedecl(CHAR_);
 	voidtype = maketypedecl(VOID_);

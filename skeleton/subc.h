@@ -32,6 +32,12 @@ struct node *bottom;
 struct node *globalscope;
 struct ste *bottom_ste;
 
+/* for label stack */
+// top node to save label for BREAK statement in loop
+struct label_node* break_label_stack;
+// top node to save label for CONTINUE statement in loop
+struct label_node* continue_label_stack; 
+
 /* for default type decl */
 struct decl *inttype;
 struct decl *chartype;
@@ -112,6 +118,18 @@ struct ste *popscope();
 struct ste *popste();
 
 
+/* For label stack */
+typedef struct label_node
+{
+	int label_number;
+    struct label_node *prev;
+} label_node;
+
+void push_label_stack(struct label_node** top, int label_number);
+void pop_label_stack(struct label_node** top);
+int get_break_label_number();
+int get_continue_label_number();
+
 // For symbol table declaration
 int declare(struct id* id_ptr, struct decl* decl_ptr); /* return error_found */
 
@@ -125,8 +143,6 @@ struct decl *makefloatconstdecl(struct decl* typedecl, float value);
 struct decl *makeptrdecl(struct decl* typedecl);
 struct decl *makeprocdecl();
 struct decl *makestructdecl();
-
-//void rollback_struct_of(struct decl* procdecl);
 
 struct decl *findcurrentdecl(struct id* id_ptr); // return last pushed decl (global scope)
 struct ste *findcurrentdecls(struct id* id_ptr); // return linked list of ste (global scope)
