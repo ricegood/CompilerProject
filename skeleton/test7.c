@@ -15,9 +15,11 @@ void main() {
 	
 	struct s s1;
 	struct s *s2;
+	struct s s3;
 
 /*	s1 = *foo2(5); */
 	s2 = foo2(5);
+/*	s3 = *s2; */
 /*
 	write_int(s1.x); /* 18 */
 	write_string("\n");
@@ -36,6 +38,15 @@ void main() {
 	write_int(s2->y[1]); /* 5 */
 	write_string("\n");
 	write_int(s2->z); /* 3 */
+	write_string("\n=====================\n");
+
+	write_int(s3.x); /* 18 */
+	write_string("\n");
+	write_int(s3.y[0]); /* 7 */
+	write_string("\n");
+	write_int(s3.y[1]); /* 5 */
+	write_string("\n");
+	write_int(s3.z); /* 3 */
 	write_string("\n=====================\n");
 
 	write_int(foo2(5)->x); /* 18 */
