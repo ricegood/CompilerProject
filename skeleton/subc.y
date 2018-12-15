@@ -92,7 +92,7 @@ ext_def
         {
             is_array_decl = 1; // prevent from printing 'push_const' in unary
         }
-        unary
+        const_expr
         {
             is_array_decl = 0; // reset
         }
@@ -310,7 +310,7 @@ param_decl  /* formal parameter declaration */
         {
             is_array_decl = 1; // prevent from printing 'push_const' in unary
         }
-        unary
+        const_expr
         {
             is_array_decl = 0; // reset
         }
@@ -353,7 +353,7 @@ def
         {
             is_array_decl = 1; // prevent from printing 'push_const' in unary
         }
-        unary
+        const_expr
         {
             is_array_decl = 0; // reset
         }
