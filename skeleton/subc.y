@@ -774,9 +774,10 @@ binary
         }
         | binary '+' binary
         {
-            /* only for int+int */
-            if (check_same_type($1, inttype) && check_same_type($3, inttype))
-                $$ = plustype($1, $3);
+            /* only for int+int or pointer+int */
+            if ((check_same_type($1, inttype) || check_is_pointer_type($1)) && check_same_type($3, inttype))
+                //$$ = plustype($1, $3);
+                $$ = $1;
             else {
                 ERROR("not int type");
                 $$ = NULL;
@@ -787,9 +788,10 @@ binary
         }
         | binary '-' binary
         {
-            /* only for int+int */
-            if (check_same_type($1, inttype) && check_same_type($3, inttype))
-                $$ = plustype($1, $3);
+            /* only for int-int or pointer-int */
+            if ((check_same_type($1, inttype) || check_is_pointer_type($1)) && check_same_type($3, inttype))
+                //$$ = plustype($1, $3);
+                $$ = $1;
             else {
                 ERROR("not int type");
                 $$ = NULL;
