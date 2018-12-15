@@ -263,7 +263,9 @@ struct decl* check_function_call(decl* proc_ptr, decl* actuals) {
 	if (formals == NULL && actuals == NULL) {
 		// same number of formals, actuals
 		// [TODO] I'm not sure const decl is right type.
-  		return makeconstdecl(proc_ptr->returntype);
+		struct decl *return_decl = makeconstdecl(proc_ptr->returntype);
+		return_decl->is_return_value = 1; // set return value is true
+  		return return_decl;
 	}
 	else {
   	// different number of formals, actuals

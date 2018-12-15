@@ -107,8 +107,9 @@ label_1:
 	assign
 	fetch
 	push_reg fp
-	push_const 1
+	push_const 5
 	add
+	fetch
 	push_const 0
 	add
 	fetch
@@ -117,8 +118,9 @@ str_1. string "\n"
 	push_const str_1
 	write_string
 	push_reg fp
-	push_const 1
+	push_const 5
 	add
+	fetch
 	push_const 1
 	add
 	push_const 0
@@ -131,8 +133,9 @@ str_2. string "\n"
 	push_const str_2
 	write_string
 	push_reg fp
-	push_const 1
+	push_const 5
 	add
+	fetch
 	push_const 1
 	add
 	push_const 1
@@ -145,66 +148,15 @@ str_3. string "\n"
 	push_const str_3
 	write_string
 	push_reg fp
-	push_const 1
+	push_const 5
 	add
+	fetch
 	push_const 3
 	add
 	fetch
 	write_int
 str_4. string "\n=====================\n"
 	push_const str_4
-	write_string
-	push_reg fp
-	push_const 5
-	add
-	fetch
-	push_const 0
-	add
-	fetch
-	write_int
-str_5. string "\n"
-	push_const str_5
-	write_string
-	push_reg fp
-	push_const 5
-	add
-	fetch
-	push_const 1
-	add
-	push_const 0
-	push_const 1
-	mul
-	add
-	fetch
-	write_int
-str_6. string "\n"
-	push_const str_6
-	write_string
-	push_reg fp
-	push_const 5
-	add
-	fetch
-	push_const 1
-	add
-	push_const 1
-	push_const 1
-	mul
-	add
-	fetch
-	write_int
-str_7. string "\n"
-	push_const str_7
-	write_string
-	push_reg fp
-	push_const 5
-	add
-	fetch
-	push_const 3
-	add
-	fetch
-	write_int
-str_8. string "\n=====================\n"
-	push_const str_8
 	write_string
 	shift_sp 1
 	push_const label_2
@@ -216,13 +168,12 @@ str_8. string "\n=====================\n"
 	pop_reg fp
 	jump foo2
 label_2:
-	fetch
 	push_const 0
 	add
 	fetch
 	write_int
-str_9. string "\n"
-	push_const str_9
+str_5. string "\n"
+	push_const str_5
 	write_string
 	shift_sp 1
 	push_const label_3
@@ -234,7 +185,6 @@ str_9. string "\n"
 	pop_reg fp
 	jump foo2
 label_3:
-	fetch
 	push_const 1
 	add
 	push_const 0
@@ -243,8 +193,8 @@ label_3:
 	add
 	fetch
 	write_int
-str_10. string "\n"
-	push_const str_10
+str_6. string "\n"
+	push_const str_6
 	write_string
 	shift_sp 1
 	push_const label_4
@@ -256,7 +206,6 @@ str_10. string "\n"
 	pop_reg fp
 	jump foo2
 label_4:
-	fetch
 	push_const 1
 	add
 	push_const 1
@@ -265,8 +214,8 @@ label_4:
 	add
 	fetch
 	write_int
-str_11. string "\n"
-	push_const str_11
+str_7. string "\n"
+	push_const str_7
 	write_string
 	shift_sp 1
 	push_const label_5
@@ -278,13 +227,12 @@ str_11. string "\n"
 	pop_reg fp
 	jump foo2
 label_5:
-	fetch
 	push_const 3
 	add
 	fetch
 	write_int
-str_12. string "\n=====================\n"
-	push_const str_12
+str_8. string "\n=====================\n"
+	push_const str_8
 	write_string
 	shift_sp 1
 	push_const label_6
@@ -300,8 +248,8 @@ label_6:
 	add
 	fetch
 	write_int
-str_13. string "\n"
-	push_const str_13
+str_9. string "\n"
+	push_const str_9
 	write_string
 	shift_sp 1
 	push_const label_7
@@ -321,8 +269,8 @@ label_7:
 	add
 	fetch
 	write_int
-str_14. string "\n"
-	push_const str_14
+str_10. string "\n"
+	push_const str_10
 	write_string
 	shift_sp 1
 	push_const label_8
@@ -342,8 +290,8 @@ label_8:
 	add
 	fetch
 	write_int
-str_15. string "\n"
-	push_const str_15
+str_11. string "\n"
+	push_const str_11
 	write_string
 	shift_sp 1
 	push_const label_9
@@ -359,8 +307,8 @@ label_9:
 	add
 	fetch
 	write_int
-str_16. string "\n=====================\n"
-	push_const str_16
+str_12. string "\n=====================\n"
+	push_const str_12
 	write_string
 	push_const Lglob
 	push_const 0
@@ -369,8 +317,8 @@ str_16. string "\n=====================\n"
 	add
 	fetch
 	write_int
-str_17. string "\n"
-	push_const str_17
+str_13. string "\n"
+	push_const str_13
 	write_string
 	push_const Lglob
 	push_const 0
@@ -383,8 +331,8 @@ str_17. string "\n"
 	add
 	fetch
 	write_int
-str_18. string "\n"
-	push_const str_18
+str_14. string "\n"
+	push_const str_14
 	write_string
 	push_const Lglob
 	push_const 0
@@ -397,8 +345,8 @@ str_18. string "\n"
 	add
 	fetch
 	write_int
-str_19. string "\n"
-	push_const str_19
+str_15. string "\n"
+	push_const str_15
 	write_string
 	push_const Lglob
 	push_const 0
@@ -407,8 +355,8 @@ str_19. string "\n"
 	add
 	fetch
 	write_int
-str_20. string "\n=====================\n"
-	push_const str_20
+str_16. string "\n=====================\n"
+	push_const str_16
 	write_string
 main_final:
 	push_reg fp

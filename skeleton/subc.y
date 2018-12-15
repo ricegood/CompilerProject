@@ -1096,7 +1096,8 @@ unary
 
             /* code generation */
             // struct access
-            CODE("fetch");
+            if (!$1->is_return_value)
+                CODE("fetch"); // to get address (*pointer return value is already address)
             printf("\tpush_const %d\n", $$->offset);
             CODE("add");
         }
