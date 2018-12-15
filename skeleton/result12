@@ -1,0 +1,200 @@
+	shift_sp 1
+	push_const EXIT
+	push_reg fp
+	push_reg sp
+	pop_reg fp
+	jump main
+EXIT:
+	exit
+main:
+	shift_sp 7
+main_start:
+	push_reg fp
+	push_const 1
+	add
+	push_reg sp
+	fetch
+	push_const 0
+	assign
+	fetch
+label_1:
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 5
+	less
+	push_reg sp
+	fetch
+	branch_true label_2
+	branch_false label_3
+label_4:
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 1
+	add
+	assign
+	jump label_1
+label_2:
+	shift_sp -1
+	push_reg fp
+	push_const 3
+	add
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 1
+	mul
+	add
+	push_reg sp
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 10
+	add
+	assign
+	fetch
+	jump label_4
+label_3:
+	push_reg fp
+	push_const 2
+	add
+	push_reg sp
+	fetch
+	push_reg fp
+	push_const 3
+	add
+	push_const 0
+	push_const 1
+	mul
+	add
+	assign
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	push_reg sp
+	fetch
+	push_const 0
+	assign
+	fetch
+label_5:
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 5
+	less
+	branch_false label_6
+	push_reg fp
+	push_const 2
+	add
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	add
+	fetch
+	write_int
+str_1. string "\n"
+	push_const str_1
+	write_string
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 1
+	add
+	assign
+	jump label_5
+label_6:
+str_2. string "==================\n"
+	push_const str_2
+	write_string
+	push_reg fp
+	push_const 2
+	add
+	push_reg sp
+	fetch
+	push_reg fp
+	push_const 3
+	add
+	push_const 4
+	push_const 1
+	mul
+	add
+	assign
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	push_reg sp
+	fetch
+	push_const 0
+	assign
+	fetch
+label_7:
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 5
+	less
+	branch_false label_8
+	push_reg fp
+	push_const 2
+	add
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	sub
+	fetch
+	write_int
+str_3. string "\n"
+	push_const str_3
+	write_string
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 1
+	add
+	assign
+	jump label_7
+label_8:
+main_final:
+	push_reg fp
+	pop_reg sp
+	pop_reg fp
+	pop_reg pc
+main_end:
+	Lglob. data 0
