@@ -2127,7 +2127,7 @@ yyreduce:
             
             CODE("assign");
             CODE("fetch");
-            CODE("shift_sp -1");
+            //CODE("shift_sp -1");
         }
 #line 2133 "subc.tab.c" /* yacc.c:1646  */
     break;

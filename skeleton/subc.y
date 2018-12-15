@@ -668,7 +668,7 @@ expr
             
             CODE("assign");
             CODE("fetch");
-            CODE("shift_sp -1");
+            //CODE("shift_sp -1");
         }
         | or_expr
 

@@ -17,7 +17,6 @@ main_start:
 	push_const 10
 	assign
 	fetch
-	shift_sp -1
 label_1:
 	push_reg fp
 	push_const 1
@@ -81,7 +80,6 @@ label_4:
 	push_const 0
 	assign
 	fetch
-	shift_sp -1
 label_6:
 	push_const Lglob
 	push_const 0
@@ -173,7 +171,6 @@ str_8. string "====================\n"
 	push_const 0
 	assign
 	fetch
-	shift_sp -1
 label_12:
 	push_reg fp
 	push_const 1
@@ -259,7 +256,6 @@ str_14. string "====================\n"
 	push_const 0
 	assign
 	fetch
-	shift_sp -1
 label_18:
 	push_const Lglob
 	push_const 0
@@ -307,7 +303,6 @@ label_19:
 	fetch
 	assign
 	fetch
-	shift_sp -1
 	jump label_21
 label_20:
 	push_const Lglob
@@ -318,7 +313,6 @@ label_20:
 	push_const 0
 	assign
 	fetch
-	shift_sp -1
 label_22:
 	push_const Lglob
 	push_const 0
@@ -366,67 +360,6 @@ str_15. string "b[i] : "
 str_16. string "\n"
 	push_const str_16
 	write_string
-	push_reg fp
-	push_const 1
-	add
-	push_reg sp
-	fetch
-	push_const Lglob
-	push_const 0
-	add
-	fetch
-	assign
-	fetch
-	shift_sp -1
-label_26:
-	push_reg fp
-	push_const 1
-	add
-	fetch
-	push_const 10
-	less
-	push_reg sp
-	fetch
-	branch_true label_27
-	branch_false label_28
-label_29:
-	push_reg fp
-	push_const 1
-	add
-	fetch
-	push_reg fp
-	push_const 1
-	add
-	push_reg fp
-	push_const 1
-	add
-	fetch
-	push_const 1
-	add
-	assign
-	jump label_26
-label_27:
-	shift_sp -1
-str_17. string "\tb[a] : "
-	push_const str_17
-	write_string
-	push_const Lglob
-	push_const 1
-	add
-	push_reg fp
-	push_const 1
-	add
-	fetch
-	push_const 1
-	mul
-	add
-	fetch
-	write_int
-str_18. string "\n"
-	push_const str_18
-	write_string
-	jump label_29
-label_28:
 	jump label_25
 label_24:
 main_final:

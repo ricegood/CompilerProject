@@ -22,7 +22,6 @@ test_start:
 	fetch
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 5
 	add
@@ -36,7 +35,6 @@ test_start:
 	fetch
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 5
 	add
@@ -52,7 +50,6 @@ test_start:
 	fetch
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 5
 	add
@@ -69,7 +66,6 @@ test_start:
 	push_const 1313113
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 5
 	add
@@ -92,7 +88,6 @@ test_start:
 	add
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const -1
 	add
@@ -290,7 +285,6 @@ str_5. string "\n========================\n"
 	push_const 5
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 2
 	add
@@ -299,7 +293,6 @@ str_5. string "\n========================\n"
 	push_const 2
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 3
 	add
@@ -308,7 +301,6 @@ str_5. string "\n========================\n"
 	push_const 3
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 5
 	add
@@ -422,7 +414,6 @@ label_1:
 	shift_sp -1
 	assign
 	fetch
-	shift_sp -1
 	shift_sp 8
 	push_const label_2
 	push_reg fp

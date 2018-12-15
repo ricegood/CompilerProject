@@ -22,7 +22,6 @@ foo_start:
 	add
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const -1
 	add
@@ -77,7 +76,6 @@ label_1:
 	fetch
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 2
 	add
@@ -95,7 +93,6 @@ label_1:
 label_2:
 	assign
 	fetch
-	shift_sp -1
 	shift_sp 1
 	push_const label_3
 	push_reg fp
