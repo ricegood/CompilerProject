@@ -61,7 +61,8 @@ struct decl* parsing_binary_decl = NULL; /* to save the decl upper binary */
 %type<declptr>      ext_def struct_specifier func_decl param_list param_decl def compound_stmt unary
 
 /* type decl */
-%type<declptr>      type_specifier const_expr expr or_expr or_list and_expr and_list binary args
+//const_expr
+%type<declptr>      type_specifier expr or_expr or_list and_expr and_list binary args
 
 %type<intVal>       pointers codegen if_branch_code_gen;
 
@@ -92,7 +93,7 @@ ext_def
         {
             is_array_decl = 1; // prevent from printing 'push_const' in unary
         }
-        const_expr
+        unary
         {
             is_array_decl = 0; // reset
         }
@@ -310,7 +311,7 @@ param_decl  /* formal parameter declaration */
         {
             is_array_decl = 1; // prevent from printing 'push_const' in unary
         }
-        const_expr
+        unary
         {
             is_array_decl = 0; // reset
         }
@@ -353,7 +354,7 @@ def
         {
             is_array_decl = 1; // prevent from printing 'push_const' in unary
         }
-        const_expr
+        unary
         {
             is_array_decl = 0; // reset
         }
@@ -587,10 +588,10 @@ if_branch_code_gen : /* empty */
 expr_e
         : expr
         | /* empty */
-
+/*
 const_expr
         : expr
-
+*/
 expr
         : unary '='
         {

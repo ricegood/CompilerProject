@@ -1,4 +1,6 @@
 /* while, for loop test */
+int i;
+int b[10];
 
 void main() {
 	int a;
@@ -13,6 +15,18 @@ void main() {
 		write_string("\n");
 		if (a == 3) {
 			break;
+		} else {
+			for(i = 0; i < a; i++) {
+				if (i == 0) {
+					continue;
+				}
+				write_string("\ti : ");
+				write_int(i);
+				write_string("\n");
+				if (i == 5) {
+					break;
+				}
+			}
 		}
 	}
 	write_string("====================\n");
@@ -39,4 +53,15 @@ void main() {
 	write_string("a : ");
 	write_int(a);
 	write_string("\n");
+
+	write_string("====================\n");
+	for (i = 0; i < 10; i++) {
+		b[i] = i;
+	}
+
+	for (i = 0; i < 10; i++) {
+		write_string("b[i] : ");
+		write_int(b[i]);
+		write_string("\n");
+	}
 }

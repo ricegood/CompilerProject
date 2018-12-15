@@ -71,25 +71,99 @@ str_2. string "\n"
 	equal
 	branch_false label_4
 	jump label_2
+	jump label_5
 label_4:
-	jump label_1
-label_2:
-str_3. string "====================\n"
+	push_const Lglob
+	push_const 0
+	add
+	push_reg sp
+	fetch
+	push_const 0
+	assign
+	fetch
+	shift_sp -1
+label_6:
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	less
+	push_reg sp
+	fetch
+	branch_true label_7
+	branch_false label_8
+label_9:
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_const Lglob
+	push_const 0
+	add
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_const 1
+	add
+	assign
+	jump label_6
+label_7:
+	shift_sp -1
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_const 0
+	equal
+	branch_false label_10
+	jump label_9
+label_10:
+str_3. string "\ti : "
 	push_const str_3
 	write_string
-str_4. string "a : "
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	write_int
+str_4. string "\n"
 	push_const str_4
+	write_string
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_const 5
+	equal
+	branch_false label_11
+	jump label_8
+label_11:
+	jump label_9
+label_8:
+label_5:
+	jump label_1
+label_2:
+str_5. string "====================\n"
+	push_const str_5
+	write_string
+str_6. string "a : "
+	push_const str_6
 	write_string
 	push_reg fp
 	push_const 1
 	add
 	fetch
 	write_int
-str_5. string "\n"
-	push_const str_5
+str_7. string "\n"
+	push_const str_7
 	write_string
-str_6. string "====================\n"
-	push_const str_6
+str_8. string "====================\n"
+	push_const str_8
 	write_string
 	push_reg fp
 	push_const 1
@@ -100,7 +174,7 @@ str_6. string "====================\n"
 	assign
 	fetch
 	shift_sp -1
-label_5:
+label_12:
 	push_reg fp
 	push_const 1
 	add
@@ -109,9 +183,9 @@ label_5:
 	less
 	push_reg sp
 	fetch
-	branch_true label_6
-	branch_false label_7
-label_8:
+	branch_true label_13
+	branch_false label_14
+label_15:
 	push_reg fp
 	push_const 1
 	add
@@ -126,8 +200,8 @@ label_8:
 	push_const 1
 	add
 	assign
-	jump label_5
-label_6:
+	jump label_12
+label_13:
 	shift_sp -1
 	push_reg fp
 	push_const 1
@@ -135,19 +209,19 @@ label_6:
 	fetch
 	push_const 4
 	equal
-	branch_false label_9
-	jump label_8
-label_9:
-str_7. string "a : "
-	push_const str_7
+	branch_false label_16
+	jump label_15
+label_16:
+str_9. string "a : "
+	push_const str_9
 	write_string
 	push_reg fp
 	push_const 1
 	add
 	fetch
 	write_int
-str_8. string "\n"
-	push_const str_8
+str_10. string "\n"
+	push_const str_10
 	write_string
 	push_reg fp
 	push_const 1
@@ -155,29 +229,149 @@ str_8. string "\n"
 	fetch
 	push_const 7
 	greater_equal
-	branch_false label_10
-	jump label_7
-label_10:
-	jump label_8
-label_7:
-str_9. string "====================\n"
-	push_const str_9
+	branch_false label_17
+	jump label_14
+label_17:
+	jump label_15
+label_14:
+str_11. string "====================\n"
+	push_const str_11
 	write_string
-str_10. string "a : "
-	push_const str_10
+str_12. string "a : "
+	push_const str_12
 	write_string
 	push_reg fp
 	push_const 1
 	add
 	fetch
 	write_int
-str_11. string "\n"
-	push_const str_11
+str_13. string "\n"
+	push_const str_13
 	write_string
+str_14. string "====================\n"
+	push_const str_14
+	write_string
+	push_const Lglob
+	push_const 0
+	add
+	push_reg sp
+	fetch
+	push_const 0
+	assign
+	fetch
+	shift_sp -1
+label_18:
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_const 10
+	less
+	push_reg sp
+	fetch
+	branch_true label_19
+	branch_false label_20
+label_21:
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_const Lglob
+	push_const 0
+	add
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_const 1
+	add
+	assign
+	jump label_18
+label_19:
+	shift_sp -1
+	push_const Lglob
+	push_const 1
+	add
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_const 1
+	mul
+	add
+	push_reg sp
+	fetch
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	assign
+	fetch
+	shift_sp -1
+	jump label_21
+label_20:
+	push_const Lglob
+	push_const 0
+	add
+	push_reg sp
+	fetch
+	push_const 0
+	assign
+	fetch
+	shift_sp -1
+label_22:
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_const 10
+	less
+	push_reg sp
+	fetch
+	branch_true label_23
+	branch_false label_24
+label_25:
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_const Lglob
+	push_const 0
+	add
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_const 1
+	add
+	assign
+	jump label_22
+label_23:
+	shift_sp -1
+str_15. string "b[i] : "
+	push_const str_15
+	write_string
+	push_const Lglob
+	push_const 1
+	add
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_const 1
+	mul
+	add
+	fetch
+	write_int
+str_16. string "\n"
+	push_const str_16
+	write_string
+	jump label_25
+label_24:
 main_final:
 	push_reg fp
 	pop_reg sp
 	pop_reg fp
 	pop_reg pc
 main_end:
-	Lglob. data 0
+	Lglob. data 11
