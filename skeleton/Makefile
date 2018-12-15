@@ -14,8 +14,8 @@ all : subc
 clean :
 	rm -f *.o lex.yy.c subc.tab.c subc.tab.h subc.output subc
 
-subc : lex.yy.o hash.o scopestack.o symboltable.o subc.tab.o
-	${CC} -o subc lex.yy.o hash.o scopestack.o symboltable.o subc.tab.o ${LINK_OPTION}
+subc : lex.yy.o hash.o scopestack.o symboltable.o labelstack.o subc.tab.o
+	${CC} -o subc lex.yy.o hash.o scopestack.o symboltable.o labelstack.o subc.tab.o ${LINK_OPTION}
 
 subc.tab.o : subc.tab.c subc.h
 	${CC} -c ${COMPILE_OPTION} subc.tab.c
@@ -28,6 +28,9 @@ scopestack.o : scopestack.c subc.h
 
 symboltable.o : symboltable.c subc.h
 	${CC} -c ${COMPILE_OPTION} symboltable.c
+
+labelstack.o : labelstack.c subc.h
+	${CC} -c ${COMPILE_OPTION} labelstack.c
 
 lex.yy.o : lex.yy.c subc.tab.h subc.h
 	${CC} -c ${COMPILE_OPTION} lex.yy.c
