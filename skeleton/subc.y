@@ -1045,7 +1045,7 @@ unary
             /* code generation */
             // one more fetch to read address
             // but pointer from function return is already fetched value (already true address)
-            if (!check_is_pointer_from_return($2))
+            if (!$2->is_return_value)
                 CODE("fetch");
         }
         | unary '[' expr ']'

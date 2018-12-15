@@ -2572,7 +2572,7 @@ yyreduce:
             /* code generation */
             // one more fetch to read address
             // but pointer from function return is already fetched value (already true address)
-            if (!check_is_pointer_from_return((yyvsp[0].declptr)))
+            if (!(yyvsp[0].declptr)->is_return_value)
                 CODE("fetch");
         }
 #line 2579 "subc.tab.c" /* yacc.c:1646  */
