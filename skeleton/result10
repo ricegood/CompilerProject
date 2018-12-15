@@ -366,6 +366,67 @@ str_15. string "b[i] : "
 str_16. string "\n"
 	push_const str_16
 	write_string
+	push_reg fp
+	push_const 1
+	add
+	push_reg sp
+	fetch
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	assign
+	fetch
+	shift_sp -1
+label_26:
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 10
+	less
+	push_reg sp
+	fetch
+	branch_true label_27
+	branch_false label_28
+label_29:
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 1
+	add
+	assign
+	jump label_26
+label_27:
+	shift_sp -1
+str_17. string "\tb[a] : "
+	push_const str_17
+	write_string
+	push_const Lglob
+	push_const 1
+	add
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	push_const 1
+	mul
+	add
+	fetch
+	write_int
+str_18. string "\n"
+	push_const str_18
+	write_string
+	jump label_29
+label_28:
 	jump label_25
 label_24:
 main_final:

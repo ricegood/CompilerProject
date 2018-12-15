@@ -63,5 +63,12 @@ void main() {
 		write_string("b[i] : ");
 		write_int(b[i]);
 		write_string("\n");
+		/*
+		for (a = i; a < 10; a++) {
+			write_string("\tb[a] : ");
+			write_int(b[a]);
+			write_string("\n");
+		}
+		*/
 	}
 }
