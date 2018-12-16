@@ -629,7 +629,7 @@ expr
             int var_offset = 0;
 
             // fill the value
-            if(!check_is_struct_from_return(parsing_binary_decl)) {
+            if(!check_is_struct_from_return(parsing_binary_decl) && !(parsing_binary_decl->is_from_pointer && check_is_struct_type(parsing_binary_decl->type) && parsing_binary_decl->size > 1)) {
                 // if it has its struct scope (declared struct)
                 while (++var_offset < $1->size) {
                     // for not singleton variable (struct) *array assignment is semantic error*
@@ -667,6 +667,12 @@ expr
             }
             
             CODE("assign");
+
+            if (parsing_binary_decl->is_from_pointer && check_is_struct_type(parsing_binary_decl->type) && parsing_binary_decl->size > 1) {
+                // *(structure pointer) case
+                CODE("shift_sp -2");
+            }
+
             CODE("fetch");
             //CODE("shift_sp -1");
         }
@@ -817,7 +823,34 @@ binary
             /* code generation */
             // this code is for prevent from such as const_int fetch
             // fetch only "unary->ID" reduce case. (same condition!)
-            if ((check_is_var($1) || check_is_array($1->type)) && !no_fetch) {
+            if ($1->is_from_pointer && check_is_struct_type($1->type) && $1->size > 1) {
+                // *(structure pointer) type => fill the value
+                // Q. but then how can do binary + binary (pointer + int) ?
+                // A. this case, size > 1 struct , there are no + / - / EQUOP / RELOP def in c
+
+                // initial settings to memory the address value
+                CODE("push_reg sp");
+                CODE("push_const -1");
+                CODE("add");
+                CODE("fetch"); // address of LHS.(1st field)
+                CODE("push_reg sp");
+                CODE("push_const -1");
+                CODE("add");
+                CODE("fetch");
+                CODE("fetch"); // value of RHS.(1st field)
+
+                int var_offset = 0;
+                while (++var_offset < $1->size) {
+                    CODE("push_reg sp");
+                    printf("\tpush_const %d\n", -1-var_offset);
+                    CODE("add");
+                    CODE("fetch");
+                    printf("\tpush_const %d\n", var_offset);
+                    CODE("add");
+                    CODE("fetch");
+                }
+            }
+            else if ((check_is_var($1) || check_is_array($1->type)) && !no_fetch) {
                 CODE("fetch");
             }
             no_fetch = 0; // reset
@@ -1033,6 +1066,7 @@ unary
             if($2) {
                 if (check_is_pointer_type($2->type)) {
                     $$ = makevardecl($2->type->ptrto);
+                    $$->is_from_pointer = 1;
                 }
                 else {
                     ERROR("not a pointer");

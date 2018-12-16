@@ -17,10 +17,10 @@ void main() {
 	struct s *s2;
 	struct s s3;
 
-/*	s1 = *foo2(5); */
+	s1 = *foo2(5);
 	s2 = foo2(5);
-/*	s3 = *s2; */
-/*
+	s3 = *s2; 
+
 	write_int(s1.x); /* 18 */
 	write_string("\n");
 	write_int(s1.y[0]); /* 7 */
@@ -30,7 +30,7 @@ void main() {
 	write_int(s1.z); /* 3 */
 	write_string("\n=====================\n");
 
-*/
+
 	write_int(s2->x); /* 18 */
 	write_string("\n");
 	write_int(s2->y[0]); /* 7 */

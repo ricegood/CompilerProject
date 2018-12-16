@@ -89,7 +89,8 @@ typedef struct decl {
 	struct id *id;
 	int check_param; // It saves sum_of_args_size (if it is greater than 0, it isparameter)
 	char *stringvalue;
-	int is_return_value; // to distinghish return value or local value
+	int is_return_value; // to distinguish return value or local value
+	int is_from_pointer; // to distinguish unary from *(pointer value)
 } decl;
 
 /* For hash table */
