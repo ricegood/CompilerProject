@@ -31,7 +31,6 @@ main_start:
 	push_const 10
 	assign
 	fetch
-	shift_sp -1
 	shift_sp 1
 	push_const label_1
 	push_reg fp

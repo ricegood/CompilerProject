@@ -17,7 +17,6 @@ main_start:
 	push_const 7
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 5
 	add
@@ -40,7 +39,6 @@ main_start:
 	sub
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 2
 	add
@@ -61,7 +59,6 @@ main_start:
 	fetch
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 2
 	add

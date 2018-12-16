@@ -20,7 +20,6 @@ main_start:
 	fetch
 	assign
 	fetch
-	shift_sp -1
 main_final:
 	push_reg fp
 	pop_reg sp

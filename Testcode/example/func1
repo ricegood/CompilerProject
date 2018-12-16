@@ -24,7 +24,6 @@ outprint_start:
 	add
 	assign
 	fetch
-	shift_sp -1
 outprint_final:
 	push_reg fp
 	pop_reg sp
@@ -42,7 +41,6 @@ main_start:
 	push_const 10
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 3
 	add
@@ -53,7 +51,6 @@ main_start:
 	add
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 1
 	add
@@ -74,7 +71,6 @@ main_start:
 label_1:
 	assign
 	fetch
-	shift_sp -1
 	push_reg fp
 	push_const 2
 	add
