@@ -1,0 +1,16 @@
+	shift_sp 1
+	push_const EXIT
+	push_reg fp
+	push_reg sp
+	pop_reg fp
+	jump main
+EXIT:
+	exit
+main:
+	shift_sp 0
+main_start:
+str_1. string "-----------------------a"
+	push_const str_1
+	write_string
+str_2. string "aaaaaaaaaaaaaaaaaaaaaaa"
+	push_const str_2

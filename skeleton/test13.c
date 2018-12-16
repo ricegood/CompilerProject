@@ -1,3 +1,5 @@
+/* return *(pointer structure) */
+
 struct s {
 	int x;
 	char y[2];
@@ -13,6 +15,7 @@ struct s foo(int x, struct s *y, int *z) {
 void main() {
 	struct s a;
 	struct s aa;
+
 	int b;
 	int c;
 	int *d;
@@ -26,39 +29,38 @@ void main() {
 	c = 273;
 	d = &b;
 
-	write_int(a.x); // 777
+	write_int(a.x); /* 777 */
 	write_string("\n");
-	write_char(a.y[0]); // 'z'
+	write_char(a.y[0]); /* 'z' */
 	write_string("\n");
-	write_char(a.y[1]); // 'm'
+	write_char(a.y[1]); /* 'm' */
 	write_string("\n");
-	write_int(a.z); // 123
+	write_int(a.z); /* 123 */
 	write_string("\n");
-	write_int(c); // 273
+	write_int(c); /* 273 */
 	write_string("\n");
+	write_string("====================\n");
 
-	write_string("=====================\n")
+    aa = foo(*d, &a, &c);
 
-	aa = foo(*d, &a, &c);
+	write_int(a.x); /* 1227 */
+	write_string("\n");
+	write_char(a.y[0]); /* 'z' */
+	write_string("\n");
+	write_char(a.y[1]); /* 'm' */
+	write_string("\n");
+	write_int(a.z); /* 123 */
+	write_string("\n");
+	write_int(c); /* 1227 */
+	write_string("\n");
+	write_string("====================\n");
 
-	write_int(a.x); // 1227
+	write_int(aa.x); /* 1227 */
 	write_string("\n");
-	write_char(a.y[0]); // 'z'
+	write_char(aa.y[0]); /* 'z' */
 	write_string("\n");
-	write_char(a.y[1]); // 'm'
+	write_char(aa.y[1]); /* 'm' */
 	write_string("\n");
-	write_int(a.z); // 123
-	write_string("\n");
-	write_int(c); // 1227
-	write_string("\n");
-
-	write_string("=====================\n")
-	write_int(aa.x); // 1227
-	write_string("\n");
-	write_char(aa.y[0]); // 'z'
-	write_string("\n");
-	write_char(aa.y[1]); // 'm'
-	write_string("\n");
-	write_int(aa.z); // 123
+	write_int(aa.z); /* 123 */
 	write_string("\n");
 }

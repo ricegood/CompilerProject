@@ -121,6 +121,7 @@ struct decl *makevardecl(struct decl* typedecl) {
 
 struct decl *makeconstdecl(struct decl* typedecl) {
 	/* make new decl */
+	// [Q] here is very weird error in writestring 23 characters twice..
 	struct decl *new_decl = malloc(sizeof(struct decl));
 
 	/* initialization */

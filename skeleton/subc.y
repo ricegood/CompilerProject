@@ -442,13 +442,16 @@ stmt
 
             int var_offset = 0;
 
-            // fill the value
-            while (++var_offset < findcurrentdecl(returnid)->size) {
-                // for not singleton variable (struct) *array assignment is semantic error*
-                push_address(parsing_binary_decl, var_offset);
-                CODE("fetch");
+            if (!parsing_binary_decl->is_from_pointer) {
+                // fill the value
+                while (++var_offset < findcurrentdecl(returnid)->size) {
+                    // for not singleton variable (struct) *array assignment is semantic error*
+                    push_address(parsing_binary_decl, var_offset);
+                    CODE("fetch");
+                }
             }
             
+            var_offset = findcurrentdecl(returnid)->size;
             // assign
             while (--var_offset > 0) {
                 // push address
@@ -1081,7 +1084,7 @@ unary
             // one more fetch to read address
             // but pointer from function return is already fetched value (already true address)
             // + pointer & (expr) => already address, because it has fetched in unary->binary (->expr) ... => declclass == CONST_....
-            
+
             // CONST pointer : 
             // 1) args  2) &something  3) function return(it can use $2->is_return_value)
 
@@ -1149,7 +1152,6 @@ unary
                 args pointer last pushed args.
                 args->elementvar field pointer first pushed args.
             */
-
             if (check_is_proc($1)) {
                 if ($4)
                     $$ = check_function_call($1, $4->elementvar);
@@ -1214,7 +1216,7 @@ args    /* actual parameters(function arguments) transferred to function */
         : expr
         {
             /* expr semantic value type is TYPEDECL */
-            $$ = makeconstdecl($1);
+            $$ = makeconstdecl($1); // [Q] here is very weird error in writestring 23 characters twice..
             $$->elementvar = $$; /* to save first args pointer. */
 
             /* code generation */
