@@ -1,0 +1,142 @@
+	shift_sp 1
+	push_const EXIT
+	push_reg fp
+	push_reg sp
+	pop_reg fp
+	jump main
+EXIT:
+	exit
+foo:
+	shift_sp 1
+foo_start:
+	push_reg fp
+	push_const 2
+	add
+	push_reg sp
+	fetch
+	push_const Lglob
+	push_const 0
+	add
+	fetch
+	push_const Lglob
+	push_const 1
+	add
+	push_const 1
+	push_const 1
+	mul
+	add
+	fetch
+	add
+	push_const Lglob
+	push_const 21
+	add
+	push_const 0
+	add
+	fetch
+	add
+	push_const Lglob
+	push_const 21
+	add
+	push_const 1
+	add
+	fetch
+	add
+	push_reg fp
+	push_const 1
+	add
+	fetch
+	fetch
+	add
+	assign
+	fetch
+	push_reg fp
+	push_const -1
+	add
+	push_const -1
+	add
+	push_reg fp
+	push_const 2
+	add
+	fetch
+	assign
+	jump foo_final
+foo_final:
+	push_reg fp
+	pop_reg sp
+	pop_reg fp
+	pop_reg pc
+foo_end:
+main:
+	shift_sp 1
+main_start:
+	push_const Lglob
+	push_const 0
+	add
+	push_reg sp
+	fetch
+	push_const 4
+	assign
+	fetch
+	push_const Lglob
+	push_const 1
+	add
+	push_const 1
+	push_const 1
+	mul
+	add
+	push_reg sp
+	fetch
+	push_const 6
+	assign
+	fetch
+	push_const Lglob
+	push_const 21
+	add
+	push_const 0
+	add
+	push_reg sp
+	fetch
+	push_const 3
+	assign
+	fetch
+	push_const Lglob
+	push_const 21
+	add
+	push_const 1
+	add
+	push_reg sp
+	fetch
+	push_const 127
+	assign
+	fetch
+	push_reg fp
+	push_const 1
+	add
+	push_reg sp
+	fetch
+	push_const 6
+	assign
+	fetch
+	shift_sp 1
+	push_const label_1
+	push_reg fp
+	push_reg fp
+	push_const 1
+	add
+	push_reg sp
+	push_const -1
+	add
+	pop_reg fp
+	jump foo
+label_1:
+	write_int
+str_1. string "\n"
+	push_const str_1
+	write_string
+main_final:
+	push_reg fp
+	pop_reg sp
+	pop_reg fp
+	pop_reg pc
+main_end:
+	Lglob. data 23
