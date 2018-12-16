@@ -793,6 +793,11 @@ binary
             }
 
             /* code generation */
+            if (check_is_pointer_type($1) && $1->ptrto->size > 1) {
+                // for struct pointer + int
+                fprintf(fp, "\tpush_const %d\n", $1->ptrto->size);
+                CODE("mul");
+            }
             CODE("add");
         }
         | binary '-' binary
@@ -807,6 +812,11 @@ binary
             }
 
             /* code generation */
+            if (check_is_pointer_type($1) && $1->ptrto->size > 1) {
+                // for struct pointer - int
+                fprintf(fp, "\tpush_const %d\n", $1->ptrto->size);
+                CODE("mul");
+            }
             CODE("sub");
         }
         | unary %prec '='

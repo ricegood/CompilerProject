@@ -418,17 +418,18 @@ str_9. string "\n"
 	push_reg fp
 	push_const 8
 	add
+	push_reg sp
 	fetch
 	push_reg fp
 	push_const 8
 	add
-	push_reg fp
-	push_const 8
-	add
 	fetch
+	push_const 1
 	push_const 5
+	mul
 	add
 	assign
+	fetch
 str_10. string "-----\n"
 	push_const str_10
 	write_string
@@ -529,17 +530,18 @@ str_14. string "\n"
 	push_reg fp
 	push_const 8
 	add
+	push_reg sp
 	fetch
 	push_reg fp
 	push_const 8
 	add
-	push_reg fp
-	push_const 8
-	add
 	fetch
-	push_const -5
-	add
+	push_const 1
+	push_const 5
+	mul
+	sub
 	assign
+	fetch
 str_15. string "-----\n"
 	push_const str_15
 	write_string

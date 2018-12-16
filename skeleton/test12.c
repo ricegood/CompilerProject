@@ -56,7 +56,8 @@ void main(){
 		write_int(bb[i].z);
 		write_string("\n");
 		i++;
-		aa++;
+		/*aa++;*/
+		aa = aa+1;
 		write_string("-----\n");
 	}
 
@@ -74,7 +75,8 @@ void main(){
 		write_string("\n");
 
 		i++;
-		aa--;
+		/*aa--;*/
+		aa = aa-1;
 
 		write_string("-----\n");
 	}
