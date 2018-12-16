@@ -1491,7 +1491,7 @@ yyreduce:
             FUNC_LABEL(labelname, "end");
             if (strcmp(labelname,"main") == 0) {
                 // in main function, set global variable memory size
-                printf("\tLglob. data %d\n", globalscope->sumofsize);
+                fprintf(fp, "\tLglob. data %d\n", globalscope->sumofsize);
             }
         }
 #line 1498 "subc.tab.c" /* yacc.c:1646  */
@@ -1793,7 +1793,7 @@ yyreduce:
     {
             /* code generation */
             if (is_func_decl && block_number == 1) {
-                printf("\tshift_sp %d\n", top->sumofsize);
+                fprintf(fp, "\tshift_sp %d\n", top->sumofsize);
                 FUNC_LABEL(labelname, "start");
             }
         }
@@ -1821,7 +1821,7 @@ yyreduce:
             /* code generation */
             CODE("push_const 0"); // no return expr, so return value = 0
             CODE("assign");
-            printf("\tjump %s_final\n", labelname);
+            fprintf(fp, "\tjump %s_final\n", labelname);
         }
 #line 1827 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1857,7 +1857,7 @@ yyreduce:
                 CODE("push_reg fp");
                 CODE("push_const -1");
                 CODE("add"); // fp-1 (return address)
-                printf("\tpush_const %d\n", -findcurrentdecl(returnid)->size + var_offset);
+                fprintf(fp, "\tpush_const %d\n", -findcurrentdecl(returnid)->size + var_offset);
                 CODE("add"); // return value : fp-2 => (struct : fp-1-size)
 
                 // push value
@@ -1874,7 +1874,7 @@ yyreduce:
             }
 
             CODE("assign");
-            printf("\tjump %s_final\n", labelname);
+            fprintf(fp, "\tjump %s_final\n", labelname);
         }
 #line 1880 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1883,7 +1883,7 @@ yyreduce:
 #line 482 "subc.y" /* yacc.c:1646  */
     {   
             /* code generation */
-            printf("label_%d:\n", (yyvsp[-1].intVal));
+            fprintf(fp, "label_%d:\n", (yyvsp[-1].intVal));
         }
 #line 1889 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1893,8 +1893,8 @@ yyreduce:
     {   
             /* code generation */
             (yyval.intVal) = new_label();
-            printf("\tjump label_%d\n", (yyval.intVal));
-            printf("label_%d:\n", (yyvsp[-2].intVal));
+            fprintf(fp, "\tjump label_%d\n", (yyval.intVal));
+            fprintf(fp, "label_%d:\n", (yyvsp[-2].intVal));
         }
 #line 1900 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1903,7 +1903,7 @@ yyreduce:
 #line 494 "subc.y" /* yacc.c:1646  */
     {
             /* code generation */
-            printf("label_%d:\n", (yyvsp[-1].intVal));
+            fprintf(fp, "label_%d:\n", (yyvsp[-1].intVal));
         }
 #line 1909 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1913,7 +1913,7 @@ yyreduce:
     {
             /* code generation */
             (yyval.intVal) = new_label();
-            printf("label_%d:\n", (yyval.intVal));
+            fprintf(fp, "label_%d:\n", (yyval.intVal));
             push_label_stack(&continue_label_stack, (yyval.intVal)); // save the return label number for CONTINUE in WHLIE
         }
 #line 1920 "subc.tab.c" /* yacc.c:1646  */
@@ -1924,7 +1924,7 @@ yyreduce:
     {
             /* code generation */
             (yyval.intVal) = new_label();
-            printf("\tbranch_false label_%d\n", (yyval.intVal));
+            fprintf(fp, "\tbranch_false label_%d\n", (yyval.intVal));
             push_label_stack(&break_label_stack, (yyval.intVal)); // save the return label number for BREAK in WHILE
         }
 #line 1931 "subc.tab.c" /* yacc.c:1646  */
@@ -1934,8 +1934,8 @@ yyreduce:
 #line 513 "subc.y" /* yacc.c:1646  */
     {
             /* code generation */
-            printf("\tjump label_%d\n", (yyvsp[-5].intVal));
-            printf("label_%d:\n", (yyvsp[-1].intVal)); // branch false
+            fprintf(fp, "\tjump label_%d\n", (yyvsp[-5].intVal));
+            fprintf(fp, "label_%d:\n", (yyvsp[-1].intVal)); // branch false
             pop_label_stack(&continue_label_stack); // pop this loop stmt label for CONTINUE
             pop_label_stack(&break_label_stack); // pop this loop stmt label for BREAK
         }
@@ -1948,7 +1948,7 @@ yyreduce:
             /* $<intVal>5 */
             /* code generation */
             (yyval.intVal) = new_label();
-            printf("label_%d:\n", (yyval.intVal));
+            fprintf(fp, "label_%d:\n", (yyval.intVal));
         }
 #line 1954 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1961,8 +1961,8 @@ yyreduce:
             (yyval.intVal) = new_label();
             CODE("push_reg sp");
             CODE("fetch"); // to compare false condition
-            printf("\tbranch_true label_%d\n", (yyval.intVal));
-            printf("\tbranch_false label_%d\n", new_label()); // $<intVal>7+1
+            fprintf(fp, "\tbranch_true label_%d\n", (yyval.intVal));
+            fprintf(fp, "\tbranch_false label_%d\n", new_label()); // $<intVal>7+1
             push_label_stack(&break_label_stack, (yyval.intVal)+1); // save the return label number for BREAK in FOR
         }
 #line 1969 "subc.tab.c" /* yacc.c:1646  */
@@ -1974,7 +1974,7 @@ yyreduce:
             /* $<intVal>9 */
             /* code generation */
             (yyval.intVal) = new_label();
-            printf("label_%d:\n", (yyval.intVal));
+            fprintf(fp, "label_%d:\n", (yyval.intVal));
             push_label_stack(&continue_label_stack, (yyval.intVal)); // save the return label number for CONTINUE in FOR
         }
 #line 1981 "subc.tab.c" /* yacc.c:1646  */
@@ -1984,7 +1984,7 @@ yyreduce:
 #line 547 "subc.y" /* yacc.c:1646  */
     {
             /* code generation */
-            printf("\tjump label_%d\n", (yyvsp[-5].intVal));
+            fprintf(fp, "\tjump label_%d\n", (yyvsp[-5].intVal));
         }
 #line 1990 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -1993,7 +1993,7 @@ yyreduce:
 #line 552 "subc.y" /* yacc.c:1646  */
     {
            /* code generation */
-            printf("label_%d:\n", (yyvsp[-5].intVal)); // branch true
+            fprintf(fp, "label_%d:\n", (yyvsp[-5].intVal)); // branch true
             CODE("shift_sp -1"); // pop the top one which pushed to compare the false label
         }
 #line 2000 "subc.tab.c" /* yacc.c:1646  */
@@ -2003,8 +2003,8 @@ yyreduce:
 #line 558 "subc.y" /* yacc.c:1646  */
     {
             /* code generation */
-            printf("\tjump label_%d\n", (yyvsp[-5].intVal));
-            printf("label_%d:\n", (yyvsp[-7].intVal) + 1); // branch false
+            fprintf(fp, "\tjump label_%d\n", (yyvsp[-5].intVal));
+            fprintf(fp, "label_%d:\n", (yyvsp[-7].intVal) + 1); // branch false
             pop_label_stack(&continue_label_stack); // pop this loop stmt label for CONTINUE
             pop_label_stack(&break_label_stack); // pop this loop stmt label for BREAK
         }
@@ -2014,7 +2014,7 @@ yyreduce:
   case 62:
 #line 566 "subc.y" /* yacc.c:1646  */
     {
-            printf("\tjump label_%d\n", get_break_label_number());
+            fprintf(fp, "\tjump label_%d\n", get_break_label_number());
         }
 #line 2020 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2022,7 +2022,7 @@ yyreduce:
   case 63:
 #line 570 "subc.y" /* yacc.c:1646  */
     {
-            printf("\tjump label_%d\n", get_continue_label_number());
+            fprintf(fp, "\tjump label_%d\n", get_continue_label_number());
         }
 #line 2028 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2034,7 +2034,7 @@ yyreduce:
             CODE("push_reg fp");
             CODE("push_const -1");
             CODE("add"); // fp-1 (return address)
-            printf("\tpush_const %d\n", -findcurrentdecl(returnid)->size);
+            fprintf(fp, "\tpush_const %d\n", -findcurrentdecl(returnid)->size);
             CODE("add"); // return value : fp-2 => (struct : fp-1-size)
         }
 #line 2041 "subc.tab.c" /* yacc.c:1646  */
@@ -2045,7 +2045,7 @@ yyreduce:
     {
             /* code generation */
             (yyval.intVal) = new_label();
-            printf("\tbranch_false label_%d\n", (yyval.intVal));
+            fprintf(fp, "\tbranch_false label_%d\n", (yyval.intVal));
         }
 #line 2051 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2109,10 +2109,10 @@ yyreduce:
             while (var_offset > 1) {
                 // push address
                 CODE("push_reg sp");
-                printf("\tpush_const %d\n", -var_offset);
+                fprintf(fp, "\tpush_const %d\n", -var_offset);
                 CODE("add");
                 CODE("fetch");
-                printf("\tpush_const %d\n", --var_offset);
+                fprintf(fp, "\tpush_const %d\n", --var_offset);
                 CODE("add");
 
                 // push value
@@ -2317,10 +2317,10 @@ yyreduce:
                 int var_offset = 0;
                 while (++var_offset < (yyvsp[0].declptr)->size) {
                     CODE("push_reg sp");
-                    printf("\tpush_const %d\n", -1-var_offset);
+                    fprintf(fp, "\tpush_const %d\n", -1-var_offset);
                     CODE("add");
                     CODE("fetch");
-                    printf("\tpush_const %d\n", var_offset);
+                    fprintf(fp, "\tpush_const %d\n", var_offset);
                     CODE("add");
                     CODE("fetch");
                 }
@@ -2357,7 +2357,7 @@ yyreduce:
 
             /* code generation */
             if (!is_array_decl)
-                printf("\tpush_const %d\n", (yyval.declptr)->value);
+                fprintf(fp, "\tpush_const %d\n", (yyval.declptr)->value);
         }
 #line 2363 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2368,7 +2368,7 @@ yyreduce:
             (yyval.declptr) = makeintconstdecl(chartype, (yyvsp[0].intVal));
 
             /* code generation */
-            printf("\tpush_const %d\n", (yyval.declptr)->value);
+            fprintf(fp, "\tpush_const %d\n", (yyval.declptr)->value);
         }
 #line 2374 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2379,8 +2379,8 @@ yyreduce:
             (yyval.declptr) = makestringconstdecl(stringtype, (yyvsp[0].stringVal));
 
             /* code generation */
-            printf("str_%d. string %s\n", new_string(), (yyval.declptr)->stringvalue);
-            printf("\tpush_const str_%d\n", stringnumber);
+            fprintf(fp, "str_%d. string %s\n", new_string(), (yyval.declptr)->stringvalue);
+            fprintf(fp, "\tpush_const str_%d\n", stringnumber);
         }
 #line 2386 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2459,11 +2459,11 @@ yyreduce:
             CODE("fetch");
             if (check_is_pointer_type((yyvsp[-1].declptr)->type)){
                 // pointer (++ptrto size)
-                printf("\tpush_const %d\n", (yyvsp[-1].declptr)->type->ptrto->size);
+                fprintf(fp, "\tpush_const %d\n", (yyvsp[-1].declptr)->type->ptrto->size);
             }
             else {
                 // int, char, struct
-                printf("\tpush_const %d\n", (yyvsp[-1].declptr)->size);
+                fprintf(fp, "\tpush_const %d\n", (yyvsp[-1].declptr)->size);
             }
             CODE("add");
             CODE("assign");
@@ -2490,11 +2490,11 @@ yyreduce:
             CODE("fetch");
             if (check_is_pointer_type((yyvsp[-1].declptr)->type)){
                 // pointer (++ptrto size)
-                printf("\tpush_const -%d\n", (yyvsp[-1].declptr)->type->ptrto->size);
+                fprintf(fp, "\tpush_const -%d\n", (yyvsp[-1].declptr)->type->ptrto->size);
             }
             else {
                 // int, char, struct
-                printf("\tpush_const -%d\n", (yyvsp[-1].declptr)->size);
+                fprintf(fp, "\tpush_const -%d\n", (yyvsp[-1].declptr)->size);
             }
             CODE("add");
             CODE("assign");
@@ -2520,11 +2520,11 @@ yyreduce:
             CODE("fetch");
             if (check_is_pointer_type((yyvsp[0].declptr)->type)){
                 // pointer (++ptrto size)
-                printf("\tpush_const %d\n", (yyvsp[0].declptr)->type->ptrto->size);
+                fprintf(fp, "\tpush_const %d\n", (yyvsp[0].declptr)->type->ptrto->size);
             }
             else {
                 // int, char, struct
-                printf("\tpush_const %d\n", (yyvsp[0].declptr)->size);
+                fprintf(fp, "\tpush_const %d\n", (yyvsp[0].declptr)->size);
             }
             CODE("add");
             CODE("assign");
@@ -2549,11 +2549,11 @@ yyreduce:
             CODE("fetch");
             if (check_is_pointer_type((yyvsp[0].declptr)->type)){
                 // pointer (++ptrto size)
-                printf("\tpush_const -%d\n", (yyvsp[0].declptr)->type->ptrto->size);
+                fprintf(fp, "\tpush_const -%d\n", (yyvsp[0].declptr)->type->ptrto->size);
             }
             else {
                 // int, char, struct
-                printf("\tpush_const -%d\n", (yyvsp[0].declptr)->size);
+                fprintf(fp, "\tpush_const -%d\n", (yyvsp[0].declptr)->size);
             }
             CODE("add");
             CODE("assign");
@@ -2630,7 +2630,7 @@ yyreduce:
 
             /* code generation */
             // array access
-            printf("\tpush_const %d\n", ((yyvsp[-3].declptr)->size)/((yyvsp[-3].declptr)->num_index));
+            fprintf(fp, "\tpush_const %d\n", ((yyvsp[-3].declptr)->size)/((yyvsp[-3].declptr)->num_index));
             CODE("mul");
             CODE("add");
         }
@@ -2655,11 +2655,11 @@ yyreduce:
             // print unary address (in case of struct from function return)
             if (check_is_struct_from_return((yyvsp[-2].declptr))) {
                 CODE("push_reg sp");
-                printf("\tpush_const %d\n", -((yyvsp[-2].declptr)->size-1));
+                fprintf(fp, "\tpush_const %d\n", -((yyvsp[-2].declptr)->size-1));
                 CODE("add");
             }
             
-            printf("\tpush_const %d\n", (yyval.declptr)->offset);
+            fprintf(fp, "\tpush_const %d\n", (yyval.declptr)->offset);
             CODE("add");
         }
 #line 2666 "subc.tab.c" /* yacc.c:1646  */
@@ -2681,7 +2681,7 @@ yyreduce:
             // struct access
             if (!(yyvsp[-2].declptr)->is_return_value)
                 CODE("fetch"); // to get address (*pointer return value is already address)
-            printf("\tpush_const %d\n", (yyval.declptr)->offset);
+            fprintf(fp, "\tpush_const %d\n", (yyval.declptr)->offset);
             CODE("add");
         }
 #line 2688 "subc.tab.c" /* yacc.c:1646  */
@@ -2715,11 +2715,11 @@ yyreduce:
             else {
                 // push the actual parameters on the stack in 'args' reducing procedure
                 CODE("push_reg sp"); // FP = SP
-                printf("\tpush_const -%d\n", sumofargs);
+                fprintf(fp, "\tpush_const -%d\n", sumofargs);
                 CODE("add");
                 CODE("pop_reg fp");
-                printf("\tjump %s\n", (yyvsp[-4].declptr)->id->name); // Then, jump
-                printf("label_%d:\n", (yyvsp[-2].intVal)); // print label
+                fprintf(fp, "\tjump %s\n", (yyvsp[-4].declptr)->id->name); // Then, jump
+                fprintf(fp, "label_%d:\n", (yyvsp[-2].intVal)); // print label
             }
         }
 #line 2726 "subc.tab.c" /* yacc.c:1646  */
@@ -2738,8 +2738,8 @@ yyreduce:
             // no actual parameters
             CODE("push_reg sp"); // FP = SP
             CODE("pop_reg fp");
-            printf("\tjump %s\n", (yyvsp[-3].declptr)->id->name); // Then, jump
-            printf("label_%d:\n", (yyvsp[-1].intVal)); // print label
+            fprintf(fp, "\tjump %s\n", (yyvsp[-3].declptr)->id->name); // Then, jump
+            fprintf(fp, "label_%d:\n", (yyvsp[-1].intVal)); // print label
         }
 #line 2745 "subc.tab.c" /* yacc.c:1646  */
     break;
@@ -2758,9 +2758,9 @@ yyreduce:
             /* code generation */
             // caller convention
             if((yyvsp[(-1) - (0)].declptr) != write_int && (yyvsp[(-1) - (0)].declptr) != write_string && (yyvsp[(-1) - (0)].declptr) != write_char) {
-                printf("\tshift_sp %d\n", (yyvsp[(-1) - (0)].declptr)->returntype->size); // push a hole for return value
+                fprintf(fp, "\tshift_sp %d\n", (yyvsp[(-1) - (0)].declptr)->returntype->size); // push a hole for return value
                 (yyval.intVal) = new_label();
-                printf("\tpush_const label_%d\n", (yyval.intVal)); // push the return address
+                fprintf(fp, "\tpush_const label_%d\n", (yyval.intVal)); // push the return address
                 CODE("push_reg fp"); // push the old FP
             }
             sumofargs = 0; // reset
@@ -3053,19 +3053,19 @@ void push_address(struct decl* decl_ptr, int offset) {
         switch (check_variable_scope(decl_ptr)) {
             case GLOBAL:
                 CODE("push_const Lglob");
-                printf("\tpush_const %d\n", decl_ptr->offset + offset);
+                fprintf(fp, "\tpush_const %d\n", decl_ptr->offset + offset);
                 CODE("add");
                 break;
 
             case PARAM:
                 CODE("push_reg fp");
-                printf("\tpush_const %d\n", 1 + decl_ptr->offset + offset);
+                fprintf(fp, "\tpush_const %d\n", 1 + decl_ptr->offset + offset);
                 CODE("add");
                 break;
 
             case LOCAL:
                 CODE("push_reg fp");
-                printf("\tpush_const %d\n", 1 + decl_ptr->scope->sumofparams + decl_ptr->offset + offset);
+                fprintf(fp, "\tpush_const %d\n", 1 + decl_ptr->scope->sumofparams + decl_ptr->offset + offset);
                 CODE("add");
                 break;
 
@@ -3090,15 +3090,15 @@ void ERROR(char* s) {
 }
 
 void CODE(char *s) {
-    printf("\t%s\n",s);
+    fprintf(fp, "\t%s\n",s);
 }
 
 void LABEL(char *s) {
-    printf("%s:\n",s);
+    fprintf(fp, "%s:\n",s);
 }
 
 void FUNC_LABEL(char *func_name, char *label) {
-    printf("%s_%s:\n", func_name, label);
+    fprintf(fp, "%s_%s:\n", func_name, label);
 }
 
 int new_label() {

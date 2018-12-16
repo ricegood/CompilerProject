@@ -24,6 +24,8 @@ char* labelname;
 int stringnumber;
 int sumofargs;
 
+FILE *fp;
+
 int debugging; // set 1 => debug mode (print scope stack)
 
 /* for scope stack */

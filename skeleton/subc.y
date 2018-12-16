@@ -154,7 +154,7 @@ ext_def
             FUNC_LABEL(labelname, "end");
             if (strcmp(labelname,"main") == 0) {
                 // in main function, set global variable memory size
-                printf("\tLglob. data %d\n", globalscope->sumofsize);
+                fprintf(fp, "\tLglob. data %d\n", globalscope->sumofsize);
             }
         }
 
@@ -395,7 +395,7 @@ compound_stmt
         {
             /* code generation */
             if (is_func_decl && block_number == 1) {
-                printf("\tshift_sp %d\n", top->sumofsize);
+                fprintf(fp, "\tshift_sp %d\n", top->sumofsize);
                 FUNC_LABEL(labelname, "start");
             }
         }
@@ -426,7 +426,7 @@ stmt
             /* code generation */
             CODE("push_const 0"); // no return expr, so return value = 0
             CODE("assign");
-            printf("\tjump %s_final\n", labelname);
+            fprintf(fp, "\tjump %s_final\n", labelname);
         }
         | RETURN return_code_gen expr ';'
         {   
@@ -458,7 +458,7 @@ stmt
                 CODE("push_reg fp");
                 CODE("push_const -1");
                 CODE("add"); // fp-1 (return address)
-                printf("\tpush_const %d\n", -findcurrentdecl(returnid)->size + var_offset);
+                fprintf(fp, "\tpush_const %d\n", -findcurrentdecl(returnid)->size + var_offset);
                 CODE("add"); // return value : fp-2 => (struct : fp-1-size)
 
                 // push value
@@ -475,45 +475,45 @@ stmt
             }
 
             CODE("assign");
-            printf("\tjump %s_final\n", labelname);
+            fprintf(fp, "\tjump %s_final\n", labelname);
         }
         | ';'
         | IF '(' expr ')' if_branch_code_gen stmt
         {   
             /* code generation */
-            printf("label_%d:\n", $5);
+            fprintf(fp, "label_%d:\n", $5);
         }
         | IF '(' expr ')' if_branch_code_gen stmt ELSE
         {   
             /* code generation */
             $<intVal>$ = new_label();
-            printf("\tjump label_%d\n", $<intVal>$);
-            printf("label_%d:\n", $5);
+            fprintf(fp, "\tjump label_%d\n", $<intVal>$);
+            fprintf(fp, "label_%d:\n", $5);
         }
         stmt
         {
             /* code generation */
-            printf("label_%d:\n", $<intVal>8);
+            fprintf(fp, "label_%d:\n", $<intVal>8);
         }
         | WHILE
         {
             /* code generation */
             $<intVal>$ = new_label();
-            printf("label_%d:\n", $<intVal>$);
+            fprintf(fp, "label_%d:\n", $<intVal>$);
             push_label_stack(&continue_label_stack, $<intVal>$); // save the return label number for CONTINUE in WHLIE
         }
         '(' expr ')' 
         {
             /* code generation */
             $<intVal>$ = new_label();
-            printf("\tbranch_false label_%d\n", $<intVal>$);
+            fprintf(fp, "\tbranch_false label_%d\n", $<intVal>$);
             push_label_stack(&break_label_stack, $<intVal>$); // save the return label number for BREAK in WHILE
         }
         stmt
         {
             /* code generation */
-            printf("\tjump label_%d\n", $<intVal>2);
-            printf("label_%d:\n", $<intVal>6); // branch false
+            fprintf(fp, "\tjump label_%d\n", $<intVal>2);
+            fprintf(fp, "label_%d:\n", $<intVal>6); // branch false
             pop_label_stack(&continue_label_stack); // pop this loop stmt label for CONTINUE
             pop_label_stack(&break_label_stack); // pop this loop stmt label for BREAK
         }
@@ -522,7 +522,7 @@ stmt
             /* $<intVal>5 */
             /* code generation */
             $<intVal>$ = new_label();
-            printf("label_%d:\n", $<intVal>$);
+            fprintf(fp, "label_%d:\n", $<intVal>$);
         }
         expr_e
         {
@@ -531,8 +531,8 @@ stmt
             $<intVal>$ = new_label();
             CODE("push_reg sp");
             CODE("fetch"); // to compare false condition
-            printf("\tbranch_true label_%d\n", $<intVal>$);
-            printf("\tbranch_false label_%d\n", new_label()); // $<intVal>7+1
+            fprintf(fp, "\tbranch_true label_%d\n", $<intVal>$);
+            fprintf(fp, "\tbranch_false label_%d\n", new_label()); // $<intVal>7+1
             push_label_stack(&break_label_stack, $<intVal>$+1); // save the return label number for BREAK in FOR
         }
         ';'
@@ -540,35 +540,35 @@ stmt
             /* $<intVal>9 */
             /* code generation */
             $<intVal>$ = new_label();
-            printf("label_%d:\n", $<intVal>$);
+            fprintf(fp, "label_%d:\n", $<intVal>$);
             push_label_stack(&continue_label_stack, $<intVal>$); // save the return label number for CONTINUE in FOR
         }
         expr_e
         {
             /* code generation */
-            printf("\tjump label_%d\n", $<intVal>5);
+            fprintf(fp, "\tjump label_%d\n", $<intVal>5);
         }
         ')'
         {
            /* code generation */
-            printf("label_%d:\n", $<intVal>7); // branch true
+            fprintf(fp, "label_%d:\n", $<intVal>7); // branch true
             CODE("shift_sp -1"); // pop the top one which pushed to compare the false label
         }
         stmt
         {
             /* code generation */
-            printf("\tjump label_%d\n", $<intVal>9);
-            printf("label_%d:\n", $<intVal>7 + 1); // branch false
+            fprintf(fp, "\tjump label_%d\n", $<intVal>9);
+            fprintf(fp, "label_%d:\n", $<intVal>7 + 1); // branch false
             pop_label_stack(&continue_label_stack); // pop this loop stmt label for CONTINUE
             pop_label_stack(&break_label_stack); // pop this loop stmt label for BREAK
         }
         | BREAK ';'
         {
-            printf("\tjump label_%d\n", get_break_label_number());
+            fprintf(fp, "\tjump label_%d\n", get_break_label_number());
         }
         | CONTINUE ';'
         {
-            printf("\tjump label_%d\n", get_continue_label_number());
+            fprintf(fp, "\tjump label_%d\n", get_continue_label_number());
         }
 
 return_code_gen : /* empty */
@@ -577,7 +577,7 @@ return_code_gen : /* empty */
             CODE("push_reg fp");
             CODE("push_const -1");
             CODE("add"); // fp-1 (return address)
-            printf("\tpush_const %d\n", -findcurrentdecl(returnid)->size);
+            fprintf(fp, "\tpush_const %d\n", -findcurrentdecl(returnid)->size);
             CODE("add"); // return value : fp-2 => (struct : fp-1-size)
         }
 
@@ -585,7 +585,7 @@ if_branch_code_gen : /* empty */
         {
             /* code generation */
             $$ = new_label();
-            printf("\tbranch_false label_%d\n", $$);
+            fprintf(fp, "\tbranch_false label_%d\n", $$);
         }
 
 expr_e
@@ -650,10 +650,10 @@ expr
             while (var_offset > 1) {
                 // push address
                 CODE("push_reg sp");
-                printf("\tpush_const %d\n", -var_offset);
+                fprintf(fp, "\tpush_const %d\n", -var_offset);
                 CODE("add");
                 CODE("fetch");
-                printf("\tpush_const %d\n", --var_offset);
+                fprintf(fp, "\tpush_const %d\n", --var_offset);
                 CODE("add");
 
                 // push value
@@ -845,10 +845,10 @@ binary
                 int var_offset = 0;
                 while (++var_offset < $1->size) {
                     CODE("push_reg sp");
-                    printf("\tpush_const %d\n", -1-var_offset);
+                    fprintf(fp, "\tpush_const %d\n", -1-var_offset);
                     CODE("add");
                     CODE("fetch");
-                    printf("\tpush_const %d\n", var_offset);
+                    fprintf(fp, "\tpush_const %d\n", var_offset);
                     CODE("add");
                     CODE("fetch");
                 }
@@ -875,22 +875,22 @@ unary
 
             /* code generation */
             if (!is_array_decl)
-                printf("\tpush_const %d\n", $$->value);
+                fprintf(fp, "\tpush_const %d\n", $$->value);
         }
         | CHAR_CONST
         {   
             $$ = makeintconstdecl(chartype, $1);
 
             /* code generation */
-            printf("\tpush_const %d\n", $$->value);
+            fprintf(fp, "\tpush_const %d\n", $$->value);
         }
         | STRING
         {
             $$ = makestringconstdecl(stringtype, $1);
 
             /* code generation */
-            printf("str_%d. string %s\n", new_string(), $$->stringvalue);
-            printf("\tpush_const str_%d\n", stringnumber);
+            fprintf(fp, "str_%d. string %s\n", new_string(), $$->stringvalue);
+            fprintf(fp, "\tpush_const str_%d\n", stringnumber);
         }
         | ID {
             /* find ID */
@@ -952,11 +952,11 @@ unary
             CODE("fetch");
             if (check_is_pointer_type($1->type)){
                 // pointer (++ptrto size)
-                printf("\tpush_const %d\n", $1->type->ptrto->size);
+                fprintf(fp, "\tpush_const %d\n", $1->type->ptrto->size);
             }
             else {
                 // int, char, struct
-                printf("\tpush_const %d\n", $1->size);
+                fprintf(fp, "\tpush_const %d\n", $1->size);
             }
             CODE("add");
             CODE("assign");
@@ -979,11 +979,11 @@ unary
             CODE("fetch");
             if (check_is_pointer_type($1->type)){
                 // pointer (++ptrto size)
-                printf("\tpush_const -%d\n", $1->type->ptrto->size);
+                fprintf(fp, "\tpush_const -%d\n", $1->type->ptrto->size);
             }
             else {
                 // int, char, struct
-                printf("\tpush_const -%d\n", $1->size);
+                fprintf(fp, "\tpush_const -%d\n", $1->size);
             }
             CODE("add");
             CODE("assign");
@@ -1005,11 +1005,11 @@ unary
             CODE("fetch");
             if (check_is_pointer_type($2->type)){
                 // pointer (++ptrto size)
-                printf("\tpush_const %d\n", $2->type->ptrto->size);
+                fprintf(fp, "\tpush_const %d\n", $2->type->ptrto->size);
             }
             else {
                 // int, char, struct
-                printf("\tpush_const %d\n", $2->size);
+                fprintf(fp, "\tpush_const %d\n", $2->size);
             }
             CODE("add");
             CODE("assign");
@@ -1030,11 +1030,11 @@ unary
             CODE("fetch");
             if (check_is_pointer_type($2->type)){
                 // pointer (++ptrto size)
-                printf("\tpush_const -%d\n", $2->type->ptrto->size);
+                fprintf(fp, "\tpush_const -%d\n", $2->type->ptrto->size);
             }
             else {
                 // int, char, struct
-                printf("\tpush_const -%d\n", $2->size);
+                fprintf(fp, "\tpush_const -%d\n", $2->size);
             }
             CODE("add");
             CODE("assign");
@@ -1099,7 +1099,7 @@ unary
 
             /* code generation */
             // array access
-            printf("\tpush_const %d\n", ($1->size)/($1->num_index));
+            fprintf(fp, "\tpush_const %d\n", ($1->size)/($1->num_index));
             CODE("mul");
             CODE("add");
         }
@@ -1120,11 +1120,11 @@ unary
             // print unary address (in case of struct from function return)
             if (check_is_struct_from_return($1)) {
                 CODE("push_reg sp");
-                printf("\tpush_const %d\n", -($1->size-1));
+                fprintf(fp, "\tpush_const %d\n", -($1->size-1));
                 CODE("add");
             }
             
-            printf("\tpush_const %d\n", $$->offset);
+            fprintf(fp, "\tpush_const %d\n", $$->offset);
             CODE("add");
         }
         | unary STRUCTOP ID
@@ -1142,7 +1142,7 @@ unary
             // struct access
             if (!$1->is_return_value)
                 CODE("fetch"); // to get address (*pointer return value is already address)
-            printf("\tpush_const %d\n", $$->offset);
+            fprintf(fp, "\tpush_const %d\n", $$->offset);
             CODE("add");
         }
         | unary '(' codegen args ')'
@@ -1172,11 +1172,11 @@ unary
             else {
                 // push the actual parameters on the stack in 'args' reducing procedure
                 CODE("push_reg sp"); // FP = SP
-                printf("\tpush_const -%d\n", sumofargs);
+                fprintf(fp, "\tpush_const -%d\n", sumofargs);
                 CODE("add");
                 CODE("pop_reg fp");
-                printf("\tjump %s\n", $1->id->name); // Then, jump
-                printf("label_%d:\n", $3); // print label
+                fprintf(fp, "\tjump %s\n", $1->id->name); // Then, jump
+                fprintf(fp, "label_%d:\n", $3); // print label
             }
         }
         | unary '(' codegen ')'
@@ -1191,8 +1191,8 @@ unary
             // no actual parameters
             CODE("push_reg sp"); // FP = SP
             CODE("pop_reg fp");
-            printf("\tjump %s\n", $1->id->name); // Then, jump
-            printf("label_%d:\n", $3); // print label
+            fprintf(fp, "\tjump %s\n", $1->id->name); // Then, jump
+            fprintf(fp, "label_%d:\n", $3); // print label
         }
         | NULL_TOKEN
         {
@@ -1204,9 +1204,9 @@ codegen : /* empty */
             /* code generation */
             // caller convention
             if($<declptr>-1 != write_int && $<declptr>-1 != write_string && $<declptr>-1 != write_char) {
-                printf("\tshift_sp %d\n", $<declptr>-1->returntype->size); // push a hole for return value
+                fprintf(fp, "\tshift_sp %d\n", $<declptr>-1->returntype->size); // push a hole for return value
                 $$ = new_label();
-                printf("\tpush_const label_%d\n", $$); // push the return address
+                fprintf(fp, "\tpush_const label_%d\n", $$); // push the return address
                 CODE("push_reg fp"); // push the old FP
             }
             sumofargs = 0; // reset
@@ -1261,19 +1261,19 @@ void push_address(struct decl* decl_ptr, int offset) {
         switch (check_variable_scope(decl_ptr)) {
             case GLOBAL:
                 CODE("push_const Lglob");
-                printf("\tpush_const %d\n", decl_ptr->offset + offset);
+                fprintf(fp, "\tpush_const %d\n", decl_ptr->offset + offset);
                 CODE("add");
                 break;
 
             case PARAM:
                 CODE("push_reg fp");
-                printf("\tpush_const %d\n", 1 + decl_ptr->offset + offset);
+                fprintf(fp, "\tpush_const %d\n", 1 + decl_ptr->offset + offset);
                 CODE("add");
                 break;
 
             case LOCAL:
                 CODE("push_reg fp");
-                printf("\tpush_const %d\n", 1 + decl_ptr->scope->sumofparams + decl_ptr->offset + offset);
+                fprintf(fp, "\tpush_const %d\n", 1 + decl_ptr->scope->sumofparams + decl_ptr->offset + offset);
                 CODE("add");
                 break;
 
@@ -1298,15 +1298,15 @@ void ERROR(char* s) {
 }
 
 void CODE(char *s) {
-    printf("\t%s\n",s);
+    fprintf(fp, "\t%s\n",s);
 }
 
 void LABEL(char *s) {
-    printf("%s:\n",s);
+    fprintf(fp, "%s:\n",s);
 }
 
 void FUNC_LABEL(char *func_name, char *label) {
-    printf("%s_%s:\n", func_name, label);
+    fprintf(fp, "%s_%s:\n", func_name, label);
 }
 
 int new_label() {
