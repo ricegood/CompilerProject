@@ -124,28 +124,6 @@ int read_line()
 
 int main(int argc, char** argv)
 {
-	// write file
-	if(argc >= 3) {
-		fp = fopen(argv[2], "w");
-	}
-
-	/* initialize type decl */
-	init_type();
-
-	// [TODO] modify this??
-	static char* keyWord[]={
-		"auto","break","case","char","continue","default","do","else","extern","for","goto","if","int","register","return","sizeof","static","struct","switch","while", NULL
-	};
-
-	static int tokentype[] = { TYPE, 0 }; // [TODO] oh this field is for keyword token type!!!!!!
-	int i;
-
-	// Initilize Hash Tabel with Keywords
-	for (i = 0; keyWord[i] != NULL; i++) {
-		// [TODO] change 'KEYWORD' to 'tokentype[i]'.
-		enter(KEYWORD, keyWord[i], strlen(keyWord[i]));
-	}
-
 	if(argc >= 2) yyin = fopen(argv[1], "r");
 	else yyin = stdin;
 	if(!yyin) {
@@ -153,9 +131,15 @@ int main(int argc, char** argv)
 		exit(1);
 	}
 
-	
+	// write file
+	if(argc >= 3) {
+		fp = fopen(argv[2], "w");
+	}
 
 	filename = argv[1];
+
+	// initialize type decl
+	init_type();
 
 	yyparse();
 	fclose(yyin);
