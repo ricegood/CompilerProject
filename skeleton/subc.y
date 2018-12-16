@@ -962,7 +962,7 @@ unary
         | unary DECOP
         {
             /* only char, integer */
-            if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype))
+            if (check_same_type_for_unary($1, inttype) || check_same_type_for_unary($1, chartype) || check_is_pointer_type($1->type) || check_is_struct_type($1->type))
                 $$ = $1;
             else {
                 ERROR("not int or char type");
@@ -989,7 +989,7 @@ unary
         | INCOP unary
         {
             /* only char, integer */
-            if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
+            if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype) || check_is_pointer_type($2->type) || check_is_struct_type($2->type))
                 $$ = $2;
             else {
                 ERROR("not int or char type");
@@ -1014,7 +1014,7 @@ unary
         | DECOP unary
         {
             /* only char, integer */
-            if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype))
+            if (check_same_type_for_unary($2, inttype) || check_same_type_for_unary($2, chartype) || check_is_pointer_type($2->type) || check_is_struct_type($2->type))
                 $$ = $2;
             else {
                 ERROR("not int or char type");
@@ -1077,10 +1077,17 @@ unary
                 $$ = NULL;
 
             /* code generation */
+
             // one more fetch to read address
             // but pointer from function return is already fetched value (already true address)
-            if (!$2->is_return_value)
+            // + pointer & (expr) => already address, because it has fetched in unary->binary (->expr) ... => declclass == CONST_....
+            
+            // CONST pointer : 
+            // 1) args  2) &something  3) function return(it can use $2->is_return_value)
+
+            if (!$2->is_return_value && !$2->declclass == CONST_) {
                 CODE("fetch");
+            }
         }
         | unary '[' expr ']'
         {
