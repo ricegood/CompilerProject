@@ -9,7 +9,7 @@ EXIT:
 main:
 	shift_sp 0
 main_start:
-str_1. string "-----------------------a"
+str_1. string "-----------------------"
 	push_const str_1
 	write_string
 str_2. string "aaaaaaaaaaaaaaaaaaaaaaa"
